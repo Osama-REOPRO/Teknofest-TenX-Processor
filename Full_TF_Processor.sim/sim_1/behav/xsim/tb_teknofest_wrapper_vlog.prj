@@ -1,0 +1,106 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "../../../../Full_TF_Processor.srcs/sources_1/new" --include "../../../../Full_TF_Processor.srcs/sources_1/imports/sim" --include "../../../../../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_wrapper_2024.srcs" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/clocking/mig_7series_v4_2_clk_ibuf.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/clocking/mig_7series_v4_2_infrastructure.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/clocking/mig_7series_v4_2_iodelay_ctrl.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/clocking/mig_7series_v4_2_tempmon.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_arb_mux.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_arb_row_col.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_arb_select.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_bank_cntrl.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_bank_common.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_bank_compare.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_bank_mach.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_bank_queue.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_bank_state.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_col_mach.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_mc.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_rank_cntrl.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_rank_common.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_rank_mach.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/ecc/mig_7series_v4_2_ecc_buf.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/ecc/mig_7series_v4_2_ecc_dec_fix.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/ecc/mig_7series_v4_2_ecc_gen.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/ecc/mig_7series_v4_2_ecc_merge_enc.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/ecc/mig_7series_v4_2_fi_xor.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/ip_top/mig_7series_v4_2_memc_ui_top_std.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/ip_top/mig_7series_v4_2_mem_intfc.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_group_io.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_if_post_fifo.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy_wrapper.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_of_pre_fifo.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_4lanes.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ck_addr_cmd_delay.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_dqs_found_cal.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_dqs_found_cal_hr.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_cntlr.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_data.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_edge.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_lim.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_mux.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_po_cntlr.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_samp.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_oclkdelay_cal.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_prbs_rdlvl.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_tempmon.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_top.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrcal.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrlvl.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrlvl_off_delay.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_ddr_prbs_gen.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_poc_cc.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_poc_edge_store.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_poc_meta.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_poc_pd.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_poc_tap_base.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/phy/mig_7series_v4_2_poc_top.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/ui/mig_7series_v4_2_ui_cmd.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/ui/mig_7series_v4_2_ui_rd_data.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/ui/mig_7series_v4_2_ui_top.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/ui/mig_7series_v4_2_ui_wr_data.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/mig_7series_0_mig_sim.v" \
+"../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/mig_7series_0.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/FIFObuffer.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/ORCB.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/ZeroCounter32.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/booth_mul.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/cache.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/cache_controller.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/carryless_multiplier.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/conflict_resolver_caches_main.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/conflict_resolver_mem_map_io.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/count_population.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/ddr2_model.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/decode_cycle.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/execute_cycle.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/fetch_cycle.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/hazard_unit.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/ksa.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/memory_controller.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/memory_cycle.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/non_restoring_div.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/pipeline_top.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/register_files.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/uart.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/uart_wishbone_controller.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/wb_m_core_uart.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/wb_s_uart.v" \
+"../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/writeback_cycle.v" \
+
+sv xil_defaultlib  --include "../../../../Full_TF_Processor.srcs/sources_1/new" --include "../../../../Full_TF_Processor.srcs/sources_1/imports/sim" --include "../../../../../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_wrapper_2024.srcs" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/programmer.sv" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/teknofest_memory.sv" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/teknofest_wrapper.sv" \
+"../../../../Full_TF_Processor.srcs/sources_1/new/tb_teknofest_wrapper.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
