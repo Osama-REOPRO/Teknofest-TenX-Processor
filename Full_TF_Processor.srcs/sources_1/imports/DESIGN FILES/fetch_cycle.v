@@ -1,3 +1,5 @@
+`define PC_START_ADRS 32'h80000000
+
 module fetch_cycle(
     // Declare input & outputs
         input clk, rst, flush,
@@ -12,6 +14,8 @@ module fetch_cycle(
         output [31:0] InstrD,
         output [31:0] PCD, PCPlus4D
     );
+
+	 // localparam pc_start_adrs = 32'h80000000;
 
     // Declaring interim wires
     wire [31:0] PC_F, PCF, PCPlus4F;
@@ -37,7 +41,8 @@ module fetch_cycle(
                 .rst(rst),
                 .flush(flush),
                 .PC(PCF),
-                .PC_Next(PC_F)
+                .PC_Next(PC_F),
+                .mem_instr_done_i(mem_instr_done_i)
                 );
 
     // Communicaet with Instruction Memory through Memory Controller
@@ -66,6 +71,8 @@ module fetch_cycle(
             InstrF_reg <= 32'h00000000;
             PCF_reg <= 32'h00000000;
             PCPlus4F_reg <= 32'h00000000;
+            mem_instr_adrs_o <= `PC_START_ADRS;
+        		mem_instr_req_o <= 1'b0;
         end else if (~mem_instr_done_i) begin
             mem_instr_req_o <= 1'b1;
             mem_instr_adrs_o <= PCF; // PC address
@@ -119,10 +126,11 @@ module Mux_4_by_1 (a,b,c,d, s,e);
     
 endmodule
 
-module PC_Module(clk,rst, flush, PC,PC_Next);
+module PC_Module(clk,rst, flush, PC,PC_Next, mem_instr_done_i);
     input clk,rst, flush;
     input [31:0]PC_Next;
     output [31:0]PC;
+    input mem_instr_done_i;
     reg [31:0]PC;
 
 //    always @(posedge clk or posedge flush)
@@ -133,14 +141,16 @@ module PC_Module(clk,rst, flush, PC,PC_Next);
 //            PC <= PC_Next;
 //    end
     always @(posedge flush) begin
-        PC <= 32'h0;            
+        PC <= `PC_START_ADRS;            
     end
     always @(posedge clk)
     begin
         if(rst == 1'b0)
-            PC <= {32{1'b0}};
+            PC <= `PC_START_ADRS;
         else
-            PC <= PC_Next;
+        		if (mem_instr_done_i) begin
+            	PC <= PC_Next;
+        		end
     end
 endmodule
 

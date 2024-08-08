@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_teknofest_wrapper_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_teknofest_wrapper" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="366.159356 us"></ZoomEndTime>
+      <Cursor1Time time="1,000.000000 us"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="317"></NameColumnWidth>
+      <ValueColumnWidth column_width="373"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="10" />
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core_rst_n" type="logic">
+      <obj_property name="ElementShortName">core_rst_n</obj_property>
+      <obj_property name="ObjectShortName">core_rst_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/sys_rst_n" type="logic">
+      <obj_property name="ElementShortName">sys_rst_n</obj_property>
+      <obj_property name="ObjectShortName">sys_rst_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/u_programmer/programming_active" type="logic">
+      <obj_property name="ElementShortName">programming_active</obj_property>
+      <obj_property name="ObjectShortName">programming_active</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/u_teknofest_memory/addr" type="array">
+      <obj_property name="ElementShortName">addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/u_teknofest_memory/\gen_sram.memory " type="array">
+      <obj_property name="ElementShortName">\gen_sram.memory [0:16][127:0]</obj_property>
+      <obj_property name="ObjectShortName">\gen_sram.memory [0:16][127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_req_o" type="logic">
+      <obj_property name="ElementShortName">mem_instr_req_o</obj_property>
+      <obj_property name="ObjectShortName">mem_instr_req_o</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider336">
+      <obj_property name="label">fetch</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_req_o" type="logic">
+      <obj_property name="ElementShortName">mem_instr_req_o</obj_property>
+      <obj_property name="ObjectShortName">mem_instr_req_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_adrs_o" type="array">
+      <obj_property name="ElementShortName">mem_instr_adrs_o[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_instr_adrs_o[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_done_i" type="logic">
+      <obj_property name="ElementShortName">mem_instr_done_i</obj_property>
+      <obj_property name="ObjectShortName">mem_instr_done_i</obj_property>
+   </wvobject>
+</wave_config>

@@ -43,13 +43,13 @@ always @(clk_i) begin
 				else 						allowed <= none;
 			end
 			instr: begin
-				if (!req_o && !res_done_i) begin // done
+				if (!res_req_o && !res_done_i) begin // done
 					if (req_data) 	allowed <= data;
 					else 				allowed <= none;
 				end
 			end
 			data: begin
-				if (!req_o && !res_done_i) begin // done
+				if (!res_req_o && !res_done_i) begin // done
 					if (req_instr) allowed <= instr;
 					else 				allowed <= none;
 				end
@@ -58,15 +58,17 @@ always @(clk_i) begin
 	end
 end
 
-assign we_o 	  = (allowed == instr)? instr_we_i		:(allowed == data)? data_we_i    : 0;
-assign adrs_o  = (allowed == instr)? instr_adrs_i		:(allowed == data)? data_adrs_i  : 0;
-assign wdata_o = (allowed == instr)? instr_wdata_i	:(allowed == data)? data_wdata_i : 0;
-assign wstrb_o = (allowed == instr)? instr_wstrb_i	:(allowed == data)? data_wstrb_i : 0;
-assign req_o   = (allowed == instr)? instr_req_i		:(allowed == data)? data_req_i   : 0;
+assign res_we_o 	  = (allowed == instr)? instr_we_i		:(allowed == data)? data_we_i    : 0;
+assign res_adrs_o  = (allowed == instr)? instr_adrs_i		:(allowed == data)? data_adrs_i  : 0;
+assign res_wdata_o = (allowed == instr)? instr_wdata_i	:(allowed == data)? data_wdata_i : 0;
+assign res_wstrb_o = (allowed == instr)? instr_wstrb_i	:(allowed == data)? data_wstrb_i : 0;
+assign res_req_o   = (allowed == instr)? instr_req_i		:(allowed == data)? data_req_i   : 0;
 
 assign instr_done_o  	= (allowed == instr)? 	res_done_i : 0;
 assign data_done_o  	= (allowed == data)?		res_done_i : 0;
-assign instr_rdata_o  = (allowed == instr)? 	res_rdata_i : 0;
-assign data_rdata_o  	= (allowed == data)? 	res_rdata_i : 0;
+
+// always pump result to output, no need for discrimination, that causes data to be 0 when allowing none
+assign instr_rdata_o  = res_rdata_i; 
+assign data_rdata_o  	= res_rdata_i;
 
 endmodule

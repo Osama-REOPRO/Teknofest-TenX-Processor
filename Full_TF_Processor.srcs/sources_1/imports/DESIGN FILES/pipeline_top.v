@@ -20,12 +20,16 @@ module Pipeline_top(
 	input  [31:0]	mem_data_rdata_i
 );
    //useless
-    assign mem_instr_we_o = 1'b0;
-    assign mem_instr_wdata_o = 32'b0;
-    assign mem_instr_wsize_o = 2'b10;
-    
-    // For now
-    assign mem_data_req_o = 1'b0;
+   assign mem_instr_we_o = 1'b0;
+   assign mem_instr_wdata_o = 32'b0;
+   assign mem_instr_wsize_o = 2'b10;
+   
+   // For now
+   assign mem_data_we_o 	= 1'b0;
+	assign mem_data_adrs_o 	= 32'b0;
+	assign mem_data_wdata_o = 32'b0;
+	assign mem_data_wsize_o = 2'b0;
+	assign mem_data_req_o 	= 1'b0;
     
     
     
