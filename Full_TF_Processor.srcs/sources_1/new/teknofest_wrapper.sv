@@ -45,7 +45,7 @@ module teknofest_wrapper #(
     mem_t core_mem, programmer_mem, sel_mem;
     // sel_mem: I think this is "selected memory" so that we can switch between core_mem and programmer_mem
     // core_mem: these are simply the signals connecting the core to the main memory, I might connect these signals to the cache inside the core
-    // programmer_mem: I think this is for programming the core
+    // programmer_mem: this is for programming the core
     
     logic system_reset_n;
     logic programmer_active;
@@ -91,7 +91,7 @@ module teknofest_wrapper #(
 	 // core instantiation
     Pipeline_top core(
 		 .clk(core_clk), 
-		 .rst(!core_rst_n),
+		 .rst(core_rst_n),
 		 // instruction mem operations
 		 .mem_instr_we_o(mem_instr_we),
 		 .mem_instr_adrs_o(mem_instr_adrs),
@@ -120,7 +120,7 @@ module teknofest_wrapper #(
 	wire 			WB_UART_RTY;
 	memory_controller mem_ctrl (
 		.clk_i(core_clk),
-		.rst_i(core_rst_n),
+		.rst_i(!core_rst_n),
 		// instruction mem operations
 		.instr_we_i(mem_instr_we),
 		.instr_adrs_i(mem_instr_adrs),
@@ -186,21 +186,36 @@ module teknofest_wrapper #(
     assign mem_main_done = mem_main_we? core_mem.gnt : core_mem.rvalid; // todo: verify that this works
 	 assign mem_main_rdata = core_mem.rdata;
     
-    programmer #(
-        .UART_BAUD_RATE(UART_BAUD_RATE),
-        .CPU_FREQ_HZ   (CPU_FREQ_HZ)
-    )u_programmer (
-        .clk                    (sys_clk), // eski hali: (core_clk)
-        .rst_n                  (sys_rst_n), // eski hali: (core_rst_n)
-        .mem_req                (programmer_mem.req),
-        .mem_we                 (programmer_mem.we),
-        .mem_addr               (programmer_mem.addr),
-        .mem_wdata              (programmer_mem.wdata),
-        .mem_wstrb              (programmer_mem.wstrb),
-        .ram_prog_rx_i          (ram_prog_rx_i),
-        .system_reset_no        (system_reset_n),
-        .programming_state_on   (programmer_active)
-    );
+programmer #(
+    .UART_BAUD_RATE(UART_BAUD_RATE),
+    .CPU_FREQ_HZ   (CPU_FREQ_HZ)
+)u_programmer (
+    .clk                    (sys_clk), // eski hali: (core_clk)
+    .rst_n                  (sys_rst_n), // eski hali: (core_rst_n)
+    .mem_req                (programmer_mem.req),
+    .mem_we                 (programmer_mem.we),
+    .mem_addr               (programmer_mem.addr),
+    .mem_wdata              (programmer_mem.wdata),
+    .mem_wstrb              (programmer_mem.wstrb),
+    .ram_prog_rx_i          (ram_prog_rx_i),
+    .system_reset_no        (system_reset_n),
+    .programming_state_on   (programmer_active)
+);
+
+// 	BootLoader bootLoader(
+//         .clk_i                    (sys_clk),
+//         .rst_n_i                  (sys_rst_n),
+// 
+//         .mem_req_o                (programmer_mem.req),
+//         .mem_we_o                 (programmer_mem.we),
+//         .mem_addr_o               (programmer_mem.addr),
+//         .mem_wdata_o              (programmer_mem.wdata),
+//         .mem_wstrb_o              (programmer_mem.wstrb),
+// 
+//         .system_reset_n_o        (system_reset_n),
+//         .programming_state_on   (programmer_active)
+//     );
+    
     
     assign sel_mem.req   = programmer_active ? programmer_mem.req   : core_mem.req;
     assign sel_mem.we    = programmer_active ? programmer_mem.we    : core_mem.we;
@@ -219,7 +234,8 @@ module teknofest_wrapper #(
     
     teknofest_memory #(
         .USE_SRAM   (USE_SRAM),
-        .MEM_DEPTH  (16)
+        .MEM_DEPTH  (16),
+		  .MEM_START_ADRS('h80000000)
     )u_teknofest_memory(
         .clk_i  (sys_clk),
         .rst_ni (sys_rst_n),

@@ -19,13 +19,20 @@ module cache_controller
 	output reg [31:0]	 rdata_o,
 
 	output reg 		    main_we_o,
-	output reg [31:0]  main_adrs_o,
+	output [31:0]  main_adrs_o,
 	output reg [127:0] main_wdata_o,
 	output reg [15:0]  main_wstrb_o,
 	output reg 		    main_req_o,
 	input  		   	 main_done_i,
 	input  	  [127:0] main_rdata_i
 );
+
+// test wires
+wire [31:0] start_of_32_word = adrs_i[3:2]*32;
+
+// signals
+assign main_adrs_o = adrs_i;
+
 
 // cache signals
 reg [`op_N:0] op;
@@ -72,16 +79,16 @@ localparam write_begin_st = 0,
 // ######################################### state machine tasks
 // read_op: miss and no clean nor empty
 // write_op: miss and no clean nor empty
-wire evac_needed = !hit_occurred || (!empty_found && !clean_found);
+wire evac_needed = !hit_occurred && (!empty_found && !clean_found);
 // read_op: we read if hit or need evac
 // write_op: we read if need evac
 wire read_needed_cache = evac_needed || (op && hit_occurred);
 // read_op: miss
 // write_op: miss
 wire read_needed_main = !hit_occurred;
-// read_op: evac_needed
+// read_op: evac_needed or missed
 // write_op: write_op or evac_needed
-wire write_needed_cache = (op == `write_op) || evac_needed;
+wire write_needed_cache = !hit_occurred || (op == `write_op) || evac_needed;
 // read_op: evac_needed
 // write_op: evac_needed
 wire write_needed_main = evac_needed;
@@ -137,7 +144,7 @@ always @(posedge clk_i) begin
 					finish: begin
 						if (!mem_operation_done) begin
 							if (read_needed_cache || read_needed_main) 	state <= read_st;
-							else 																state <= write_st;
+							else 														state <= write_st;
 
 							cache_sub_state <= init;
 						end
@@ -173,7 +180,7 @@ always @(posedge clk_i) begin
 								if (!mem_operation_done) begin
 									if ((op == `read_op) && hit_occurred) begin
 										// if hit occurred and we are in read state then we simply return the data
-										rdata_o <= read_data[(adrs_i[3:2]*32)-1 +: 32]; // todo: verify
+										rdata_o <= read_data[(adrs_i[3:2]*32) +: 32]; // todo: verify
 										op_sub_state <= read_done_st;
 									end else begin
 										op_sub_state <= read_main_st;
@@ -202,7 +209,9 @@ always @(posedge clk_i) begin
 							end
 							finish: begin
 								if (!main_done_i) begin
-									if (op == `read_op) rdata_o <= read_data[(adrs_i[3:2]*32)-1 +: 32]; // todo: verify
+									if (we_i == 0) begin
+										rdata_o <= main_rdata_i[(adrs_i[3:2]*32)+31 -: 32]; // todo: verify
+									end
 
 									op_sub_state <= read_done_st;
 									cache_sub_state  <= init;
@@ -212,8 +221,8 @@ always @(posedge clk_i) begin
 					end
 
 					read_done_st: begin
-						if (write_needed_cache || write_needed_main) op_sub_state <= write_st;
-						else op_sub_state <= done_st;
+						if (write_needed_cache || write_needed_main) state <= write_st;
+						else state <= done_st;
 
 						op_sub_state <= read_begin_st;
 					end

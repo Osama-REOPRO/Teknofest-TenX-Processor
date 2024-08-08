@@ -1,5 +1,5 @@
 # compile verilog/system verilog design source files
-verilog xil_defaultlib  --include "../../../../Full_TF_Processor.srcs/sources_1/new" --include "../../../../Full_TF_Processor.srcs/sources_1/imports/sim" --include "../../../../../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_wrapper_2024.srcs" \
+verilog xil_defaultlib  --include "../../../../Full_TF_Processor.srcs/sources_1/new" --include "../../../../Full_TF_Processor.srcs/sources_1/imports/sim" --include "../../../../../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_wrapper_2024.srcs" --include "../../../../Full_TF_Processor.srcs/sim_1/imports/sources_1/imports/sim" \
 "../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/clocking/mig_7series_v4_2_clk_ibuf.v" \
 "../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/clocking/mig_7series_v4_2_infrastructure.v" \
 "../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/user_design/rtl/clocking/mig_7series_v4_2_iodelay_ctrl.v" \
@@ -93,11 +93,11 @@ verilog xil_defaultlib  --include "../../../../Full_TF_Processor.srcs/sources_1/
 "../../../../Full_TF_Processor.srcs/sources_1/new/wb_s_uart.v" \
 "../../../../Full_TF_Processor.srcs/sources_1/imports/DESIGN FILES/writeback_cycle.v" \
 
-sv xil_defaultlib  --include "../../../../Full_TF_Processor.srcs/sources_1/new" --include "../../../../Full_TF_Processor.srcs/sources_1/imports/sim" --include "../../../../../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_wrapper_2024.srcs" \
+sv xil_defaultlib  --include "../../../../Full_TF_Processor.srcs/sources_1/new" --include "../../../../Full_TF_Processor.srcs/sources_1/imports/sim" --include "../../../../../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_wrapper_2024.srcs" --include "../../../../Full_TF_Processor.srcs/sim_1/imports/sources_1/imports/sim" \
 "../../../../Full_TF_Processor.srcs/sources_1/new/programmer.sv" \
 "../../../../Full_TF_Processor.srcs/sources_1/new/teknofest_memory.sv" \
 "../../../../Full_TF_Processor.srcs/sources_1/new/teknofest_wrapper.sv" \
-"../../../../Full_TF_Processor.srcs/sources_1/new/tb_teknofest_wrapper.sv" \
+"../../../../Full_TF_Processor.srcs/sim_1/imports/sources_1/new/tb_teknofest_wrapper.sv" \
 
 # compile glbl module
 verilog xil_defaultlib "glbl.v"

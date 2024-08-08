@@ -75,6 +75,13 @@ wire		   uart_req;
 wire        uart_done;
 wire [31:0] uart_rdata;
 
+wire 			instr_done_o_uart;
+wire [31:0] instr_rdata_o_uart;
+
+wire 			data_done_o_uart;
+wire [31:0] data_rdata_o_uart;
+
+
 // resolve conflicts between signals going to uart
 conflict_resolver_mem_map_io con_res_uart(
 	.clk_i(clk_i),
@@ -84,17 +91,17 @@ conflict_resolver_mem_map_io con_res_uart(
 	.instr_adrs_i  (instr_adrs_i),
 	.instr_wdata_i (instr_wdata_i),
 	.instr_wsize_i (instr_wsize_i),
-	.instr_req_i   (instr_req_i),
-	.instr_done_o  (instr_done_o),
-	.instr_rdata_o (instr_rdata_o),
+	.instr_req_i   (instr_req_i && adrs_is_uart),
+	.instr_done_o  (instr_done_o_uart),
+	.instr_rdata_o (instr_rdata_o_uart),
 	// data
 	.data_we_i	   (data_we_i),
 	.data_adrs_i   (data_adrs_i),
 	.data_wdata_i  (data_wdata_i),
 	.data_wsize_i  (data_wsize_i),
-	.data_req_i    (data_req_i),
-	.data_done_o   (data_done_o),
-	.data_rdata_o  (data_rdata_o),
+	.data_req_i    (data_req_i && adrs_is_uart),
+	.data_done_o   (data_done_o_uart),
+	.data_rdata_o  (data_rdata_o_uart),
 	// result
 	.res_we_o	  	(uart_we),
 	.res_adrs_o  	(uart_adrs),
@@ -114,6 +121,8 @@ assign uart_done   = adrs_is_uart ? uart_done_ctrl	 :	 1'b0;
 assign uart_rdata  = adrs_is_uart ? uart_rdata_ctrl : 32'b0;
 
 uart_wishbone_controller uart_wb_ctrl(
+	.clk_i(clk_i),
+	.rst_i(rst_i),
 	// signals from mem ctrl
 	.we_i(uart_we_ctrl),
 	.adrs_i(uart_adrs_ctrl),
@@ -132,22 +141,22 @@ uart_wishbone_controller uart_wb_ctrl(
 	.WB_RTY_I(WB_RTY_I)
 	);
 
-// caches inputs
+// caches inputs/outputs
 wire 		    instr_we    = adrs_instr_is_main? instr_we_i    :  1'b0;
 wire [31:0]  instr_adrs  = adrs_instr_is_main? instr_adrs_i  : 32'b0;
 wire [31:0]  instr_wdata = adrs_instr_is_main? instr_wdata_i : 32'b0;
 wire [1:0]   instr_wsize = adrs_instr_is_main? instr_wsize_i :  2'b0;
 wire 		    instr_req   = adrs_instr_is_main? instr_req_i   :  1'b0;
-assign instr_done_o  = adrs_instr_is_main? instr_done  :  1'b0;
-assign instr_rdata_o = adrs_instr_is_main? instr_rdata : 32'b0;
+assign instr_done_o  = adrs_instr_is_main? instr_done : adrs_instr_is_uart? instr_done_o_uart  :  1'b0;
+assign instr_rdata_o = adrs_instr_is_main? instr_rdata : adrs_instr_is_uart? instr_rdata_o_uart :  32'b0;
 
 wire 		    data_we    = adrs_data_is_main? data_we_i    :  1'b0;
 wire [31:0]  data_adrs  = adrs_data_is_main? data_adrs_i  : 32'b0;
 wire [31:0]  data_wdata = adrs_data_is_main? data_wdata_i : 32'b0;
 wire [1:0]   data_wsize = adrs_data_is_main? data_wsize_i :  2'b0;
 wire 		    data_req   = adrs_data_is_main? data_req_i   :  1'b0;
-assign data_done_o  = adrs_data_is_main? data_done  :  1'b0;
-assign data_rdata_o = adrs_data_is_main? data_rdata : 32'b0;
+assign data_done_o  = adrs_data_is_main? data_done  : adrs_data_is_uart? data_done_o_uart :  1'b0;
+assign data_rdata_o = adrs_data_is_main? data_rdata : adrs_data_is_uart? data_rdata_o_uart :  32'b0;
 
 // between caches and main mem
 wire 		    instr_main_we;

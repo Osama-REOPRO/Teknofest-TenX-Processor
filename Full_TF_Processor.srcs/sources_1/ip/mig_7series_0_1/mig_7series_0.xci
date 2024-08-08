@@ -1182,7 +1182,7 @@
         "OUTPUTDIR": [ { "value": "../../../../Full_TF_Processor.gen/sources_1/ip/mig_7series_0_1" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
-        "SWVERSION": [ { "value": "2023.1" } ],
+        "SWVERSION": [ { "value": "2023.2" } ],
         "SYNTHESISFLOW": [ { "value": "GLOBAL" } ]
       }
     },
