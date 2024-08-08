@@ -66,6 +66,8 @@ module fetch_cycle(
             InstrF_reg <= 32'h00000000;
             PCF_reg <= 32'h00000000;
             PCPlus4F_reg <= 32'h00000000;
+            mem_instr_adrs_o <= 32'h00000000;
+        		mem_instr_req_o <= 1'b0;
         end else if (~mem_instr_done_i) begin
             mem_instr_req_o <= 1'b1;
             mem_instr_adrs_o <= PCF; // PC address

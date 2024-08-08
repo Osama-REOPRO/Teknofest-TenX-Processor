@@ -6,7 +6,7 @@ module uart_wishbone_controller(
 	input  [31:0] wdata_i,
 	// input  [2:0]  wsize_i, // ignored, always word read/write
 	input 		  req_i,
-	output reg        done_o,
+	output reg    		done_o,
 	output reg [31:0] rdata_o,
 	// wishbone
 	input  [31:0] WB_ADR_O,
@@ -27,7 +27,7 @@ wire       tx_empty;
 wire       rx_full;
 wire       rx_empty;
 reg        wdata_write_request;
-wire [7:0]  wdata;
+wire [7:0] wdata;
 reg        rdata_read_request;
 wire [7:0] rdata;
 
@@ -90,7 +90,9 @@ always @(posedge clk_i) begin
 			rx_en,
 			baud_div,
 			wdata_write_request,
-			rdata_read_request
+			rdata_read_request,
+			done_o,
+			rdata_o
 			} <= 0;
 	end else begin
 		case (state)

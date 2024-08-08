@@ -91,7 +91,7 @@ module teknofest_wrapper #(
 	 // core instantiation
     Pipeline_top core(
 		 .clk(core_clk), 
-		 .rst(!core_rst_n),
+		 .rst(core_rst_n),
 		 // instruction mem operations
 		 .mem_instr_we_o(mem_instr_we),
 		 .mem_instr_adrs_o(mem_instr_adrs),
@@ -120,7 +120,7 @@ module teknofest_wrapper #(
 	wire 			WB_UART_RTY;
 	memory_controller mem_ctrl (
 		.clk_i(core_clk),
-		.rst_i(core_rst_n),
+		.rst_i(!core_rst_n),
 		// instruction mem operations
 		.instr_we_i(mem_instr_we),
 		.instr_adrs_i(mem_instr_adrs),

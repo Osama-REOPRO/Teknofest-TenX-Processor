@@ -43,13 +43,13 @@ always @(clk_i) begin
 				else 						allowed <= none;
 			end
 			instr: begin
-				if (!req_o && !res_done_i) begin // done
+				if (!res_req_o && !res_done_i) begin // done
 					if (req_data) 	allowed <= data;
 					else 				allowed <= none;
 				end
 			end
 			data: begin
-				if (!req_o && !res_done_i) begin // done
+				if (!res_req_o && !res_done_i) begin // done
 					if (req_instr) allowed <= instr;
 					else 				allowed <= none;
 				end
@@ -58,11 +58,11 @@ always @(clk_i) begin
 	end
 end
 
-assign we_o 	  = (allowed == instr)? instr_we_i		:(allowed == data)? data_we_i    : 0;
-assign adrs_o  = (allowed == instr)? instr_adrs_i		:(allowed == data)? data_adrs_i  : 0;
-assign wdata_o = (allowed == instr)? instr_wdata_i	:(allowed == data)? data_wdata_i : 0;
-assign wsize_o = (allowed == instr)? instr_wsize_i	:(allowed == data)? data_wsize_i : 0;
-assign req_o   = (allowed == instr)? instr_req_i		:(allowed == data)? data_req_i   : 0;
+assign res_we_o 	  = (allowed == instr)? instr_we_i		:(allowed == data)? data_we_i    : 0;
+assign res_adrs_o  = (allowed == instr)? instr_adrs_i		:(allowed == data)? data_adrs_i  : 0;
+assign res_wdata_o = (allowed == instr)? instr_wdata_i	:(allowed == data)? data_wdata_i : 0;
+assign res_wsize_o = (allowed == instr)? instr_wsize_i	:(allowed == data)? data_wsize_i : 0;
+assign res_req_o   = (allowed == instr)? instr_req_i		:(allowed == data)? data_req_i   : 0;
 
 assign instr_done_o  	= (allowed == instr)? 	res_done_i : 0;
 assign data_done_o  	= (allowed == data)?		res_done_i : 0;
