@@ -153,7 +153,7 @@ module programmer #(
   logic [31:0] prog_addr;
   always @(posedge clk) begin
     if (!rst_n) begin // eski hali: (!(rst_n && system_reset_no))
-      prog_addr <= 'h0;
+      prog_addr <= 32'h80000000; // osama: I changed this from 1'h0
     end else begin
       if ((state_prog == SequenceProgram) && prog_inst_valid) begin
         prog_addr <= prog_addr + 'd16;

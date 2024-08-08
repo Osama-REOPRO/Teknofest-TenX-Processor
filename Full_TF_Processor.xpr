@@ -4,7 +4,7 @@
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.                   -->
 <!-- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.   -->
 
-<Project Product="Vivado" Version="7" Minor="65" Path="D:/Documents/vivado/Full_TF_Processor-main/Full_TF_Processor.xpr">
+<Project Product="Vivado" Version="7" Minor="65" Path="D:/Documents/vivado/Full_TF_Processor/Full_TF_Processor.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="1c4be7a9bd9c445590670dde92e851ab"/>
@@ -59,7 +59,7 @@
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="FeatureSet" Val="FeatureSet_Classic"/>
-    <Option Name="WTXSimLaunchSim" Val="331"/>
+    <Option Name="WTXSimLaunchSim" Val="343"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -627,7 +627,16 @@
     </FileSet>
     <FileSet Name="sim_1" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_1" RelGenDir="$PGENDIR/sim_1">
       <Filter Type="Srcs"/>
-      <File Path="$PSRCDIR/sources_1/new/tb_teknofest_wrapper.sv">
+      <File Path="$PSRCDIR/sim_1/imports/sources_1/imports/sim/ddr2_model_parameters.vh">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PSRCDIR/sources_1/imports/sim/ddr2_model_parameters.vh"/>
+          <Attr Name="ImportTime" Val="1722169085"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+          <Attr Name="IsVisible" Val="1"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sim_1/imports/sources_1/new/tb_teknofest_wrapper.sv">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_project_2024.srcs/sources_1/new/tb_teknofest_wrapper.sv"/>
           <Attr Name="ImportTime" Val="1721306605"/>
@@ -661,21 +670,20 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/sim/ddr2_model_parameters.vh">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-          <Attr Name="IsVisible" Val="1"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/pipeline_tb.v">
+      <File Path="$PSRCDIR/sim_1/imports/sources_1/imports/DESIGN FILES/pipeline_tb.v">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/pipeline_tb.v"/>
           <Attr Name="ImportTime" Val="1721084710"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sim_1/imports/Full_TF_Processor.wcfg/memory-test-1.wcfg">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/Full_TF_Processor.wcfg/memory-test-1.wcfg"/>
+          <Attr Name="ImportTime" Val="1723096578"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>

@@ -17,7 +17,8 @@
 
 module teknofest_memory #(
     parameter USE_SRAM  = 1,
-    parameter MEM_DEPTH = 16 // Only valid for SRAM/ means the memory array will have 16 entries (each 128 bits wide)
+    parameter MEM_DEPTH = 16, // Only valid for SRAM/ means the memory array will have 16 entries (each 128 bits wide)
+	 parameter MEM_START_ADRS = 0
 )(
     input  logic        clk_i,
     input  logic        rst_ni,
@@ -57,8 +58,11 @@ module teknofest_memory #(
     inout  [1:0]  ddr2_dm,
     output        ddr2_odt
 );
+
+    wire [31:0] addr_offset = addr - 32'h80000000;
+
     wire        sys_clk_i    = sys_clk;
-    wire [26:0] app_addr     = addr[30:4];
+    wire [26:0] app_addr     = addr_offset[30:4];
     wire [2:0]  app_cmd      = ~we ? (3'b001) : (wstrb != 16'hFFFF ? 3'b001 : 3'b000);
     wire        app_en       = req;
     wire [127:0]app_wdf_data = wdata;
@@ -91,17 +95,17 @@ module teknofest_memory #(
     generate
         if(USE_SRAM == 1) begin : gen_sram
             localparam ADDR_W = $clog2(MEM_DEPTH);
-            logic [127:0] memory [MEM_DEPTH-1:0];
+            logic [127:0] memory [0 : MEM_DEPTH];
             
             always_ff@(posedge clk_i) begin
                 if(req && we) begin		// write operation
                     for(int i=0; i<16; i++) begin
                         if(wstrb[i]) 
                         	 // only write bytes for which wstrb is asserted
-                            memory[addr[4+:ADDR_W]][i*8+:8] <= wdata[i*8 +: 8];
+                            memory[addr_offset[4+:ADDR_W]][i*8+:8] <= wdata[i*8 +: 8];
                     end
                 end else if(req && ~we) begin // read operation
-                    rdata <= memory[addr[4+:ADDR_W]];
+                    rdata <= memory[addr_offset[4+:ADDR_W]];
                 end
             end
             
