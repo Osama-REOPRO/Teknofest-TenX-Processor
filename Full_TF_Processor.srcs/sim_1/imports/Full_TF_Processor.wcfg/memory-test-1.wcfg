@@ -12,14 +12,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000000 us"></ZoomStartTime>
-      <ZoomEndTime time="1,000.000001 us"></ZoomEndTime>
-      <Cursor1Time time="99.820144 us"></Cursor1Time>
+      <ZoomEndTime time="366.159356 us"></ZoomEndTime>
+      <Cursor1Time time="1,000.000000 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="317"></NameColumnWidth>
-      <ValueColumnWidth column_width="378"></ValueColumnWidth>
+      <ValueColumnWidth column_width="373"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="6" />
+   <WVObjectSize size="10" />
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core_rst_n" type="logic">
       <obj_property name="ElementShortName">core_rst_n</obj_property>
       <obj_property name="ObjectShortName">core_rst_n</obj_property>
@@ -43,5 +43,21 @@
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_req_o" type="logic">
       <obj_property name="ElementShortName">mem_instr_req_o</obj_property>
       <obj_property name="ObjectShortName">mem_instr_req_o</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider336">
+      <obj_property name="label">fetch</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_req_o" type="logic">
+      <obj_property name="ElementShortName">mem_instr_req_o</obj_property>
+      <obj_property name="ObjectShortName">mem_instr_req_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_adrs_o" type="array">
+      <obj_property name="ElementShortName">mem_instr_adrs_o[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_instr_adrs_o[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_done_i" type="logic">
+      <obj_property name="ElementShortName">mem_instr_done_i</obj_property>
+      <obj_property name="ObjectShortName">mem_instr_done_i</obj_property>
    </wvobject>
 </wave_config>

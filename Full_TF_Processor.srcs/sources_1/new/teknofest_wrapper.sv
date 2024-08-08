@@ -45,7 +45,7 @@ module teknofest_wrapper #(
     mem_t core_mem, programmer_mem, sel_mem;
     // sel_mem: I think this is "selected memory" so that we can switch between core_mem and programmer_mem
     // core_mem: these are simply the signals connecting the core to the main memory, I might connect these signals to the cache inside the core
-    // programmer_mem: I think this is for programming the core
+    // programmer_mem: this is for programming the core
     
     logic system_reset_n;
     logic programmer_active;
