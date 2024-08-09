@@ -147,7 +147,9 @@ wire [31:0]  instr_adrs  = adrs_instr_is_main? instr_adrs_i  : 32'b0;
 wire [31:0]  instr_wdata = adrs_instr_is_main? instr_wdata_i : 32'b0;
 wire [1:0]   instr_wsize = adrs_instr_is_main? instr_wsize_i :  2'b0;
 wire 		    instr_req   = adrs_instr_is_main? instr_req_i   :  1'b0;
+wire instr_done;
 assign instr_done_o  = adrs_instr_is_main? instr_done : adrs_instr_is_uart? instr_done_o_uart  :  1'b0;
+wire [31:0] instr_rdata;
 assign instr_rdata_o = adrs_instr_is_main? instr_rdata : adrs_instr_is_uart? instr_rdata_o_uart :  32'b0;
 
 wire 		    data_we    = adrs_data_is_main? data_we_i    :  1'b0;

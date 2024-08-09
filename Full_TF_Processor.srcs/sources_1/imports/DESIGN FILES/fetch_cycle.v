@@ -36,13 +36,16 @@ module fetch_cycle(
                 );
 
     // Declare PC Counter
+    reg increment_pc;
+    wire pc_incremented;
     PC_Module Program_Counter (
                 .clk(clk),
                 .rst(rst),
                 .flush(flush),
                 .PC(PCF),
                 .PC_Next(PC_F),
-                .mem_instr_done_i(mem_instr_done_i)
+                .increment_pc_i(increment_pc),
+                .pc_incremented_o(pc_incremented)
                 );
 
     // Communicaet with Instruction Memory through Memory Controller
@@ -59,31 +62,84 @@ module fetch_cycle(
                 .c(PCPlus4F)
                 );
 
-    // Fetch Cycle Register Logic
     always @(posedge flush) begin
         InstrF_reg <= 32'h00000000;
         PCF_reg <= 32'h00000000;
         PCPlus4F_reg <= 32'h00000000;
         mem_instr_req_o <= 1'b0;
     end
-    always @(posedge clk or negedge rst) begin
+    
+// Fetch Cycle Register Logic (old)
+//    always @(posedge clk or negedge rst) begin
+//        if(rst == 1'b0) begin
+//            InstrF_reg <= 32'h00000000;
+//            PCF_reg <= 32'h00000000;
+//            PCPlus4F_reg <= 32'h00000000;
+//            mem_instr_adrs_o <= `PC_START_ADRS;
+//        		mem_instr_req_o <= 1'b0;
+//        end else if (~mem_instr_done_i) begin
+//            mem_instr_req_o <= 1'b1;
+//            mem_instr_adrs_o <= PCF; // PC address
+//        end else begin // if mem_instr_done_i
+//            mem_instr_req_o <= 1'b0;
+//            InstrF_reg <= mem_instr_rdata_i; //InstrF;
+//            PCF_reg <= PCF;
+//            PCPlus4F_reg <= PCPlus4F;
+//        end
+//    end
+   
+   // Fetch Cycle Register Logic state machine
+   reg [3:0] mem_state;
+	localparam mem_init_st   = 0,
+				  mem_busy_st   = 1,
+				  mem_finish_st = 2,
+				  pc_increment_st = 3; 
+	
+	always @(posedge clk or negedge rst) begin
         if(rst == 1'b0) begin
             InstrF_reg <= 32'h00000000;
             PCF_reg <= 32'h00000000;
             PCPlus4F_reg <= 32'h00000000;
             mem_instr_adrs_o <= `PC_START_ADRS;
         		mem_instr_req_o <= 1'b0;
-        end else if (~mem_instr_done_i) begin
-            mem_instr_req_o <= 1'b1;
-            mem_instr_adrs_o <= PCF; // PC address
-        end else begin // if mem_instr_done_i
-            mem_instr_req_o <= 1'b0;
-            InstrF_reg <= mem_instr_rdata_i; //InstrF;
-            PCF_reg <= PCF;
-            PCPlus4F_reg <= PCPlus4F;
-        end
-    end
+        		mem_state <= 4'h0;
+        		increment_pc <= 1'b0;
+        end else begin
+        		case(mem_state)
+        			mem_init_st: begin
+        				if (!mem_instr_done_i && !mem_instr_req_o) begin
+							mem_instr_req_o <= 1'b1;
+							mem_instr_adrs_o <= PCF; // PC address
+							increment_pc <= 1'b0;
+							
+							mem_state <= mem_busy_st;
+        				end
+        			end
+        			mem_busy_st: begin
+						if (mem_instr_done_i) begin
+							mem_instr_req_o <= 1'b0;
 
+							mem_state <= mem_finish_st;
+						end
+        			end
+        			mem_finish_st: begin
+						if (!mem_instr_done_i) begin
+							InstrF_reg <= mem_instr_rdata_i; //InstrF;
+							PCF_reg <= PCF;
+							PCPlus4F_reg <= PCPlus4F;
+							increment_pc <= 1'b1;
+							
+							mem_state <= pc_increment_st;
+						end
+        			end
+        			pc_increment_st: begin
+							if (pc_incremented) begin
+								mem_state <= mem_init_st;
+							end
+        			end
+        		endcase
+        end
+	end
 
     // Assigning Registers Value to the Output port
     assign  InstrD = InstrF_reg;
@@ -126,11 +182,12 @@ module Mux_4_by_1 (a,b,c,d, s,e);
     
 endmodule
 
-module PC_Module(clk,rst, flush, PC,PC_Next, mem_instr_done_i);
+module PC_Module(clk,rst, flush, PC,PC_Next, increment_pc_i, pc_incremented_o);
     input clk,rst, flush;
     input [31:0]PC_Next;
     output [31:0]PC;
-    input mem_instr_done_i;
+    input increment_pc_i;
+    output reg pc_incremented_o;
     reg [31:0]PC;
 
 //    always @(posedge clk or posedge flush)
@@ -145,12 +202,16 @@ module PC_Module(clk,rst, flush, PC,PC_Next, mem_instr_done_i);
     end
     always @(posedge clk)
     begin
-        if(rst == 1'b0)
+        if(rst == 1'b0) begin
             PC <= `PC_START_ADRS;
-        else
-        		if (mem_instr_done_i) begin
+            pc_incremented_o <= 1'b0;
+        end else
+        		if (increment_pc_i && !pc_incremented_o) begin
             	PC <= PC_Next;
+            	pc_incremented_o <= 1'b1;
         		end
+        		
+        		if (!increment_pc_i) pc_incremented_o <= 1'b0;
     end
 endmodule
 
