@@ -210,9 +210,9 @@ module cache
 //					$display("		ib = %b", ib);
 //					$display("		i_valid_bytes[%0d] = %b", ib, i_valid_bytes[ib]);
 					if (i_valid_bytes[ib]) begin
-//						$write("		o_read_data[%0d -:8] <= %b", ((ib+1)*8)-1, data_mem[target_N][set_adrs][ ($clog2(4*b)-1) >= 2 ? ib[$clog2(4*b)-1:2] : 0 ][ ib[1:0] ]);
-//						$write(" = %0d\n", data_mem[target_N][set_adrs][ ($clog2(4*b)-1) >= 2 ? ib[$clog2(4*b)-1:2] : 0 ][ ib[1:0] ]);
-						o_read_data[((ib+1)*8)-1 -:8] <= data_mem[target_N][set_adrs][ ($clog2(4*b)-1) >= 2 ? ib[$clog2(4*b)-1:2] : 0 ][ ib[1:0] ];
+						$write("		o_read_data[%0d -:8] <= %b", ((ib+1)*8)-1, data_mem[target_N][set_adrs][ ($clog2(4*b)-1) >= 2 ? ib[$clog2(4*b)-1:2] : 0 ][ ib[1:0] ]);
+						$write(" = %0d\n", data_mem[target_N][set_adrs][ ($clog2(4*b)-1) >= 2 ? ib[$clog2(4*b)-1:2] : 0 ] [ ib[1:0] ]);
+						o_read_data[((ib+1)*8)-1 -:8] <= data_mem[target_N][set_adrs][ ($clog2(4*b)-1) >= 2 ? ib[$clog2(4*b)-1:2] : 0 ] [ ib[1:0] ];
 					end
 				end
 				

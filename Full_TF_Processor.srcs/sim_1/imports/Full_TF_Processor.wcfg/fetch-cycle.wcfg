@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_teknofest_wrapper_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_teknofest_wrapper" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="225,738.418 ns"></ZoomStartTime>
+      <ZoomEndTime time="226,724.292 ns"></ZoomEndTime>
+      <Cursor1Time time="1,000,000.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="238"></NameColumnWidth>
+      <ValueColumnWidth column_width="307"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="24" />
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/flush" type="logic">
+      <obj_property name="ElementShortName">flush</obj_property>
+      <obj_property name="ObjectShortName">flush</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_adrs_o" type="array">
+      <obj_property name="ElementShortName">mem_instr_adrs_o[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_instr_adrs_o[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_req_o" type="logic">
+      <obj_property name="ElementShortName">mem_instr_req_o</obj_property>
+      <obj_property name="ObjectShortName">mem_instr_req_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_done_i" type="logic">
+      <obj_property name="ElementShortName">mem_instr_done_i</obj_property>
+      <obj_property name="ObjectShortName">mem_instr_done_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_rdata_i" type="array">
+      <obj_property name="ElementShortName">mem_instr_rdata_i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_instr_rdata_i[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCSrcE" type="logic">
+      <obj_property name="ElementShortName">PCSrcE</obj_property>
+      <obj_property name="ObjectShortName">PCSrcE</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCTargetE" type="array">
+      <obj_property name="ElementShortName">PCTargetE[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PCTargetE[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/InstrD" type="array">
+      <obj_property name="ElementShortName">InstrD[31:0]</obj_property>
+      <obj_property name="ObjectShortName">InstrD[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCD" type="array">
+      <obj_property name="ElementShortName">PCD[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PCD[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCPlus4D" type="array">
+      <obj_property name="ElementShortName">PCPlus4D[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PCPlus4D[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PC_F" type="array">
+      <obj_property name="ElementShortName">PC_F[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PC_F[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCF" type="array">
+      <obj_property name="ElementShortName">PCF[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PCF[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCPlus4F" type="array">
+      <obj_property name="ElementShortName">PCPlus4F[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PCPlus4F[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/InstrF_reg" type="array">
+      <obj_property name="ElementShortName">InstrF_reg[31:0]</obj_property>
+      <obj_property name="ObjectShortName">InstrF_reg[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCF_reg" type="array">
+      <obj_property name="ElementShortName">PCF_reg[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PCF_reg[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCPlus4F_reg" type="array">
+      <obj_property name="ElementShortName">PCPlus4F_reg[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PCPlus4F_reg[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider378">
+      <obj_property name="label">PC Module</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/Program_Counter/increment_pc_i" type="logic">
+      <obj_property name="ElementShortName">increment_pc_i</obj_property>
+      <obj_property name="ObjectShortName">increment_pc_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/Program_Counter/pc_incremented_o" type="logic">
+      <obj_property name="ElementShortName">pc_incremented_o</obj_property>
+      <obj_property name="ObjectShortName">pc_incremented_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/Program_Counter/PC" type="array">
+      <obj_property name="ElementShortName">PC[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PC[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/Program_Counter/flush" type="logic">
+      <obj_property name="ElementShortName">flush</obj_property>
+      <obj_property name="ObjectShortName">flush</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/Program_Counter/PC_Next" type="array">
+      <obj_property name="ElementShortName">PC_Next[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PC_Next[31:0]</obj_property>
+   </wvobject>
+</wave_config>

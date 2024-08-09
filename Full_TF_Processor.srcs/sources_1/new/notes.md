@@ -5,4 +5,10 @@
 - [x] read data is switching to 0 before it is read, why?
     - problem is in conflict resolver
 ---- it finally works!!!!
-- [ ] first instruction read correctly, second one read semi-correctly, why?
+- [x] first instruction read correctly, second one read semi-correctly, why?
+---- fetch cycle works correctly
+- [x] cach never hits, even though it has the data, why?
+    - never asserting set valid
+- [x] read_needed_cache is behaving wrong and we are never entering cache read mode, instead we go writing instead!
+    - we never get a read_op
+---- cache functional

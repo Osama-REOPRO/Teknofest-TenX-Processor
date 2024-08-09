@@ -82,13 +82,13 @@ localparam write_begin_st = 0,
 wire evac_needed = !hit_occurred && (!empty_found && !clean_found);
 // read_op: we read if hit or need evac
 // write_op: we read if need evac
-wire read_needed_cache = evac_needed || (op && hit_occurred);
+wire read_needed_cache = evac_needed || (we_i == 0 && hit_occurred);
 // read_op: miss
 // write_op: miss
 wire read_needed_main = !hit_occurred;
 // read_op: evac_needed or missed
 // write_op: write_op or evac_needed
-wire write_needed_cache = !hit_occurred || (op == `write_op) || evac_needed;
+wire write_needed_cache = !hit_occurred || (we_i == 1) || evac_needed;
 // read_op: evac_needed
 // write_op: evac_needed
 wire write_needed_main = evac_needed;
@@ -180,7 +180,8 @@ always @(posedge clk_i) begin
 								if (!mem_operation_done) begin
 									if ((op == `read_op) && hit_occurred) begin
 										// if hit occurred and we are in read state then we simply return the data
-										rdata_o <= read_data[(adrs_i[3:2]*32) +: 32]; // todo: verify
+//										rdata_o <= read_data[(adrs_i[3:2]*32) +: 32]; // todo: verify
+										rdata_o <= read_data[(adrs_i[3:2]*32)+31 -: 32];
 										op_sub_state <= read_done_st;
 									end else begin
 										op_sub_state <= read_main_st;
@@ -210,7 +211,7 @@ always @(posedge clk_i) begin
 							finish: begin
 								if (!main_done_i) begin
 									if (we_i == 0) begin
-										rdata_o <= main_rdata_i[(adrs_i[3:2]*32)+31 -: 32]; // todo: verify
+										rdata_o <= main_rdata_i[(adrs_i[3:2]*32)+31 -: 32];
 									end
 
 									op_sub_state <= read_done_st;
@@ -244,6 +245,9 @@ always @(posedge clk_i) begin
 							init: begin
 								op 			   <= `write_op;
 								mem_operation  <= 1'b1;
+								set_valid		<= 1'b1;
+								set_tag		<= 1'b1;
+								set_use		<= 1'b1;
 
 								// valid_bytes depend on whether we are writing
 								// from input or we are writing missing data from main
@@ -251,6 +255,7 @@ always @(posedge clk_i) begin
 								// will be determined by wsize_i, if we are
 								// writing missing data from above then all are valid
 								if (hit_occurred) begin
+									set_dirty 	<= 1'b1;
 									// only write valid bytes from input
 									case (wsize_i) // 0:byte, 1:half, 2:word
 										2'h0: begin
@@ -277,6 +282,7 @@ always @(posedge clk_i) begin
 									endcase
 								end else begin
 									// write all from above
+									set_dirty 	<= 1'b0; // clean
 									valid_bytes <= {(4*b){1'b1}}; // all valid
 									write_data <= main_rdata_i; // todo: verify
 								end
