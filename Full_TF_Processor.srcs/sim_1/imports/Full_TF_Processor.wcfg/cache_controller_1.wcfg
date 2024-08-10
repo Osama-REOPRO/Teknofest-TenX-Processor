@@ -11,15 +11,18 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="385,730.319 ns"></ZoomStartTime>
-      <ZoomEndTime time="387,696.727 ns"></ZoomEndTime>
-      <Cursor1Time time="387,087.500 ns"></Cursor1Time>
+      <ZoomStartTime time="225,721.867 ns"></ZoomStartTime>
+      <ZoomEndTime time="226,627.603 ns"></ZoomEndTime>
+      <Cursor1Time time="225,967.500 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="197"></NameColumnWidth>
-      <ValueColumnWidth column_width="328"></ValueColumnWidth>
+      <ValueColumnWidth column_width="353"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="48" />
+   <WVObjectSize size="37" />
+   <wave_markers>
+      <marker time="225927500" label="" />
+   </wave_markers>
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/clk_i" type="logic">
       <obj_property name="ElementShortName">clk_i</obj_property>
       <obj_property name="ObjectShortName">clk_i</obj_property>
@@ -95,15 +98,11 @@
       <obj_property name="label">Cache</obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/op" type="array">
-      <obj_property name="ElementShortName">op[2:0]</obj_property>
-      <obj_property name="ObjectShortName">op[2:0]</obj_property>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_sub_state" type="array">
+      <obj_property name="ElementShortName">cache_sub_state[3:0]</obj_property>
+      <obj_property name="ObjectShortName">cache_sub_state[3:0]</obj_property>
       <obj_property name="CustomSignalColor">#808080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/i_address" type="array">
-      <obj_property name="ElementShortName">i_address[31:0]</obj_property>
-      <obj_property name="ObjectShortName">i_address[31:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/i_mem_operation" type="logic">
       <obj_property name="ElementShortName">i_mem_operation</obj_property>
@@ -111,35 +110,9 @@
       <obj_property name="CustomSignalColor">#808080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/o_mem_operation_done" type="logic">
-      <obj_property name="ElementShortName">o_mem_operation_done</obj_property>
-      <obj_property name="ObjectShortName">o_mem_operation_done</obj_property>
-      <obj_property name="CustomSignalColor">#808080</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/o_read_data" type="array">
-      <obj_property name="ElementShortName">o_read_data[127:0]</obj_property>
-      <obj_property name="ObjectShortName">o_read_data[127:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/i_set_valid" type="logic">
-      <obj_property name="ElementShortName">i_set_valid</obj_property>
-      <obj_property name="ObjectShortName">i_set_valid</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/i_set_tag" type="logic">
-      <obj_property name="ElementShortName">i_set_tag</obj_property>
-      <obj_property name="ObjectShortName">i_set_tag</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/i_set_dirty" type="logic">
-      <obj_property name="ElementShortName">i_set_dirty</obj_property>
-      <obj_property name="ObjectShortName">i_set_dirty</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/i_set_use" type="logic">
-      <obj_property name="ElementShortName">i_set_use</obj_property>
-      <obj_property name="ObjectShortName">i_set_use</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_sub_state" type="array">
-      <obj_property name="ElementShortName">cache_sub_state[3:0]</obj_property>
-      <obj_property name="ObjectShortName">cache_sub_state[3:0]</obj_property>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/op" type="array">
+      <obj_property name="ElementShortName">op[2:0]</obj_property>
+      <obj_property name="ObjectShortName">op[2:0]</obj_property>
       <obj_property name="CustomSignalColor">#808080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -148,18 +121,6 @@
       <obj_property name="ObjectShortName">valid_bytes[15:0]</obj_property>
       <obj_property name="CustomSignalColor">#808080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/i_valid_bytes" type="array">
-      <obj_property name="ElementShortName">i_valid_bytes[15:0]</obj_property>
-      <obj_property name="ObjectShortName">i_valid_bytes[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/valid_mem" type="array">
-      <obj_property name="ElementShortName">valid_mem[0:0][7:0]</obj_property>
-      <obj_property name="ObjectShortName">valid_mem[0:0][7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/tag_mem" type="array">
-      <obj_property name="ElementShortName">tag_mem[0:0][7:0][24:0]</obj_property>
-      <obj_property name="ObjectShortName">tag_mem[0:0][7:0][24:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/o_mem_operation_done" type="logic">
       <obj_property name="ElementShortName">o_mem_operation_done</obj_property>
@@ -170,7 +131,7 @@
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/hit_occurred" type="logic">
       <obj_property name="ElementShortName">hit_occurred</obj_property>
       <obj_property name="ObjectShortName">hit_occurred</obj_property>
-      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="CustomSignalColor">#808080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/empty_found" type="logic">
@@ -204,11 +165,6 @@
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/write_needed_main" type="logic">
       <obj_property name="ElementShortName">write_needed_main</obj_property>
       <obj_property name="ObjectShortName">write_needed_main</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/cache_data/data_mem" type="array">
-      <obj_property name="ElementShortName">data_mem[0:0][7:0][3:0][3:0][7:0]</obj_property>
-      <obj_property name="ObjectShortName">data_mem[0:0][7:0][3:0][3:0][7:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider490">
       <obj_property name="label">Main signals</obj_property>
@@ -264,12 +220,12 @@
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
-   <wvobject type="divider" fp_name="divider2631">
-      <obj_property name="label">main mem</obj_property>
+   <wvobject type="divider" fp_name="divider358">
+      <obj_property name="label">test signals</obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/u_teknofest_memory/\gen_sram.memory " type="array">
-      <obj_property name="ElementShortName">\gen_sram.memory [0:16][127:0]</obj_property>
-      <obj_property name="ObjectShortName">\gen_sram.memory [0:16][127:0]</obj_property>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_instr/start_of_32_word" type="array">
+      <obj_property name="ElementShortName">start_of_32_word[31:0]</obj_property>
+      <obj_property name="ObjectShortName">start_of_32_word[31:0]</obj_property>
    </wvobject>
 </wave_config>

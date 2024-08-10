@@ -432,9 +432,10 @@ output		f2i_out_sign;
      
     // ---------------------------------------------------------------------
     // Exceptions
+    // Exceptions
     wire		underflow_fmul;
     wire		overflow_fdiv;
-    wire		undeflow_div;
+    wire		underflow_div;
      
     wire		z =	shft_co | ( exp_ovf[1] |  exp_in_00) |
                 (!exp_ovf[1] & !exp_in_00 & (exp_out1_co | exp_out_00));
@@ -442,7 +443,7 @@ output		f2i_out_sign;
     assign underflow_fmul = ( (|fract_trunc) & z & !exp_in_ff ) |
                 (fract_out_00 & !fract_in_00 & exp_ovf[1]);
      
-    assign undeflow_div =	!(exp_ovf[1] &  exp_ovf[0] & rmode_00) & !inf_out & !max_num & exp_out_final!=8'hff & (
+    assign underflow_div =	!(exp_ovf[1] &  exp_ovf[0] & rmode_00) & !inf_out & !max_num & exp_out_final!=8'hff & (
      
                 ((|fract_trunc) & !opb_dn & (
                                 ( op_dn & !exp_ovf[1] & exp_ovf[0])	|
@@ -472,7 +473,7 @@ output		f2i_out_sign;
      
                 );
      
-    assign underflow = op_div ? undeflow_div : 
+    assign underflow = op_div ? underflow_div : 
                         op_mul ? underflow_fmul : 
                         (!fract_in[47] & exp_out1_co) & !dn; // FOR OTHER OPERATIONS OTHER THAN MUL AND DIV, INCLUDING SQRT
      
