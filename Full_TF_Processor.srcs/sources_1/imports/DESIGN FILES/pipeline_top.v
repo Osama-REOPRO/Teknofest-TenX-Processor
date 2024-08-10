@@ -184,7 +184,7 @@ module Pipeline_top(
                         .RD_W(RDW), 
                         .PCPlus4W(PCPlus4W), 
                         .Execute_ResultW(Execute_ResultW), 
-                        .ReadDataW(ReadDataW)
+                        .ReadDataW(ReadDataW),
                      	.WordSize_M(WordSize_M)
                     );
 

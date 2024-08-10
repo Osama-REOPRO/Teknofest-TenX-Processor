@@ -59,7 +59,7 @@
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="FeatureSet" Val="FeatureSet_Classic"/>
-    <Option Name="WTXSimLaunchSim" Val="380"/>
+    <Option Name="WTXSimLaunchSim" Val="390"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -238,6 +238,15 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/memory_cycle.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/memory_cycle.v"/>
+          <Attr Name="ImportTime" Val="1721301672"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/non_restoring_div.v">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/non_restoring_div.v"/>
@@ -326,16 +335,6 @@
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_wrapper_2024.srcs/sources_1/new/teknofest_wrapper.sv"/>
           <Attr Name="ImportTime" Val="1717483473"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/memory_cycle.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/memory_cycle.v"/>
-          <Attr Name="ImportTime" Val="1721301672"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -615,6 +614,18 @@
           <Attr Name="IsVisible" Val="1"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/new/mem_cycle_test_0.mem">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/test_store_0.mem">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="teknofest_wrapper"/>
@@ -692,6 +703,18 @@
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/Full_TF_Processor.wcfg/cache_controller_1.wcfg"/>
           <Attr Name="ImportTime" Val="1723121884"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sim_1/new/mem_cycle_test_0.mem">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/mem_cycle_test_0.mem">
+        <FileInfo RelPath="mem_cycle_test_0.mem">
+          <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>

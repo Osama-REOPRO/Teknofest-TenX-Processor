@@ -1,7 +1,7 @@
 module memory_cycle(
     clk, rst, flush, RegWriteM, int_RD_M, MemWriteM, ResultSrcM, RD_M, PCPlus4M, WriteDataM, 
     Execute_ResultM, RegWriteW, int_RD_W, ResultSrcW, RD_W, PCPlus4W, Execute_ResultW, ReadDataW,
-    WordSize_M // byte: 00, half: 01, word: 10, unsignedbyte: 11, unsignedhalf: 100;
+    WordSize_M, // byte: 00, half: 01, word: 10, unsignedbyte: 11, unsignedhalf: 100;
 
     mem_data_we_o,
     mem_data_adrs_o,
@@ -14,8 +14,8 @@ module memory_cycle(
     // Declaration of I/Os
     input clk, rst, flush, RegWriteM, int_RD_M, MemWriteM, ResultSrcM;
     input [4:0] RD_M; 
-    input [31:0] PCPlus4M, Execute_ResultM; //, WriteDataM;
-    //input [2:0] WordSize_M;
+    input [31:0] PCPlus4M, Execute_ResultM, WriteDataM;
+    input [2:0] WordSize_M;
 
     output RegWriteW, ResultSrcW, int_RD_W; 
     output [4:0] RD_W;
@@ -117,7 +117,6 @@ module memory_cycle(
 
 		end else begin
 			case(mem_state)
-			
 				mem_init_st: begin
 					if (!mem_data_done_i && !mem_data_req_o) begin
 						mem_data_req_o 	<= 1'b1;
@@ -147,20 +146,15 @@ module memory_cycle(
 				
 				mem_finish_st: begin
 					if (!mem_data_done_i) begin
-						ReadDataM <= mem_data_rdata_i; // ignored for writes
+						ReadDataM_r <= mem_data_rdata_i; // ignored for writes
 
 						mem_state <= mem_init_st;
 					end
-				end
-				
-		endcase
+				end	
+			endcase
+		end
 	end
     
-    
-    
-    
-    
-
     // Declaration of output assignments
     assign RegWriteW = RegWriteM_r;
     assign ResultSrcW = ResultSrcM_r;
@@ -171,45 +165,45 @@ module memory_cycle(
     assign int_RD_W = int_RD_M_r;
 endmodule
 
-module Data_Memory(
-    clk, rst, WE, WD, A, RD, WS
-);
-    input clk, rst, WE;
-    input [31:0] A, WD;
-    input [2:0] WS;
-    output [31:0] RD;
+//module Data_Memory(
+//    clk, rst, WE, WD, A, RD, WS
+//);
+//    input clk, rst, WE;
+//    input [31:0] A, WD;
+//    input [2:0] WS;
+//    output [31:0] RD;
 
-    wire [31:0] result;
-    reg [31:0] mem [1023:0];
+//    wire [31:0] result;
+//    reg [31:0] mem [1023:0];
 
-    always @(posedge clk) begin
-        if (WE) begin
-           case (WS)
-                3'b000 : mem[A][7:0] = WD[7:0]; // byte signed
-                3'b001 : mem[A][15:0] = WD[15:0]; // half signed
-                3'b010 : mem[A] = WD; // word
-                default : mem[A] = 32'h0;
-            endcase
-            //mem[A >> 2] <= WD;  // Addressing by word, assuming word-aligned addresses
-        end
-    end
+//    always @(posedge clk) begin
+//        if (WE) begin
+//           case (WS)
+//                3'b000 : mem[A][7:0] = WD[7:0]; // byte signed
+//                3'b001 : mem[A][15:0] = WD[15:0]; // half signed
+//                3'b010 : mem[A] = WD; // word
+//                default : mem[A] = 32'h0;
+//            endcase
+//            //mem[A >> 2] <= WD;  // Addressing by word, assuming word-aligned addresses
+//        end
+//    end
 
-    assign result = mem[A];
+//    assign result = mem[A];
     
-    //Shift here (for some reason arithmetic shift doesnt' work;
-    assign RD = (rst == 1'b0) ? 32'd0 :
-                    (WS == 3'b010) ? result :          // word
-                    (WS == 3'b000) ? { {24{result[7]}}, result[7:0] } :  // byte
-                    (WS == 3'b001) ? { {16{result[15]}}, result[15:0] } :  // half
-                    (WS == 3'b100) ? result >> 24:  // unsigned byte
-                    (WS == 3'b101) ? result >> 16:   //only left case: unsigned half (WS == 3'b100)
-                32'b0;            // default
+//    //Shift here (for some reason arithmetic shift doesnt' work;
+//    assign RD = (rst == 1'b0) ? 32'd0 :
+//                    (WS == 3'b010) ? result :          // word
+//                    (WS == 3'b000) ? { {24{result[7]}}, result[7:0] } :  // byte
+//                    (WS == 3'b001) ? { {16{result[15]}}, result[15:0] } :  // half
+//                    (WS == 3'b100) ? result >> 24:  // unsigned byte
+//                    (WS == 3'b101) ? result >> 16:   //only left case: unsigned half (WS == 3'b100)
+//                32'b0;            // default
                 
-    initial begin
-        // Initialize memory as needed
-        mem[0] = 32'h00000000;
-        mem[5] = 32'haaaaaaaa;
-        mem[2] = 32'hffffffff;
-        // Additional initializations if needed
-    end
-endmodule
+//    initial begin
+//        // Initialize memory as needed
+//        mem[0] = 32'h00000000;
+//        mem[5] = 32'haaaaaaaa;
+//        mem[2] = 32'hffffffff;
+//        // Additional initializations if needed
+//    end
+//endmodule
