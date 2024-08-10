@@ -11,17 +11,18 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="385,814.871 ns"></ZoomStartTime>
-      <ZoomEndTime time="387,420.987 ns"></ZoomEndTime>
-      <Cursor1Time time="386,427.500 ns"></Cursor1Time>
+      <ZoomStartTime time="386,206.024 ns"></ZoomStartTime>
+      <ZoomEndTime time="386,556.051 ns"></ZoomEndTime>
+      <Cursor1Time time="386,399.124 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="238"></NameColumnWidth>
-      <ValueColumnWidth column_width="292"></ValueColumnWidth>
+      <ValueColumnWidth column_width="282"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="26" />
+   <WVObjectSize size="15" />
    <wave_markers>
       <marker time="226267500" label="" />
+      <marker time="386237500" label="" />
    </wave_markers>
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
@@ -51,50 +52,6 @@
       <obj_property name="ElementShortName">mem_instr_rdata_i[31:0]</obj_property>
       <obj_property name="ObjectShortName">mem_instr_rdata_i[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCSrcE" type="logic">
-      <obj_property name="ElementShortName">PCSrcE</obj_property>
-      <obj_property name="ObjectShortName">PCSrcE</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCTargetE" type="array">
-      <obj_property name="ElementShortName">PCTargetE[31:0]</obj_property>
-      <obj_property name="ObjectShortName">PCTargetE[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/InstrD" type="array">
-      <obj_property name="ElementShortName">InstrD[31:0]</obj_property>
-      <obj_property name="ObjectShortName">InstrD[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCD" type="array">
-      <obj_property name="ElementShortName">PCD[31:0]</obj_property>
-      <obj_property name="ObjectShortName">PCD[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCPlus4D" type="array">
-      <obj_property name="ElementShortName">PCPlus4D[31:0]</obj_property>
-      <obj_property name="ObjectShortName">PCPlus4D[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PC_F" type="array">
-      <obj_property name="ElementShortName">PC_F[31:0]</obj_property>
-      <obj_property name="ObjectShortName">PC_F[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCF" type="array">
-      <obj_property name="ElementShortName">PCF[31:0]</obj_property>
-      <obj_property name="ObjectShortName">PCF[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCPlus4F" type="array">
-      <obj_property name="ElementShortName">PCPlus4F[31:0]</obj_property>
-      <obj_property name="ObjectShortName">PCPlus4F[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/InstrF_reg" type="array">
-      <obj_property name="ElementShortName">InstrF_reg[31:0]</obj_property>
-      <obj_property name="ObjectShortName">InstrF_reg[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCF_reg" type="array">
-      <obj_property name="ElementShortName">PCF_reg[31:0]</obj_property>
-      <obj_property name="ObjectShortName">PCF_reg[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/PCPlus4F_reg" type="array">
-      <obj_property name="ElementShortName">PCPlus4F_reg[31:0]</obj_property>
-      <obj_property name="ObjectShortName">PCPlus4F_reg[31:0]</obj_property>
-   </wvobject>
    <wvobject type="divider" fp_name="divider378">
       <obj_property name="label">PC Module</obj_property>
       <obj_property name="DisplayName">label</obj_property>
@@ -120,139 +77,12 @@
       <obj_property name="ObjectShortName">PC_Next[31:0]</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider810">
+      <obj_property name="label">registers</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register" type="array">
       <obj_property name="ElementShortName">Register[31:0][31:0]</obj_property>
       <obj_property name="ObjectShortName">Register[31:0][31:0]</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[31]" type="array">
-         <obj_property name="ElementShortName">[31][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[31][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[30]" type="array">
-         <obj_property name="ElementShortName">[30][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[30][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[29]" type="array">
-         <obj_property name="ElementShortName">[29][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[29][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[28]" type="array">
-         <obj_property name="ElementShortName">[28][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[28][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[27]" type="array">
-         <obj_property name="ElementShortName">[27][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[27][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[26]" type="array">
-         <obj_property name="ElementShortName">[26][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[26][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[25]" type="array">
-         <obj_property name="ElementShortName">[25][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[25][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[24]" type="array">
-         <obj_property name="ElementShortName">[24][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[24][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[23]" type="array">
-         <obj_property name="ElementShortName">[23][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[23][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[22]" type="array">
-         <obj_property name="ElementShortName">[22][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[22][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[21]" type="array">
-         <obj_property name="ElementShortName">[21][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[21][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[20]" type="array">
-         <obj_property name="ElementShortName">[20][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[20][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[19]" type="array">
-         <obj_property name="ElementShortName">[19][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[19][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[18]" type="array">
-         <obj_property name="ElementShortName">[18][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[18][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[17]" type="array">
-         <obj_property name="ElementShortName">[17][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[17][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[16]" type="array">
-         <obj_property name="ElementShortName">[16][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[16][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[15]" type="array">
-         <obj_property name="ElementShortName">[15][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[15][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[14]" type="array">
-         <obj_property name="ElementShortName">[14][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[14][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[13]" type="array">
-         <obj_property name="ElementShortName">[13][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[13][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[12]" type="array">
-         <obj_property name="ElementShortName">[12][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[12][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[11]" type="array">
-         <obj_property name="ElementShortName">[11][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[11][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[10]" type="array">
-         <obj_property name="ElementShortName">[10][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[10][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[9]" type="array">
-         <obj_property name="ElementShortName">[9][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[9][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[8]" type="array">
-         <obj_property name="ElementShortName">[8][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[8][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[7]" type="array">
-         <obj_property name="ElementShortName">[7][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[7][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[6]" type="array">
-         <obj_property name="ElementShortName">[6][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[6][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[5]" type="array">
-         <obj_property name="ElementShortName">[5][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[5][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[4]" type="array">
-         <obj_property name="ElementShortName">[4][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[4][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[3]" type="array">
-         <obj_property name="ElementShortName">[3][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[3][31:0]</obj_property>
-         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[2]" type="array">
-         <obj_property name="ElementShortName">[2][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[2][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[1]" type="array">
-         <obj_property name="ElementShortName">[1][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[1][31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register[0]" type="array">
-         <obj_property name="ElementShortName">[0][31:0]</obj_property>
-         <obj_property name="ObjectShortName">[0][31:0]</obj_property>
-      </wvobject>
    </wvobject>
 </wave_config>
