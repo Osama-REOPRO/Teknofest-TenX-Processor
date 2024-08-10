@@ -93,7 +93,7 @@ module fetch_cycle(
 	localparam mem_init_st   = 0,
 				  mem_busy_st   = 1,
 				  mem_finish_st = 2,
-				  pc_increment_st = 3; 
+				  pc_increment_st = 3;
 	
 	always @(posedge clk or negedge rst) begin
         if(rst == 1'b0) begin

@@ -176,7 +176,7 @@ module Pipeline_top(
                         .ResultSrcM(ResultSrcM), 
                         .RD_M(RD_M), 
                         .PCPlus4M(PCPlus4M), 
-                        //.WriteDataM(WriteDataM), 
+                        .WriteDataM(WriteDataM), 
                         .Execute_ResultM(Execute_ResultM), 
                         .RegWriteW(RegWriteW), 
                         .int_RD_W(int_RD_W),
@@ -185,7 +185,7 @@ module Pipeline_top(
                         .PCPlus4W(PCPlus4W), 
                         .Execute_ResultW(Execute_ResultW), 
                         .ReadDataW(ReadDataW)
-                      //.WordSize_M(WordSize_M)
+                     	.WordSize_M(WordSize_M)
                     );
 
     // Write Back Stage
