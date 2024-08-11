@@ -4,11 +4,11 @@ module memory_cycle(
     WordSize_M, // byte: 00, half: 01, word: 10, unsignedbyte: 11, unsignedhalf: 100;
     mem_data_we_o,
     mem_data_adrs_o,
-  	 mem_data_wdata_o,
+  	mem_data_wdata_o,
     mem_data_wsize_o,
     mem_data_req_o,
     mem_data_done_i,
-  	 mem_data_rdata_i
+  	mem_data_rdata_i
 );
     // Declaration of I/Os
     input clk, rst, flush, RegWriteM, int_RD_M, MemWriteM, mem_read_M;
@@ -67,7 +67,7 @@ module memory_cycle(
 	end 
    
     
-    reg [2:0] mem_state;	
+    reg [1:0] mem_state;	
     localparam      mem_check_st  = 0, //00
                     mem_init_st   = 1, //01
 					mem_busy_st   = 2, //10
@@ -93,10 +93,10 @@ module memory_cycle(
 
 		end else begin
 			case(mem_state)
-			    mem_check_st:
+			    mem_check_st: // 0
 			     if(mem_read_M || MemWriteM) mem_state <= mem_init_st;
 
-				mem_init_st: begin
+				mem_init_st: begin //1
 					if (!mem_data_done_i && !mem_data_req_o) begin
 						mem_data_req_o 	<= 1'b1;
 						mem_data_adrs_o 	<= Execute_ResultM;
@@ -109,7 +109,7 @@ module memory_cycle(
 					end
 				end
 				
-				mem_busy_st: begin
+				mem_busy_st: begin //2
 					if (mem_data_done_i) begin
 						mem_data_req_o <= 1'b0;
 
@@ -117,7 +117,7 @@ module memory_cycle(
 					end
 				end
 				
-				mem_finish_st: begin
+				mem_finish_st: begin //3
 					if (!mem_data_done_i) begin
 					   if(mem_read_M) begin
 					   

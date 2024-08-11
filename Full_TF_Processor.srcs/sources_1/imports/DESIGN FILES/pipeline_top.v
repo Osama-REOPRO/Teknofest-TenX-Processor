@@ -184,7 +184,14 @@ module Pipeline_top(
                         .PCPlus4W(PCPlus4W), 
                         .Execute_ResultW(Execute_ResultW), 
                         .ReadDataW(ReadDataW),
-                     	.WordSize_M(WordSize_M)
+                     	.WordSize_M(WordSize_M),
+                     	.mem_data_we_o(mem_data_we_o),
+                     	.mem_data_adrs_o(mem_data_adrs_o),
+                     	.mem_data_wdata_o(mem_data_wdata_o),
+                     	.mem_data_wsize_o(mem_data_wsize_o),
+                     	.mem_data_req_o(mem_data_req_o),
+                     	.mem_data_done_i(mem_data_done_i),
+                     	.mem_data_rdata_i(mem_data_rdata_i)
                     );
 
     // Write Back Stage
