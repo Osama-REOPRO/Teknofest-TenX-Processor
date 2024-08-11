@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
-      <ZoomEndTime time="366.159356 us"></ZoomEndTime>
-      <Cursor1Time time="1,000.000000 us"></Cursor1Time>
+      <ZoomStartTime time="174.708874 us"></ZoomStartTime>
+      <ZoomEndTime time="481.360634 us"></ZoomEndTime>
+      <Cursor1Time time="430.007500 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="317"></NameColumnWidth>
-      <ValueColumnWidth column_width="373"></ValueColumnWidth>
+      <ValueColumnWidth column_width="367"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="10" />
+   <WVObjectSize size="17" />
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core_rst_n" type="logic">
       <obj_property name="ElementShortName">core_rst_n</obj_property>
       <obj_property name="ObjectShortName">core_rst_n</obj_property>
@@ -59,5 +59,33 @@
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_done_i" type="logic">
       <obj_property name="ElementShortName">mem_instr_done_i</obj_property>
       <obj_property name="ObjectShortName">mem_instr_done_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_data_we" type="logic">
+      <obj_property name="ElementShortName">mem_data_we</obj_property>
+      <obj_property name="ObjectShortName">mem_data_we</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_data_req" type="logic">
+      <obj_property name="ElementShortName">mem_data_req</obj_property>
+      <obj_property name="ObjectShortName">mem_data_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_data_adrs" type="array">
+      <obj_property name="ElementShortName">mem_data_adrs[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_data_adrs[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_data_wdata" type="array">
+      <obj_property name="ElementShortName">mem_data_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_data_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_data_wsize" type="array">
+      <obj_property name="ElementShortName">mem_data_wsize[1:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_data_wsize[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_data_rdata" type="array">
+      <obj_property name="ElementShortName">mem_data_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_data_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_data_done" type="logic">
+      <obj_property name="ElementShortName">mem_data_done</obj_property>
+      <obj_property name="ObjectShortName">mem_data_done</obj_property>
    </wvobject>
 </wave_config>

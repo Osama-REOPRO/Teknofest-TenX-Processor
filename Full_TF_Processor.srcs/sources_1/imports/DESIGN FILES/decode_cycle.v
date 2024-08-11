@@ -1,4 +1,4 @@
-module decode_cycle(clk, rst, flush, InstrD, PCD, PCPlus4D, RegWriteW, RDW, ResultW, RegWriteE, BSrcE, MemWriteE, ResultSrcE,
+module decode_cycle(clk, rst, flush, InstrD, PCD, PCPlus4D, RegWriteW, RDW, ResultW, RegWriteE, BSrcE, MemWriteE, mem_read_E,
     BranchE,  ALUControlE, RD1_E, RD2_E, Imm_Ext_E, RD_E, JtypeE, PCE, PCPlus4E, RS1_E, RS2_E, funct3_E,
     FPUControlE, RD3_E, F_instruction_E, int_RD_E, int_RD_W
     );
@@ -7,7 +7,7 @@ module decode_cycle(clk, rst, flush, InstrD, PCD, PCPlus4D, RegWriteW, RDW, Resu
     input clk, rst, flush, RegWriteW;
     input [4:0] RDW;
     input [31:0] InstrD, PCD, PCPlus4D, ResultW, int_RD_W;
-    output RegWriteE,BSrcE,MemWriteE,JtypeE,ResultSrcE,BranchE, F_instruction_E, int_RD_E;
+    output RegWriteE,BSrcE,MemWriteE,JtypeE,mem_read_E,BranchE, F_instruction_E, int_RD_E;
     output [5:0] ALUControlE;
     output [4:0] FPUControlE;
     output [31:0] RD1_E, RD2_E, RD3_E, Imm_Ext_E;
@@ -15,7 +15,7 @@ module decode_cycle(clk, rst, flush, InstrD, PCD, PCPlus4D, RegWriteW, RDW, Resu
     output [31:0] PCE, PCPlus4E;
     output [2:0] funct3_E;
     // Declare Interim Wires
-    wire RegWriteD,BSrcD,MemWriteD,ResultSrcD,BranchD,JtypeD, F_instruction_D, int_RD_D;
+    wire RegWriteD,BSrcD,MemWriteD,mem_read_D,BranchD,JtypeD, F_instruction_D, int_RD_D;
     wire [2:0] ImmSrcD;
     wire [5:0] ALUControlD;
     wire [4:0] FPUControlD;
@@ -23,7 +23,7 @@ module decode_cycle(clk, rst, flush, InstrD, PCD, PCPlus4D, RegWriteW, RDW, Resu
     wire is_rs1_int;
     wire write_to_int_rf;
     // Declaration of Interim Register
-    reg RegWriteD_r,BSrcD_r,MemWriteD_r,ResultSrcD_r,BranchD_r,JtypeD_r, F_instructionD_r, int_RD_D_r;
+    reg RegWriteD_r,BSrcD_r,MemWriteD_r,mem_read_D_r,BranchD_r,JtypeD_r, F_instructionD_r, int_RD_D_r;
     reg [5:0] ALUControlD_r;
     reg [5:0] FPUControlD_r;
     reg [31:0] RD1_D_r, RD2_D_r, RD3_D_r, Imm_Ext_D_r;
@@ -40,7 +40,7 @@ module decode_cycle(clk, rst, flush, InstrD, PCD, PCPlus4D, RegWriteW, RDW, Resu
                             .BSrc(BSrcD),
                             .MemWrite(MemWriteD),
                             .Jtype(JtypeD),
-                            .ResultSrc(ResultSrcD),
+                            .mem_read(mem_read_D),
                             .Branch(BranchD),
                             .funct3(InstrD[14:12]),
                             .funct7(InstrD[31:25]),
@@ -97,7 +97,7 @@ module decode_cycle(clk, rst, flush, InstrD, PCD, PCPlus4D, RegWriteW, RDW, Resu
         RegWriteD_r <= 1'b0;
         BSrcD_r <= 1'b0;
         MemWriteD_r <= 1'b0;
-        ResultSrcD_r <= 1'b0;
+        mem_read_D_r <= 1'b0;
         BranchD_r <= 1'b0;
         JtypeD_r <= 1'b0;    
         ALUControlD_r <= 6'b0000000;
@@ -120,7 +120,7 @@ module decode_cycle(clk, rst, flush, InstrD, PCD, PCPlus4D, RegWriteW, RDW, Resu
             RegWriteD_r <= 1'b0;
             BSrcD_r <= 1'b0;
             MemWriteD_r <= 1'b0;
-            ResultSrcD_r <= 1'b0;
+            mem_read_D_r <= 1'b0;
             BranchD_r <= 1'b0;
             JtypeD_r <= 1'b0;    
             ALUControlD_r <= 6'b0000000;
@@ -141,7 +141,7 @@ module decode_cycle(clk, rst, flush, InstrD, PCD, PCPlus4D, RegWriteW, RDW, Resu
             RegWriteD_r <= RegWriteD;
             BSrcD_r <= BSrcD;
             MemWriteD_r <= MemWriteD;
-            ResultSrcD_r <= ResultSrcD;
+            mem_read_D_r <= mem_read_D;
             BranchD_r <= BranchD;
             JtypeD_r <= JtypeD; 
             ALUControlD_r <= ALUControlD;
@@ -165,7 +165,7 @@ module decode_cycle(clk, rst, flush, InstrD, PCD, PCPlus4D, RegWriteW, RDW, Resu
     assign RegWriteE = RegWriteD_r;
     assign BSrcE = BSrcD_r;
     assign MemWriteE = MemWriteD_r;
-    assign ResultSrcE = ResultSrcD_r;
+    assign mem_read_E = mem_read_D_r;
     assign BranchE = BranchD_r;
     assign JtypeE = JtypeD_r; //CAUSED Jtype TO ACT CORRECTLY IN THE WAVEFORM, ALSO MAKES US ONLY FETCH TWO INSTRUCTIONS
     assign ALUControlE = ALUControlD_r;
@@ -185,13 +185,13 @@ module decode_cycle(clk, rst, flush, InstrD, PCD, PCPlus4D, RegWriteW, RDW, Resu
 
 endmodule
 
-module Control_Unit_Top(Op,RegWrite,Jtype,ImmSrc,BSrc,MemWrite,ResultSrc,Branch,funct3,funct5,funct7,
+module Control_Unit_Top(Op,RegWrite,Jtype,ImmSrc,BSrc,MemWrite,mem_read,Branch,funct3,funct5,funct7,
                         ALUControl, FPUControl, is_rs1_int, is_rd_int, f_instruction);
 
     input [6:0] Op,funct7;
     input [2:0] funct3;
     input [4:0] funct5;
-    output RegWrite,Jtype,BSrc,MemWrite,ResultSrc,Branch;
+    output RegWrite,Jtype,BSrc,MemWrite,mem_read,Branch;
     output [2:0] ImmSrc;
     
     output [5:0] ALUControl;
@@ -206,7 +206,7 @@ module Control_Unit_Top(Op,RegWrite,Jtype,ImmSrc,BSrc,MemWrite,ResultSrc,Branch,
                 .RegWrite(RegWrite),
                 .ImmSrc(ImmSrc),
                 .MemWrite(MemWrite),
-                .ResultSrc(ResultSrc),
+                .mem_read(mem_read),
                 .Branch(Branch),
                 .BSrc(BSrc),
                 .ALUOp(ALUOp),
@@ -247,9 +247,9 @@ module Sign_Extend_Immediate (In, ImmSrc, Imm_Ext);
 endmodule
 
 
-module ALU_Main_Decoder(Op, RegWrite, ImmSrc, BSrc, MemWrite, ResultSrc, Branch, ALUOp, Jtype);
+module ALU_Main_Decoder(Op, RegWrite, ImmSrc, BSrc, MemWrite, mem_read, Branch, ALUOp, Jtype);
     input [6:0] Op;
-    output RegWrite, BSrc, MemWrite, ResultSrc, Branch, Jtype;
+    output RegWrite, BSrc, MemWrite, mem_read, Branch, Jtype;
     output [2:0] ImmSrc, ALUOp;
     
     wire Load, JALR, ImmediateOP, Rtype, LUI, AUIPC, Itype, Utype, Store, Atomic;
@@ -279,11 +279,11 @@ module ALU_Main_Decoder(Op, RegWrite, ImmSrc, BSrc, MemWrite, ResultSrc, Branch,
 
     assign MemWrite = Store; // Store
 
-    assign ResultSrc = Load; // Load
+    assign mem_read = Load; // Load
 
-    assign ALUOp = Rtype ? 3'b010 :  /*I AND M*/ 
-                   Branch ? 3'b001 : // Branches
-                   (ImmediateOP) ? 3'b000 : // I-type except loads and stores
+    assign ALUOp = ImmediateOP ? 3'b000 : // I-type except loads and stores
+                    Rtype ? 3'b010 :  /*I AND M*/ 
+                    Branch ? 3'b001 : // Branches
                    (Load || Store) ? 3'b011 : // I, M and F
                    (LUI) ? 3'b100 :  
                    (AUIPC) ? 3'b101 :
@@ -373,15 +373,14 @@ module ALU_Signal_Decoder(ALUOp, funct3, funct5, funct7, ALUControl);
                              (funct3 == 3'b100) ? 6'b000100 : // XORI
                              (funct3 == 3'b110) ? 6'b000011 : // ORI
                              (funct3 == 3'b111) ? 6'b000010 : // ANDI
-                             (funct3 == 3'b101) ?
+                             (funct3 == 3'b101) ? // shift rights
                                 ((funct7 == 7'b0000000) ? 6'b000110 : // SRLI
                                 (funct7 == 7'b0100000) ? 6'b000111 : // SRAI
                                 (funct7 == 7'b0110100) ? 6'b011000 : // rev8
                                 (funct7 == 7'b0110000) ? 6'b011001 : // RORI
                                 (funct7 == 7'b0100100) ? 6'b011011 : // bext
                                 6'bxxxxxx) : //default
-                             (funct3 == 3'b001) ? 
-                                (funct7 == 7'b0010011) ? 6'b000101 : // SLLI
+                             (funct3 == 3'b001) ?
                                 (funct7 == 7'b0110000 ) ? 
                                    ((funct5 == 5'b00000) ? 6'b010100 : //CLZ
                                     (funct5 == 5'b00001) ? 6'b010110 : // CTZ
@@ -394,7 +393,7 @@ module ALU_Signal_Decoder(ALUOp, funct3, funct5, funct7, ALUControl);
                                      6'b011101 : // bseti
                                 (funct7 == 7'b0100100) ?  6'b011010 :// bclr
                                 (funct7 == 7'b0110100) ? 6'b011100 : // binv
-                                6'bxxxxxx:
+                                6'b000101 : // SLL
                              6'bxxxxxx : // Default
                         (ALUOp == 3'b001) ? //Branch
                              (funct3 == 3'b000) ? 6'b000001 : // BEQ - > SUB

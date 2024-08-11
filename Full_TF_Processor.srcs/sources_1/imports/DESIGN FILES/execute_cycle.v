@@ -1,14 +1,14 @@
-module execute_cycle(clk, rst, flush, RegWriteE, BSrcE, int_RD_E, MemWriteE, ResultSrcE, BranchE, ALUControlE, 
+module execute_cycle(clk, rst, flush, RegWriteE, BSrcE, int_RD_E, MemWriteE, mem_read_E, BranchE, ALUControlE, 
     RD1_E, RD2_E, RD3_E, Imm_Ext_E, RD_E, PCE, PCPlus4E, PCSrcE, JtypeE, PCTargetE, RegWriteM,
-    ResultSrcM, RD_M, PCPlus4M, ResultW, ForwardA_E, ForwardB_E, funct3_E, 
+    mem_read_M, RD_M, PCPlus4M, ResultW, ForwardA_E, ForwardB_E, funct3_E, 
     F_instruction_E, int_RD_M, FPUControlE, // F-EXTENSION
-    WriteDataM, mem_op_M, MemWriteM, Execute_ResultM, WordSize_M // MEM SIGNALS
+    WriteDataM, MemWriteM, Execute_ResultM, WordSize_M, // MEM SIGNALS
     
     );
 
     // Declaration I/Os
     input clk, rst, flush, JtypeE, RegWriteE,
-    BSrcE, MemWriteE,ResultSrcE,BranchE, F_instruction_E, int_RD_E;
+    BSrcE, MemWriteE,mem_read_E,BranchE, F_instruction_E, int_RD_E;
     input [5:0] ALUControlE;
     input [4:0] FPUControlE;
     input [31:0] RD1_E, RD2_E, RD3_E, Imm_Ext_E;
@@ -18,7 +18,7 @@ module execute_cycle(clk, rst, flush, RegWriteE, BSrcE, int_RD_E, MemWriteE, Res
     input [1:0] ForwardA_E, ForwardB_E;
     input [2:0] funct3_E;
 
-    output PCSrcE, RegWriteM, MemWriteM, ResultSrcM, int_RD_M, mem_op_M;
+    output PCSrcE, RegWriteM, MemWriteM, mem_read_M, int_RD_M;
     output [4:0] RD_M; 
     output [31:0] PCPlus4M, WriteDataM, Execute_ResultM;
     output [31:0] PCTargetE;
@@ -31,7 +31,7 @@ module execute_cycle(clk, rst, flush, RegWriteE, BSrcE, int_RD_E, MemWriteE, Res
     wire ZeroE;
 
     // Declaration of Register
-    reg RegWriteE_r, MemWriteE_r, ResultSrcE_r ,PCSrcE_r, int_RD_E_r, mem_op_E_r;
+    reg RegWriteE_r, MemWriteE_r, mem_read_E_r ,PCSrcE_r, int_RD_E_r;
     reg [4:0] RD_E_r;
     reg [31:0] PCPlus4E_r, RD2_E_r, ResultE_r;
     reg [2:0] WordSize_E_r;
@@ -105,7 +105,7 @@ module execute_cycle(clk, rst, flush, RegWriteE, BSrcE, int_RD_E, MemWriteE, Res
     always @(posedge flush) begin
         RegWriteE_r <= 1'b0; 
         MemWriteE_r <= 1'b0; 
-        ResultSrcE_r <= 1'b0;
+        mem_read_E_r <= 1'b0;
         RD_E_r <= 5'h00;
         PCPlus4E_r <= 32'h00000000; 
         RD2_E_r <= 32'h00000000; 
@@ -114,13 +114,12 @@ module execute_cycle(clk, rst, flush, RegWriteE, BSrcE, int_RD_E, MemWriteE, Res
         PCTarget_E_r <= 32'h0;
         PCSrcE_r <= 1'b0;
         int_RD_E_r <= 1'b0; 
-        mem_op_E_r <= 1'b0;
     end
     always @(posedge clk or negedge rst) begin
         if(rst == 1'b0) begin
             RegWriteE_r <= 1'b0; 
             MemWriteE_r <= 1'b0; 
-            ResultSrcE_r <= 1'b0;
+            mem_read_E_r <= 1'b0;
             RD_E_r <= 5'h00;
             PCPlus4E_r <= 32'h00000000; 
             RD2_E_r <= 32'h00000000; 
@@ -129,11 +128,10 @@ module execute_cycle(clk, rst, flush, RegWriteE, BSrcE, int_RD_E, MemWriteE, Res
             PCTarget_E_r <= 32'h0;
             PCSrcE_r <= 1'b0;
             int_RD_E_r <= 1'b0; 
-            mem_op_E_r <= 1'b0;
         end else begin
             RegWriteE_r <= RegWriteE; 
             MemWriteE_r <= MemWriteE; 
-            ResultSrcE_r <= ResultSrcE;
+            mem_read_E_r <= mem_read_E;
             RD_E_r <= RD_E;
             PCPlus4E_r <= PCPlus4E; 
             RD2_E_r <= Src_B_interim; 
@@ -142,7 +140,6 @@ module execute_cycle(clk, rst, flush, RegWriteE, BSrcE, int_RD_E, MemWriteE, Res
             PCTarget_E_r <= PCTargetE_r;
             PCSrcE_r <= (ALUControlE === 6'b010000) || (ZeroE && BranchE); // If instructions is JAL, JALR or branch
             int_RD_E_r <= int_RD_E;
-            mem_op_E_r <= ResultSrcE | MemWriteE;
         end
     end
 
@@ -151,7 +148,7 @@ module execute_cycle(clk, rst, flush, RegWriteE, BSrcE, int_RD_E, MemWriteE, Res
     assign PCSrcE = PCSrcE_r;
     assign RegWriteM = RegWriteE_r;
     assign MemWriteM = MemWriteE_r;
-    assign ResultSrcM = ResultSrcE_r;
+    assign mem_read_M = mem_read_E_r;
     assign RD_M = RD_E_r;
     assign PCPlus4M = PCPlus4E_r;
     assign WriteDataM = RD2_E_r;
@@ -159,7 +156,6 @@ module execute_cycle(clk, rst, flush, RegWriteE, BSrcE, int_RD_E, MemWriteE, Res
     assign PCTargetE = PCTarget_E_r;
     assign WordSize_M = WordSize_E_r;
     assign int_RD_M = int_RD_E_r;
-    assign mem_op_M = mem_op_E_r;
 
 endmodule
 

@@ -64,7 +64,7 @@ module Pipeline_top(
     wire flush_F,flush_D, flush_E, flush_M;
 
     wire PCSrcE, RegWriteW, RegWriteE, RegWriteM, int_RD_E, int_RD_M, int_RD_W, JtypeE, F_instruction_E;
-    wire BSrcE, MemWriteE, ResultSrcE, BranchE, MemWriteM, ResultSrcM, ResultSrcW, mem_op_M;
+    wire BSrcE, MemWriteE, mem_read_E, BranchE, MemWriteM, mem_read_M, mem_read_W;
     wire [5:0] ALUControlE;
     wire [4:0] FPUControlE;
     wire [4:0] RD_E, RD_M, RDW;
@@ -110,7 +110,7 @@ module Pipeline_top(
                         .BSrcE(BSrcE), 
                         .JtypeE(JtypeE),
                         .MemWriteE(MemWriteE), 
-                        .ResultSrcE(ResultSrcE),
+                        .mem_read_E(mem_read_E),
                         .BranchE(BranchE),  
                         .ALUControlE(ALUControlE), 
                         .FPUControlE(FPUControlE),
@@ -135,7 +135,7 @@ module Pipeline_top(
                         .int_RD_E(int_RD_E),
                         .BSrcE(BSrcE),
                         .MemWriteE(MemWriteE), 
-                        .ResultSrcE(ResultSrcE), 
+                        .mem_read_E(mem_read_E), 
                         .BranchE(BranchE), 
                         .ALUControlE(ALUControlE), 
                         .FPUControlE(FPUControlE),
@@ -151,7 +151,7 @@ module Pipeline_top(
                         .RegWriteM(RegWriteM),
                         .int_RD_M(int_RD_M),
                         .MemWriteM(MemWriteM), 
-                        .ResultSrcM(ResultSrcM), 
+                        .mem_read_M(mem_read_M), 
                         .RD_M(RD_M), 
                         .PCPlus4M(PCPlus4M), 
                         .WriteDataM(WriteDataM), 
@@ -161,8 +161,7 @@ module Pipeline_top(
                         .ForwardB_E(ForwardBE),
                         .funct3_E(funct3_E),
                         .WordSize_M(WordSize_M),
-                        .F_instruction_E(F_instruction_E),
-                        .mem_op_M(mem_op_M)
+                        .F_instruction_E(F_instruction_E)
                     );
     
     // Memory Stage
@@ -173,14 +172,14 @@ module Pipeline_top(
                         .RegWriteM(RegWriteM),
                         .int_RD_M(int_RD_M),
                         .MemWriteM(MemWriteM), 
-                        .ResultSrcM(ResultSrcM), 
+                        .mem_read_M(mem_read_M), 
                         .RD_M(RD_M), 
                         .PCPlus4M(PCPlus4M), 
                         .WriteDataM(WriteDataM), 
                         .Execute_ResultM(Execute_ResultM), 
                         .RegWriteW(RegWriteW), 
                         .int_RD_W(int_RD_W),
-                        .ResultSrcW(ResultSrcW), 
+                        .mem_read_W(mem_read_W), 
                         .RD_W(RDW), 
                         .PCPlus4W(PCPlus4W), 
                         .Execute_ResultW(Execute_ResultW), 
@@ -192,7 +191,7 @@ module Pipeline_top(
     writeback_cycle WriteBack (
                         .RegWriteW(RegWriteW),
                         .int_RD_W(int_RD_W),
-                        .ResultSrcW(ResultSrcW), 
+                        .mem_read_W(mem_read_W), 
                         .PCPlus4W(PCPlus4W), 
                         .Execute_ResultW(Execute_ResultW), 
                         .ReadDataW(ReadDataW), 
