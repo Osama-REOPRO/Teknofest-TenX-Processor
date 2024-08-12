@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_teknofest_wrapper_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_teknofest_wrapper" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="386,694.628 ns"></ZoomStartTime>
+      <ZoomEndTime time="386,751.929 ns"></ZoomEndTime>
+      <Cursor1Time time="386,712.391 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="167"></NameColumnWidth>
+      <ValueColumnWidth column_width="166"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="20" />
+   <wave_markers>
+      <marker time="386552500" label="" />
+      <marker time="386722500" label="" />
+   </wave_markers>
+   <wvobject type="divider" fp_name="divider410">
+      <obj_property name="label">Fetch</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/mem_instr_rdata_i" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">mem_instr_rdata_i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_instr_rdata_i[31:0]</obj_property>
+      <obj_property name="label">instruction</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/mem_data_adrs_o" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">mem_data_adrs_o[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_data_adrs_o[31:0]</obj_property>
+      <obj_property name="label">address</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider432">
+      <obj_property name="label">Mem Ctrl</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider445">
+      <obj_property name="label">data</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/data_req_i" type="logic">
+      <obj_property name="ElementShortName">data_req_i</obj_property>
+      <obj_property name="ObjectShortName">data_req_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/data_done_o" type="logic">
+      <obj_property name="ElementShortName">data_done_o</obj_property>
+      <obj_property name="ObjectShortName">data_done_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/data_we_i" type="logic">
+      <obj_property name="ElementShortName">data_we_i</obj_property>
+      <obj_property name="ObjectShortName">data_we_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/data_adrs_i" type="array">
+      <obj_property name="ElementShortName">data_adrs_i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_adrs_i[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/data_wdata_i" type="array">
+      <obj_property name="ElementShortName">data_wdata_i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_wdata_i[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/data_wsize_i" type="array">
+      <obj_property name="ElementShortName">data_wsize_i[1:0]</obj_property>
+      <obj_property name="ObjectShortName">data_wsize_i[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider446">
+      <obj_property name="label">main</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/main_req_o" type="logic">
+      <obj_property name="ElementShortName">main_req_o</obj_property>
+      <obj_property name="ObjectShortName">main_req_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/main_done_i" type="logic">
+      <obj_property name="ElementShortName">main_done_i</obj_property>
+      <obj_property name="ObjectShortName">main_done_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/main_we_o" type="logic">
+      <obj_property name="ElementShortName">main_we_o</obj_property>
+      <obj_property name="ObjectShortName">main_we_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/main_adrs_o" type="array">
+      <obj_property name="ElementShortName">main_adrs_o[31:0]</obj_property>
+      <obj_property name="ObjectShortName">main_adrs_o[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/main_wdata_o" type="array">
+      <obj_property name="ElementShortName">main_wdata_o[127:0]</obj_property>
+      <obj_property name="ObjectShortName">main_wdata_o[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/main_wstrb_o" type="array">
+      <obj_property name="ElementShortName">main_wstrb_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">main_wstrb_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider414">
+      <obj_property name="label">Main Memory</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/u_teknofest_memory/\gen_sram.memory " type="array">
+      <obj_property name="ElementShortName">\gen_sram.memory [0:16][127:0]</obj_property>
+      <obj_property name="ObjectShortName">\gen_sram.memory [0:16][127:0]</obj_property>
+   </wvobject>
+</wave_config>

@@ -99,7 +99,8 @@ module memory_cycle(
 				mem_init_st: begin //1
 					if (!mem_data_done_i && !mem_data_req_o) begin
 						mem_data_req_o 	<= 1'b1;
-						mem_data_adrs_o 	<= Execute_ResultM;
+//						mem_data_adrs_o 	<= Execute_ResultM;
+						mem_data_adrs_o 	<= 32'h80000030; // todo: remove this, replace with above
 
                         mem_data_we_o 		<= MemWriteM; //if write 1, if read 0
                         mem_data_wsize_o 	<= WordSize_M[1:0]; //ignored on read
