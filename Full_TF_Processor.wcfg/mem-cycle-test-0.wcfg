@@ -11,18 +11,18 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="386,694.628 ns"></ZoomStartTime>
-      <ZoomEndTime time="386,751.929 ns"></ZoomEndTime>
-      <Cursor1Time time="386,712.391 ns"></Cursor1Time>
+      <ZoomStartTime time="386,499.423 ns"></ZoomStartTime>
+      <ZoomEndTime time="386,868.867 ns"></ZoomEndTime>
+      <Cursor1Time time="386,837.500 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="167"></NameColumnWidth>
-      <ValueColumnWidth column_width="166"></ValueColumnWidth>
+      <ValueColumnWidth column_width="156"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="20" />
+   <WVObjectSize size="24" />
    <wave_markers>
-      <marker time="386552500" label="" />
-      <marker time="386722500" label="" />
+      <marker time="386562500" label="" />
+      <marker time="386854180" label="" />
    </wave_markers>
    <wvobject type="divider" fp_name="divider410">
       <obj_property name="label">Fetch</obj_property>
@@ -68,6 +68,18 @@
       <obj_property name="ElementShortName">data_wdata_i[31:0]</obj_property>
       <obj_property name="ObjectShortName">data_wdata_i[31:0]</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/rdata_o" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">rdata_o[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rdata_o[31:0]</obj_property>
+      <obj_property name="label">rdata (ctrl)</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/o_read_data" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">o_read_data[127:0]</obj_property>
+      <obj_property name="ObjectShortName">o_read_data[127:0]</obj_property>
+      <obj_property name="label">rdata (cache)</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/data_wsize_i" type="array">
       <obj_property name="ElementShortName">data_wsize_i[1:0]</obj_property>
       <obj_property name="ObjectShortName">data_wsize_i[1:0]</obj_property>
@@ -99,6 +111,15 @@
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/main_wstrb_o" type="array">
       <obj_property name="ElementShortName">main_wstrb_o[15:0]</obj_property>
       <obj_property name="ObjectShortName">main_wstrb_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider583">
+      <obj_property name="label">Registers</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/I_rf/Register" type="array">
+      <obj_property name="ElementShortName">Register[31:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">Register[31:0][31:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider414">
       <obj_property name="label">Main Memory</obj_property>

@@ -19,7 +19,7 @@
       <NameColumnWidth column_width="167"></NameColumnWidth>
       <ValueColumnWidth column_width="161"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="8" />
+   <WVObjectSize size="9" />
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/i_op" type="array">
       <obj_property name="ElementShortName">i_op[2:0]</obj_property>
       <obj_property name="ObjectShortName">i_op[2:0]</obj_property>
@@ -43,6 +43,10 @@
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/i_write_data" type="array">
       <obj_property name="ElementShortName">i_write_data[127:0]</obj_property>
       <obj_property name="ObjectShortName">i_write_data[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/o_read_data" type="array">
+      <obj_property name="ElementShortName">o_read_data[127:0]</obj_property>
+      <obj_property name="ObjectShortName">o_read_data[127:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/o_hit_occurred" type="logic">
       <obj_property name="ElementShortName">o_hit_occurred</obj_property>
