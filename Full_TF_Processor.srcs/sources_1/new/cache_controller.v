@@ -93,6 +93,29 @@ wire write_needed_cache = !hit_occurred || (we_i == 1) || evac_needed;
 // write_op: evac_needed
 wire write_needed_main = evac_needed;
 
+reg [127:0] combined_read_write_data;
+always @(*) begin
+	if (rst_i) begin
+		combined_read_write_data = 128'd0;
+	end else begin
+		combined_read_write_data = main_rdata_i;
+		case (wsize_i) // 0:byte, 1:half, 2:word
+			2'h0: begin
+				// byte, must be at the beginning of input word
+				combined_read_write_data[((adrs_i % (4*b))*8) +:8] = wdata_i[7:0]; // todo: verify
+			end
+			2'h1: begin
+				// half word, must be at beginning of word (lower half)
+				combined_read_write_data[(((adrs_i*2) % (4*b))*16) +:16] = wdata_i[15:0]; // todo: verify
+			end
+			2'h2: begin
+				// word
+				combined_read_write_data[(((adrs_i*4) % (4*b))*32) +:32] = wdata_i; // todo: verify
+			end
+		endcase
+	end
+end
+
 integer i;
 always @(posedge clk_i) begin
 	if(rst_i) begin
@@ -281,10 +304,10 @@ always @(posedge clk_i) begin
 										end
 									endcase
 								end else begin
-									// write all from above
+									// combine data from main with input data
 									set_dirty 	<= 1'b0; // clean
 									valid_bytes <= {(4*b){1'b1}}; // all valid
-									write_data <= main_rdata_i; // todo: verify
+									write_data <= combined_read_write_data; // todo: verify
 								end
 
 								cache_sub_state		<= busy;

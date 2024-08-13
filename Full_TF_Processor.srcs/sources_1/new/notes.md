@@ -12,5 +12,7 @@
 - [x] read_needed_cache is behaving wrong and we are never entering cache read mode, instead we go writing instead!
     - we never get a read_op
 ---- cache functional
-- [ ] cache problem: done getting raised afterwards
+- [x] cache problem: done getting raised afterwards
     - problem I think is that the delayed operations that raise it are getting called multiple times
+- [ ] cache written wrong value
+    - I think when it doesn't hit it is following an older logic and writing from read data from main, but this is a write not a read, in this case we should write data combined between what we read and what we are writing
