@@ -1,4 +1,3 @@
-//`timescale 1us / 1ns
 `include "cache_ops.vh"
 
 module cache
@@ -110,6 +109,8 @@ module cache
 			endcase
 		end
 	end
+	
+	reg delay_started;
 
 	// hit check
 	always @(*) begin
@@ -161,6 +162,7 @@ module cache
 		if (i_rst) begin
 		
 			o_mem_operation_done <= 1'b0;
+			delay_started <= 1'b0;
 
 			for (i0=0; i0<N; i0=i0+1) begin
 				for (i1=0; i1<S; i1=i1+1) begin
@@ -181,11 +183,12 @@ module cache
 			end
 		end else begin
 		
-			if (state == busy_st && i_op == `write_op && !o_mem_operation_done) begin ////////////////////////////////////// write
-
+			if (state == busy_st && i_op == `write_op && !o_mem_operation_done && !delay_started) begin ////////////////////////////////////// write
 //				log_state_write_before_delay();
 
+				delay_started <= 1'b1;
 				#20
+				delay_started <= 1'b0;
 
 //				log_state_write_after_delay();
 				
@@ -202,9 +205,11 @@ module cache
 				if (i_set_use)   use_mem 				 [set_adrs] <= target_N [0]; // #note0001
 
 				o_mem_operation_done <= 1'b1;
-			end else if (state == busy_st && i_op == `read_op && !o_mem_operation_done) begin ////////////////////////////////////// read
+			end else if (state == busy_st && i_op == `read_op && !o_mem_operation_done && !delay_started) begin ////////////////////////////////////// read
 //				log_state_read_before_delay();
+				delay_started <= 1'b1;
 				#20
+				delay_started <= 1'b0;
 				
 				for (ib=0; ib<(4*b); ib=ib+1) begin
 //					$display("		ib = %b", ib);
