@@ -133,6 +133,7 @@ module cache
 			o_empty_found  = 1'b0;
 			get_new_random_num = 1'b1;
 			#10;
+			o_mem_operation_done = 1'b1;
 			for (i=N-1; i>=0; i=i-1) begin // going backwards so the lowest hit is returned not highest! (stylistic choice)
 				if (valid_mem[i][set_adrs]) begin
 					if (tag_adrs == tag_mem[i][set_adrs]) begin
@@ -146,7 +147,6 @@ module cache
 					o_empty_found = 1'b1;
 					empty_N = i;
 				end
-				o_mem_operation_done = 1'b1;
 			end
 		end
 	end
