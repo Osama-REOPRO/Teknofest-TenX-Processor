@@ -263,21 +263,21 @@ always @(posedge clk_i) begin
 											valid_bytes <= {(4*b){1'b0}};
 											valid_bytes[adrs_i % (4*b)] <= 1'b1; // todo: verify
 
-											write_data[((adrs_i % (4*b))*8)-1 +:8] <= wdata_i[7:0]; // todo: verify
+											write_data[((adrs_i % (4*b))*8) +:8] <= wdata_i[7:0]; // todo: verify
 										end
 										2'h1: begin
 											// half word, must be at beginning of word (lower half)
 											valid_bytes <= {(4*b){1'b0}};
 											valid_bytes[(adrs_i*2) % (4*b) +:2] <= 2'b11; // todo: verify
 
-											write_data[(((adrs_i*2) % (4*b))*16)-1 +:16] <= wdata_i[15:0]; // todo: verify
+											write_data[(((adrs_i*2) % (4*b))*16) +:16] <= wdata_i[15:0]; // todo: verify
 										end
 										2'h2: begin
 											// word
 											valid_bytes <= {(4*b){1'b0}};
 											valid_bytes[(adrs_i*4) % (4*b) +:4] <= 4'b1111; // todo: verify
 
-											write_data[(((adrs_i*4) % (4*b))*32)-1 +:32] <= wdata_i; // todo: verify
+											write_data[(((adrs_i*4) % (4*b))*32) +:32] <= wdata_i; // todo: verify
 										end
 									endcase
 								end else begin
@@ -354,7 +354,7 @@ cache
 	.b(b), // block size (words in block)
 	.N(N)  // degree of associativity
 ) 
-cache_data
+cache
 (
 	.i_clk(clk_i),
 	.i_rst(rst_i),
