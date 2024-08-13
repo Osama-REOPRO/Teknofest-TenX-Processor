@@ -58,7 +58,7 @@
     <Option Name="IPUserFilesDir" Val="$PIPUSERFILESDIR"/>
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
-    <Option Name="WTXSimLaunchSim" Val="428"/>
+    <Option Name="WTXSimLaunchSim" Val="434"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -660,6 +660,7 @@
       </File>
       <File Path="$PSRCDIR/sim_1/imports/teknofest_project_2024.wcfg/tb_teknofest_wrapper_behav.wcfg">
         <FileInfo>
+          <Attr Name="UserDisabled" Val="1"/>
           <Attr Name="ImportPath" Val="$PPRDIR/../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_project_2024.wcfg/tb_teknofest_wrapper_behav.wcfg"/>
           <Attr Name="ImportTime" Val="1721299521"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -685,6 +686,7 @@
       </File>
       <File Path="$PSRCDIR/sim_1/imports/Full_TF_Processor.wcfg/memory-test-1.wcfg">
         <FileInfo>
+          <Attr Name="UserDisabled" Val="1"/>
           <Attr Name="ImportPath" Val="$PPRDIR/Full_TF_Processor.wcfg/memory-test-1.wcfg"/>
           <Attr Name="ImportTime" Val="1723096578"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -692,6 +694,7 @@
       </File>
       <File Path="$PSRCDIR/sim_1/imports/Full_TF_Processor.wcfg/cache_controller_1.wcfg">
         <FileInfo>
+          <Attr Name="UserDisabled" Val="1"/>
           <Attr Name="ImportPath" Val="$PPRDIR/Full_TF_Processor.wcfg/cache_controller_1.wcfg"/>
           <Attr Name="ImportTime" Val="1723121884"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -705,6 +708,7 @@
       </File>
       <File Path="$PPRDIR/Full_TF_Processor.wcfg/cache_controller_1.wcfg">
         <FileInfo>
+          <Attr Name="UserDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
@@ -715,6 +719,7 @@
       </File>
       <File Path="$PPRDIR/Full_TF_Processor.wcfg/memory-test-1.wcfg">
         <FileInfo>
+          <Attr Name="UserDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>

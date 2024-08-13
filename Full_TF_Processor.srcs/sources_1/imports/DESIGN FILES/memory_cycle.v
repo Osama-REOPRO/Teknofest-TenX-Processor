@@ -124,15 +124,16 @@ module memory_cycle(
 					   
                             ReadDataM_r <= mem_data_rdata_i; 
                             //TODO: SIGN/ZERO -EXTENTION
-                            if(~WordSize_M[2]) // sign-extend byte and halfs
-                                ReadDataM_r <= WordSize_M[0] ? 
-                                                ReadDataM_r >> 16 : // unsigned half 
-                                                ReadDataM_r >> 24; // unsigned byte
-                            else if (~WordSize_M[1]) begin // zero-extend byte and halfs
-                                ReadDataM_r <= WordSize_M[0] ? 
-                                                { {16{ReadDataM_r[15]}}, ReadDataM_r[15:0] } : // signed half 
-                                                { {24{ReadDataM_r[7]}}, ReadDataM_r[7:0] } >> 24; // signed byte
-                            end
+                            // osama: I commented this one for testing
+//                            if(~WordSize_M[2]) // sign-extend byte and halfs
+//                                ReadDataM_r <= WordSize_M[0] ? 
+//                                                ReadDataM_r >> 16 : // unsigned half 
+//                                                ReadDataM_r >> 24; // unsigned byte
+//                            else if (~WordSize_M[1]) begin // zero-extend byte and halfs
+//                                ReadDataM_r <= WordSize_M[0] ? 
+//                                                { {16{ReadDataM_r[15]}}, ReadDataM_r[15:0] } : // signed half 
+//                                                { {24{ReadDataM_r[7]}}, ReadDataM_r[7:0] } >> 24; // signed byte
+//                            end
                         end                
 						mem_state <= mem_check_st;
 					end
@@ -143,7 +144,7 @@ module memory_cycle(
             RD_M_r <= RD_M;
             PCPlus4M_r <= PCPlus4M;
             Execute_ResultM_r <= Execute_ResultM; 
-            ReadDataM_r <= ReadDataM;
+//            ReadDataM_r <= ReadDataM;
             int_RD_M_r <= int_RD_M;
 		end
 	end
