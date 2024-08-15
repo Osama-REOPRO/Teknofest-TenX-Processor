@@ -79,12 +79,6 @@ generate
 endgenerate
 
 
-// osama: boot program
-task load_boot_program();
-	
-endtask
-
-
 // osama: UART stuff
 localparam c_BIT_PERIOD_ddr  = 100 * 13.33;
 localparam c_BIT_PERIOD_sram = 100 * 4.999;
@@ -181,7 +175,6 @@ task send_prog_seq();
         // is this maybe for us to use? should we add our own code here to run when the ram module is done instantiating?
     else
         #1000ns;
-	load_boot_program();
 // UART starts here
     $display("Starting to write instructions to DDR");
     send_prog_seq();

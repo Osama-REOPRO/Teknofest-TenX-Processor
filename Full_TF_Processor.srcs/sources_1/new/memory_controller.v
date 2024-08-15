@@ -157,7 +157,9 @@ wire [31:0]  data_adrs  = adrs_data_is_main? data_adrs_i  : 32'b0;
 wire [31:0]  data_wdata = adrs_data_is_main? data_wdata_i : 32'b0;
 wire [1:0]   data_wsize = adrs_data_is_main? data_wsize_i :  2'b0;
 wire 		    data_req   = adrs_data_is_main? data_req_i   :  1'b0;
+wire data_done;
 assign data_done_o  = adrs_data_is_main? data_done  : adrs_data_is_uart? data_done_o_uart :  1'b0;
+wire [31:0] data_rdata;
 assign data_rdata_o = adrs_data_is_main? data_rdata : adrs_data_is_uart? data_rdata_o_uart :  32'b0;
 
 // between caches and main mem

@@ -1,6 +1,3 @@
-`define PC_START_ADRS 32'h80000000
-`define EXECUTE_CYCLES_COUNT 2'b11
-
 module Pipeline_top(
 
     input clk, 
@@ -57,13 +54,12 @@ module Pipeline_top(
     // Declaration of Interim Wires
     wire flush_F,flush_D, flush_E, flush_M;
 
-    wire pc_src_e, register_write_w, register_write_e, register_write_m, int_rd_e, int_rd_m, int_rd_w, JtypeE, F_instruction_E;
+    wire PCSrcE, RegWriteW, RegWriteE, RegWriteM, int_RD_E, int_RD_M, int_RD_W, JtypeE, F_instruction_E;
     wire BSrcE, MemWriteE, mem_read_E, BranchE, MemWriteM, mem_read_M, mem_read_W;
     wire [5:0] ALUControlE;
     wire [4:0] FPUControlE;
-    wire [4:0] RD_E, RD_M, rd_w;
-    wire [31:0] pc_target_e, instruction_d, pc_d, pc_plus_4_d, result_w, RD1_E, RD2_E, 
-    RD3_E, Imm_Ext_E, PCE, PCPlus4E, PCPlus4M, WriteDataM, Execute_ResultM;
+    wire [4:0] RD_E, RD_M, RDW;
+    wire [31:0] PCTargetE, InstrD, PCD, PCPlus4D, ResultW, RD1_E, RD2_E, Imm_Ext_E, PCE, PCPlus4E, PCPlus4M, WriteDataM, Execute_ResultM;
     wire [31:0] PCPlus4W, Execute_ResultW, ReadDataW;
     wire [4:0] RS1_E, RS2_E;
     wire [1:0] ForwardBE, ForwardAE;
@@ -71,50 +67,37 @@ module Pipeline_top(
 //    wire reservation_valid;
 //    reg reservation_set;
 
-// Coordination flags
-    wire execute_ready, memory_ready, fetch_ready, decode_ready;
-    wire decode_valid, execute_valid;
-
     // Module Initiation
     // Fetch Stage
-    fetch_cycle Fetch 
-   //#(.PC_START_ADRS(`PC_START_ADRS))
-    (
-                        .clk_i(clk), 
-                        .rst_i(rst), 
-                        .flush_i(flush_F),
-                        //.prev_ready_i(), //No prev stage to wait for
-                        .this_ready_o(fetch_ready),
-                        .next_ready_i(decode_ready),
-                        .mem_instr_done_i(mem_instr_done_i),
+    fetch_cycle Fetch (
+                        .clk(clk), 
+                        .rst(rst), 
+                        .flush(flush_F),
                         .mem_instr_adrs_o(mem_instr_adrs_o),
                         .mem_instr_req_o(mem_instr_req_o),
+                        .mem_instr_done_i(mem_instr_done_i),
                         .mem_instr_rdata_i(mem_instr_rdata_i),
-                        .pc_src_e_i(pc_src_e), 
-                        .pc_target_e_i(pc_target_e), 
-                        .instruction_d_o(instruction_d), 
-                        .pc_d_o(pc_d), 
-                        .pc_plus_4_d_o(pc_plus_4_d)
-                );
+                        .PCSrcE(PCSrcE), 
+                        .PCTargetE(PCTargetE), 
+                        .InstrD(InstrD), 
+                        .PCD(PCD), 
+                        .PCPlus4D(PCPlus4D)
+                    );
 
     // Decode Stage
     decode_cycle Decode (
                         .clk(clk), 
                         .rst(rst), 
-                        .prev_ready_i(fetch_ready),
-                        .this_valid_o(decode_valid),
-                        .this_ready_o(decode_ready),
-                        .next_ready_i(execute_ready),
                         .flush(flush_D),
-                        .instruction_d(instruction_d), 
-                        .pc_d(pc_d), 
-                        .pc_plus_4_d(pc_plus_4_d), 
-                        .register_write_w(register_write_w), 
-                        .int_rd_e(int_rd_e),
-                        .rd_w(rd_w), 
-                        .result_w(result_w),
-                        .int_rd_w(int_rd_w),
-                        .register_write_e(register_write_e), 
+                        .InstrD(InstrD), 
+                        .PCD(PCD), 
+                        .PCPlus4D(PCPlus4D), 
+                        .RegWriteW(RegWriteW), 
+                        .int_RD_E(int_RD_E),
+                        .RDW(RDW), 
+                        .ResultW(ResultW),
+                        .int_RD_W(int_RD_W),
+                        .RegWriteE(RegWriteE), 
                         .BSrcE(BSrcE), 
                         .JtypeE(JtypeE),
                         .MemWriteE(MemWriteE), 
@@ -123,8 +106,7 @@ module Pipeline_top(
                         .ALUControlE(ALUControlE), 
                         .FPUControlE(FPUControlE),
                         .RD1_E(RD1_E), 
-                        .RD2_E(RD2_E),
-                        .RD3_E(RD3_E),
+                        .RD2_E(RD2_E), 
                         .Imm_Ext_E(Imm_Ext_E), 
                         .RD_E(RD_E), 
                         .PCE(PCE), 
@@ -136,19 +118,12 @@ module Pipeline_top(
                     );
 
     // Execute Stage
-    execute_cycle Execute 
-    //#(.STAGE_CYCLE_REQ(`EXECUTE_CYCLES_COUNT))
-    (
+    execute_cycle Execute (
                         .clk(clk), 
                         .rst(rst),
                         .flush(flush_E),
-                        //.prev_ready_i(decode_ready),
-                        .prev_valid_i(decode_valid),
-                        .this_valid_o(execute_valid),
-                        .this_ready_o(execute_ready),
-                        .next_ready_i(memory_ready),
-                        .register_write_e(register_write_e), 
-                        .int_rd_e(int_rd_e),
+                        .RegWriteE(RegWriteE), 
+                        .int_RD_E(int_RD_E),
                         .BSrcE(BSrcE),
                         .MemWriteE(MemWriteE), 
                         .mem_read_E(mem_read_E), 
@@ -157,23 +132,22 @@ module Pipeline_top(
                         .FPUControlE(FPUControlE),
                         .RD1_E(RD1_E), 
                         .RD2_E(RD2_E), 
-                        .RD3_E(RD3_E),
                         .Imm_Ext_E(Imm_Ext_E), 
                         .RD_E(RD_E), 
                         .PCE(PCE), 
                         .JtypeE(JtypeE),
                         .PCPlus4E(PCPlus4E), 
-                        .pc_src_e(pc_src_e), 
-                        .pc_target_e(pc_target_e), 
-                        .register_write_m(register_write_m),
-                        .int_rd_m(int_rd_m),
+                        .PCSrcE(PCSrcE), 
+                        .PCTargetE(PCTargetE), 
+                        .RegWriteM(RegWriteM),
+                        .int_RD_M(int_RD_M),
                         .MemWriteM(MemWriteM), 
                         .mem_read_M(mem_read_M), 
                         .RD_M(RD_M), 
                         .PCPlus4M(PCPlus4M), 
                         .WriteDataM(WriteDataM), 
                         .Execute_ResultM(Execute_ResultM),
-                        .result_w(result_w),
+                        .ResultW(ResultW),
                         .ForwardA_E(ForwardAE),
                         .ForwardB_E(ForwardBE),
                         .funct3_E(funct3_E),
@@ -186,54 +160,50 @@ module Pipeline_top(
                         .clk(clk), 
                         .rst(rst),
                         .flush(flush_M),
-                        //.prev_ready_i(execute_ready),
-                        .prev_valid_i(execute_valid),
-                     	 .this_ready_o(memory_ready),
-                     	//.next_ready_i(),// NO next state to wait for
-                        .register_write_m(register_write_m),
-                        .int_rd_m(int_rd_m),
+                        .RegWriteM(RegWriteM),
+                        .int_RD_M(int_RD_M),
                         .MemWriteM(MemWriteM), 
                         .mem_read_M(mem_read_M), 
                         .RD_M(RD_M), 
                         .PCPlus4M(PCPlus4M), 
                         .WriteDataM(WriteDataM), 
                         .Execute_ResultM(Execute_ResultM), 
-                        .register_write_w(register_write_w), 
-                        .int_rd_w(int_rd_w),
+                        .RegWriteW(RegWriteW), 
+                        .int_RD_W(int_RD_W),
                         .mem_read_W(mem_read_W), 
-                        .rd_w(rd_w), 
+                        .RD_W(RDW), 
                         .PCPlus4W(PCPlus4W), 
                         .Execute_ResultW(Execute_ResultW), 
                         .ReadDataW(ReadDataW),
                      	.WordSize_M(WordSize_M),
-                     	.mem_data_done_i(mem_data_done_i),
                      	.mem_data_we_o(mem_data_we_o),
                      	.mem_data_adrs_o(mem_data_adrs_o),
                      	.mem_data_wdata_o(mem_data_wdata_o),
                      	.mem_data_wsize_o(mem_data_wsize_o),
                      	.mem_data_req_o(mem_data_req_o),
+                     	.mem_data_done_i(mem_data_done_i),
                      	.mem_data_rdata_i(mem_data_rdata_i)
                     );
 
     // Write Back Stage
     writeback_cycle WriteBack (
-                        .register_write_w(register_write_w),
-                        .int_rd_w(int_rd_w),
+                        .RegWriteW(RegWriteW),
+                        .int_RD_W(int_RD_W),
                         .mem_read_W(mem_read_W), 
                         .PCPlus4W(PCPlus4W), 
                         .Execute_ResultW(Execute_ResultW), 
                         .ReadDataW(ReadDataW), 
-                        .result_w(result_w)
+                        .ResultW(ResultW)
                     );
 
     // Hazard Unit
     hazard_unit Forwarding_block (
                         .rst(rst), 
-                        .pc_src_e(pc_src_e),
-                        .register_write_m(register_write_m), 
-                        .register_write_w(register_write_w), 
+                        .PCSrcE(PCSrcE),
+                        .RegWriteM(RegWriteM), 
+                        .RegWriteW(RegWriteW), 
                         .RD_M(RD_M), 
-                        .rd_w(rd_w), 
+                        .RD_W(RDW), 
                         .Rs1_E(RS1_E), 
                         .Rs2_E(RS2_E), 
                         .ForwardAE(ForwardAE), 
