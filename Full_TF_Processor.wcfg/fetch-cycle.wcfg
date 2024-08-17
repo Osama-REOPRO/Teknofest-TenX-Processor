@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
-      <ZoomEndTime time="1,000.000000 us"></ZoomEndTime>
-      <Cursor1Time time="385.792500 us"></Cursor1Time>
+      <ZoomStartTime time="999,082.569 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,000,183.487 ns"></ZoomEndTime>
+      <Cursor1Time time="999,332.777 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="238"></NameColumnWidth>
-      <ValueColumnWidth column_width="297"></ValueColumnWidth>
+      <ValueColumnWidth column_width="292"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="26" />
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Fetch/clk" type="logic">
