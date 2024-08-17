@@ -20,6 +20,7 @@ module decode_cycle(
         output register_write_e,BSrcE,MemWriteE,JtypeE,mem_read_E,BranchE, F_instruction_E, int_rd_e,
         output [5:0] ALUControlE,
         output [4:0] FPUControlE,
+        output [3:0] atomic_op_e_o,
         output [31:0] RD1_E, RD2_E, RD3_E, Imm_Ext_E,
         output [4:0] RS1_E, RS2_E, RD_E, // For Forwarding
         output [31:0] PCE, PCPlus4E,
@@ -31,13 +32,15 @@ module decode_cycle(
     wire [2:0] ImmSrcD;
     wire [5:0] ALUControlD;
     wire [4:0] FPUControlD;
+    wire [3:0] atomic_op_d;
     wire [31:0] RD1_int, RD2_int, RD1_fp, RD2_fp, RD1_D, RD2_D, RD3_D, Imm_Ext_D;
     wire is_rs1_int;
     wire write_to_int_rf;
     // Declaration of Interim Register
     reg RegWriteD_r,BSrcD_r,MemWriteD_r,mem_read_D_r,BranchD_r,JtypeD_r, F_instructionD_r, int_RD_D_r;
     reg [5:0] ALUControlD_r;
-    reg [5:0] FPUControlD_r;
+    reg [4:0] FPUControlD_r;
+    reg [3:0] atomic_op_d_r;
     reg [31:0] RD1_D_r, RD2_D_r, RD3_D_r, Imm_Ext_D_r;
     reg [4:0] RD_D_r, RS1_D_r, RS2_D_r, RS3_D_r;
     reg [31:0] pc_d_r, pc_plus_4_d_r;
@@ -61,7 +64,8 @@ module decode_cycle(
                             .f_instruction(F_instruction_D),
                             .FPUControl(FPUControlD),
                             .is_rs1_int(is_rs1_int),
-                            .is_rd_int(int_RD_D)
+                            .is_rd_int(int_RD_D),
+                            .atomic_op(atomic_op_d)
                             );
                             
     assign RD1_D = is_rs1_int ? RD1_int : RD1_fp;
@@ -96,6 +100,19 @@ module decode_cycle(
                         .RD2(RD2_fp),
                         .RD3(RD3_D)
                         );
+//     // CSR Register File
+//    CSR_RF csr_rf (
+//                        .clk(clk),
+//                        .rst(rst),
+//                        .WE2(csr_write), // new: to 
+//                        .WD2(result_w), // from I RF at writeback
+//                        .A1(instruction_d[31:20]), //read csr at decode
+//                        .A2(rd_w), //write rs1 on writeback
+//                        .RD1(),
+//                        );
+                        
+   
+    
     
     // Sign Extension
     Sign_Extend_Immediate extension (
@@ -105,61 +122,11 @@ module decode_cycle(
                         );
 
     // Declaring Register Logic
-    always @(posedge flush) begin
-        {      
-            RegWriteD_r,
-            BSrcD_r,
-            MemWriteD_r,
-            mem_read_D_r,
-            BranchD_r,
-            JtypeD_r,    
-            ALUControlD_r,
-            RD1_D_r,
-            RD2_D_r,
-            RD3_D_r,
-            Imm_Ext_D_r,
-            RD_D_r,
-            pc_d_r,
-            pc_plus_4_d_r,
-            RS1_D_r,
-            RS2_D_r,
-            funct3_D_r,
-            F_instructionD_r,
-            int_RD_D_r,
-            FPUControlD_r,
-            this_valid_o
-        } <= 0;
-        this_ready_o <= 1'b1;
-
-    end
+    always @(posedge flush) reset_signals();
     always @(posedge clk or negedge rst) begin
-        if(!rst) begin
-            {      
-                RegWriteD_r,
-                BSrcD_r,
-                MemWriteD_r,
-                mem_read_D_r,
-                BranchD_r,
-                JtypeD_r,    
-                ALUControlD_r,
-                RD1_D_r,
-                RD2_D_r,
-                RD3_D_r,
-                Imm_Ext_D_r,
-                RD_D_r,
-                pc_d_r,
-                pc_plus_4_d_r,
-                RS1_D_r,
-                RS2_D_r,
-                funct3_D_r,
-                F_instructionD_r,
-                int_RD_D_r,
-                FPUControlD_r,
-                this_valid_o
-            } <= 0;
-            this_ready_o <= 1'b1;
+        if(!rst) reset_signals();
         //decode is dones in a single cycle so i direcly propagate values.
-        end else if (prev_ready_i && next_ready_i) begin 
+        else if (prev_ready_i && this_ready_o) begin 
             RegWriteD_r <= RegWriteD;
             BSrcD_r <= BSrcD;
             MemWriteD_r <= MemWriteD;
@@ -178,12 +145,11 @@ module decode_cycle(
             RS2_D_r <= instruction_d[24:20];
             funct3_D_r <= instruction_d[14:12];
             FPUControlD_r <= FPUControlD;
+            atomic_op_d_r <= atomic_op_d;
             F_instructionD_r <= F_instruction_D;
             int_RD_D_r <= int_RD_D;
             this_valid_o <= 1'b1;
-        end
-        else this_valid_o <=1'b0;
-        
+        end else this_valid_o <= 1'b0;
         this_ready_o <= next_ready_i;
     end
 
@@ -206,7 +172,41 @@ module decode_cycle(
     assign RS2_E = RS2_D_r;
     assign funct3_E = funct3_D_r;
     assign FPUControlE = FPUControlD_r;
+    assign atomic_op_e_o = atomic_op_d_r; 
     assign F_instruction_E = F_instructionD_r;
     assign int_rd_e = int_RD_D_r;
+    
+    
+    task reset_signals;
+        begin
+             {      
+            RegWriteD_r,
+            BSrcD_r,
+            MemWriteD_r,
+            mem_read_D_r,
+            BranchD_r,
+            JtypeD_r,    
+            ALUControlD_r,
+            RD1_D_r,
+            RD2_D_r,
+            RD3_D_r,
+            Imm_Ext_D_r,
+            RD_D_r,
+            pc_d_r,
+            pc_plus_4_d_r,
+            RS1_D_r,
+            RS2_D_r,
+            funct3_D_r,
+            F_instructionD_r,
+            int_RD_D_r,
+            FPUControlD_r,
+            this_valid_o,
+            atomic_op_d_r
+        } <= 0;
+        this_ready_o <= 1'b1;
+        end
+    endtask
+    
+    
 
 endmodule

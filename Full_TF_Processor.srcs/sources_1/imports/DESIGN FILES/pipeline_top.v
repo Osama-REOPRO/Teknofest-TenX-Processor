@@ -1,6 +1,6 @@
 `define PC_START_ADRS 32'h80000000
 `define EXECUTE_CYCLES_COUNT 2'b11
-
+`include "atomic_ops.vh"
 module Pipeline_top(
 
     input clk, 
@@ -20,7 +20,8 @@ module Pipeline_top(
 	output [1:0]   mem_data_wsize_o, // 0 > byte, 1 > half, 2 > word
 	output 			mem_data_req_o,
 	input  			mem_data_done_i,
-	input  [31:0]	mem_data_rdata_i
+	input  [31:0]	mem_data_rdata_i,
+	output [3:0]   mem_data_atomic_operation_o
 );
    //useless
    assign mem_instr_we_o = 1'b0;
@@ -61,6 +62,7 @@ module Pipeline_top(
     wire BSrcE, MemWriteE, mem_read_E, BranchE, MemWriteM, mem_read_M, mem_read_W;
     wire [5:0] ALUControlE;
     wire [4:0] FPUControlE;
+    wire [3:0] atomic_op_e, atomic_op_m;
     wire [4:0] RD_E, RD_M, rd_w;
     wire [31:0] pc_target_e, instruction_d, pc_d, pc_plus_4_d, result_w, RD1_E, RD2_E, 
     RD3_E, Imm_Ext_E, PCE, PCPlus4E, PCPlus4M, WriteDataM, Execute_ResultM;
@@ -132,7 +134,8 @@ module Pipeline_top(
                         .RS1_E(RS1_E),
                         .RS2_E(RS2_E),
                         .funct3_E(funct3_E),
-                        .F_instruction_E(F_instruction_E)
+                        .F_instruction_E(F_instruction_E),
+                        .atomic_op_e_o(atomic_op_e)
                     );
 
     // Execute Stage
@@ -178,7 +181,9 @@ module Pipeline_top(
                         .ForwardB_E(ForwardBE),
                         .funct3_E(funct3_E),
                         .WordSize_M(WordSize_M),
-                        .F_instruction_E(F_instruction_E)
+                        .F_instruction_E(F_instruction_E),
+                        .atomic_op_e_i(atomic_op_e),
+                        .atomic_op_m_o(atomic_op_m)
                     );
     
     // Memory Stage
@@ -186,6 +191,8 @@ module Pipeline_top(
                         .clk(clk), 
                         .rst(rst),
                         .flush(flush_M),
+                        .mem_data_atomic_operation_o(mem_data_atomic_operation_o),
+                        .atomic_op_m_i(atomic_op_m),
                         //.prev_ready_i(execute_ready),
                         .prev_valid_i(execute_valid),
                      	 .this_ready_o(memory_ready),

@@ -23,10 +23,13 @@ module execute_cycle
 
     output pc_src_e, register_write_m, MemWriteM, mem_read_M, int_rd_m,
     output [4:0] RD_M,
+    output [3:0] atomic_op_m_o,
     output [31:0] PCPlus4M, WriteDataM, Execute_ResultM,
     output [31:0] pc_target_e,
-
+    
     output [2:0] WordSize_M,
+
+    input [3:0] atomic_op_e_i,
 
     input next_ready_i,
     output reg this_ready_o,
@@ -41,16 +44,18 @@ module execute_cycle
     // Declaration of Register
     reg register_write_e_r, MemWriteE_r, mem_read_E_r ,pc_src_e_r, int_rd_e_r;
     reg [4:0] RD_E_r;
+    reg [3:0] atomic_op_e_r;
     reg [31:0] PCPlus4E_r, RD2_E_r, ResultE_r;
     reg [2:0] WordSize_E_r;
     reg [31:0] PCTarget_E_r;
     
     //Coordination wires
-    reg processing,processing_done;
+    reg stage_busy;
+    reg processing_done; // = stage_cycle_counter < STAGE_CYCLE_REQ
     reg [1:0] stage_cycle_counter; //3
     // Declaration of Modules
     
-    // 3 by 1 Mux for Source A
+    // 3 by 1 Mux for Forwarding Source A
     Mux_3_by_1 srca_mux (
                         .a_i(RD1_E),
                         .b_i(result_w),
@@ -59,7 +64,7 @@ module execute_cycle
                         .d_o(Src_A)
                         );
 
-    // 3 by 1 Mux for Source B
+    // 3 by 1 Mux for Forwarding Source B
     Mux_3_by_1 srcb_mux (
                         .a_i(RD2_E),
                         .b_i(result_w),
@@ -113,27 +118,60 @@ module execute_cycle
             .c_o(pc_target_e_r)
             );
     // Register Logic
-    always @(posedge flush) begin
-        {     
-            register_write_e_r,
-            MemWriteE_r, 
-            mem_read_E_r,
-            RD_E_r,
-            PCPlus4E_r,
-            RD2_E_r,
-            ResultE_r,
-            WordSize_E_r,
-            PCTarget_E_r,
-            pc_src_e_r,
-            int_rd_e_r,
-            stage_cycle_counter,
-            processing_done,
-            processing
-        } <= 0;
-        this_ready_o <= 1'b1;
-    end
+    always @(posedge flush) reset_signals();
     always @(posedge clk or negedge rst) begin
-        if(!rst) begin
+        if(!rst) reset_signals();
+        else begin
+            if (processing_done && this_ready_o) begin
+                register_write_e_r <= register_write_e; 
+                MemWriteE_r <= MemWriteE; 
+                mem_read_E_r <= mem_read_E;
+                RD_E_r <= RD_E;
+                atomic_op_e_r <= atomic_op_e_i;
+                PCPlus4E_r <= PCPlus4E; 
+                RD2_E_r <= Src_B_interim; 
+                ResultE_r <= ResultE;
+                WordSize_E_r <= funct3_E;
+                PCTarget_E_r <= pc_target_e_r;
+                pc_src_e_r <= (ALUControlE === 6'b010000) || (ZeroE && BranchE); // If instructions is JAL, JALR or branch
+                int_rd_e_r <= int_rd_e;
+                
+                this_ready_o <= 1'b1;
+                this_valid_o <= 1'b1;
+                stage_cycle_counter <= 2'b0;
+                stage_busy <=1'b0;
+                processing_done <= 1'b0;
+                
+            end else if (stage_busy) begin
+                this_valid_o <= 1'b0;
+                if(stage_cycle_counter < STAGE_CYCLE_REQ) begin
+                    stage_cycle_counter <= stage_cycle_counter + 1;
+                    this_ready_o <= 1'b0;
+                end else begin 
+                    this_ready_o <= next_ready_i;
+                    processing_done <= 1'b1;
+                end
+            end else if (prev_valid_i) stage_busy <= 1'b1;
+        end
+    end
+
+    // Output Assignments
+    //assign pc_src_e = (ALUControlE === 6'b010000) || (ZeroE && BranchE); //explicit check to avoid X values
+    assign pc_src_e = pc_src_e_r;
+    assign register_write_m = register_write_e_r;
+    assign MemWriteM = MemWriteE_r;
+    assign mem_read_M = mem_read_E_r;
+    assign RD_M = RD_E_r;
+    assign atomic_op_m_o = atomic_op_e_r;
+    assign PCPlus4M = PCPlus4E_r;
+    assign WriteDataM = RD2_E_r;
+    assign Execute_ResultM = ResultE_r;
+    assign pc_target_e = PCTarget_E_r;
+    assign WordSize_M = WordSize_E_r;
+    assign int_rd_m = int_rd_e_r;
+    
+    task reset_signals;
+        begin
             {     
                 register_write_e_r,
                 MemWriteE_r, 
@@ -148,52 +186,13 @@ module execute_cycle
                 int_rd_e_r,
                 stage_cycle_counter,
                 this_valid_o,
-                processing
+                stage_busy,
+                atomic_op_e_r,
+                processing_done
             } <= 0;
             this_ready_o <= 1'b1;
-        end else if (processing) begin
-            this_ready_o <= 1'b0;
-            if(stage_cycle_counter < STAGE_CYCLE_REQ) begin //i.e. check if this_stage_done
-                stage_cycle_counter <= stage_cycle_counter + 1;
-            end
-            else this_valid_o <= 1'b1;
         end
-        if (this_valid_o && next_ready_i) begin
-            register_write_e_r <= register_write_e; 
-            MemWriteE_r <= MemWriteE; 
-            mem_read_E_r <= mem_read_E;
-            RD_E_r <= RD_E;
-            PCPlus4E_r <= PCPlus4E; 
-            RD2_E_r <= Src_B_interim; 
-            ResultE_r <= ResultE;
-            WordSize_E_r <= funct3_E;
-            PCTarget_E_r <= pc_target_e_r;
-            pc_src_e_r <= (ALUControlE === 6'b010000) || (ZeroE && BranchE); // If instructions is JAL, JALR or branch
-            int_rd_e_r <= int_rd_e;
-            this_ready_o <= 1'b1;
-            this_valid_o <= 1'b1;
-            stage_cycle_counter <= 2'b0;
-            processing <=1'b0;
-        end
-        if (prev_valid_i) processing <= 1'b1;
-        this_ready_o <= next_ready_i;
-        
-       
-    end
-
-    // Output Assignments
-    //assign pc_src_e = (ALUControlE === 6'b010000) || (ZeroE && BranchE); //explicit check to avoid X values
-    assign pc_src_e = pc_src_e_r;
-    assign register_write_m = register_write_e_r;
-    assign MemWriteM = MemWriteE_r;
-    assign mem_read_M = mem_read_E_r;
-    assign RD_M = RD_E_r;
-    assign PCPlus4M = PCPlus4E_r;
-    assign WriteDataM = RD2_E_r;
-    assign Execute_ResultM = ResultE_r;
-    assign pc_target_e = PCTarget_E_r;
-    assign WordSize_M = WordSize_E_r;
-    assign int_rd_m = int_rd_e_r;
+    endtask
 
 endmodule
 

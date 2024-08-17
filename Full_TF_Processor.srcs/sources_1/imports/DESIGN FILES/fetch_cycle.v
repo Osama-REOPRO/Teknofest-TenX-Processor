@@ -67,13 +67,7 @@ module fetch_cycle
                 .c_o(pc_plus_4_f)
                 );
 
-    always @(posedge flush_i) begin
-        instruction_f_r <= 32'h00000000;
-        pc_f_r <= 32'h00000000;
-        pc_plus_4_f_r <= 32'h00000000;
-        mem_instr_req_o <= 1'b0;
-        this_ready_o <= 1'b0;
-    end
+    always @(posedge flush_i) reset_signals();
    
    // Fetch Cycle Register Logic state machine
    reg [1:0] mem_state;
@@ -83,18 +77,8 @@ module fetch_cycle
 			   pc_increment_st = 3;
 	
 	always @(posedge clk_i or negedge rst_i) begin
-        if(!rst_i) begin
-            mem_instr_adrs_o <= PC_START_ADRS;
-            {
-                instruction_f_r,
-                pc_f_r,
-                pc_plus_4_f_r,
-                mem_instr_req_o,
-                mem_state,
-                increment_pc,
-                this_ready_o
-            } <= 0;
-        end else begin
+        if(!rst_i) reset_signals();
+        else begin
         		case(mem_state)
         			mem_init_st: begin
         				if (!mem_instr_done_i && !mem_instr_req_o) begin //check is useless ?
@@ -121,12 +105,11 @@ module fetch_cycle
 							
 							mem_state <= pc_increment_st;
 							this_ready_o <= 1'b1;
+							//this_valid_o <= 1'b1;
 						end
         			end
         			pc_increment_st: begin
-							if (pc_incremented) begin
-								mem_state <= mem_init_st;
-							end
+                        if (pc_incremented) mem_state <= mem_init_st;
         			end
         		endcase
         end
@@ -136,6 +119,20 @@ module fetch_cycle
     assign  instruction_d_o = instruction_f_r;
     assign  pc_d_o = pc_f_r;
     assign  pc_plus_4_d_o = pc_plus_4_f_r;
-
+    
+    task reset_signals;
+        begin
+            mem_instr_adrs_o <= PC_START_ADRS;
+            {
+                instruction_f_r,
+                pc_f_r,
+                pc_plus_4_f_r,
+                mem_instr_req_o,
+                mem_state,
+                increment_pc,
+                this_ready_o
+            } <= 0;
+        end
+    endtask
 
 endmodule

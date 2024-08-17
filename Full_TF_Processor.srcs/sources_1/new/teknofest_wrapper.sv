@@ -1,5 +1,7 @@
 `timescale 1ns / 1ps
 
+`include "atomic_ops.vh"
+
 
 module teknofest_wrapper #(
     parameter USE_SRAM  = 0,
@@ -86,6 +88,21 @@ module teknofest_wrapper #(
 	wire 		   uart_req;
 	wire 			uart_done;
 	wire [31:0] uart_rdata;
+	// atomic
+
+	// atomic operations
+	wire [3:0]	mem_data_atomic_operation;
+	
+	wire 			mem_data_atomic_we;
+	wire [31:0] mem_data_atomic_adrs;
+	wire [31:0] mem_data_atomic_wdata;
+	wire [1:0] 	mem_data_atomic_wsize;
+	wire 			mem_data_atomic_req;
+	
+	wire mem_data_done_atomic_to_core;
+	wire [31:0] mem_data_rdata_atomic_to_core;
+	
+	wire is_atomic = mem_data_atomic_operation != 4'h0;
          
     // Core'u burada cagirin.
 	 // core instantiation
@@ -101,14 +118,39 @@ module teknofest_wrapper #(
 		 .mem_instr_done_i(mem_instr_done),
 		 .mem_instr_rdata_i(mem_instr_rdata),
 		 // data mem operations
+		 .mem_data_atomic_operation_o(mem_data_atomic_operation),
 		 .mem_data_we_o(mem_data_we),
 		 .mem_data_adrs_o(mem_data_adrs),
 		 .mem_data_wdata_o(mem_data_wdata),
 		 .mem_data_wsize_o(mem_data_wsize),
 		 .mem_data_req_o(mem_data_req),
-		 .mem_data_done_i(mem_data_done),
-		 .mem_data_rdata_i(mem_data_rdata)
+		 .mem_data_done_i(is_atomic? mem_data_done_atomic_to_core : mem_data_done),
+		 .mem_data_rdata_i(is_atomic? mem_data_rdata_atomic_to_core : mem_data_rdata)
 		 );
+
+	// atomic
+	Atomic_Operations_Handler atomic_handler(
+		.clk_i(core_clk),
+		.rst_i(!core_rst_n),
+
+		.data_atomic_operation_i(mem_data_atomic_operation),
+
+		.data_we_i(is_atomic? mem_data_we : 1'b0),
+		.data_adrs_i(is_atomic? mem_data_adrs : 32'd0),
+		.data_wdata_i(is_atomic? mem_data_wdata : 32'd0),
+		.data_wsize_i(is_atomic? mem_data_wsize : 2'b00),
+		.data_req_i(is_atomic? mem_data_req : 1'b0),
+		.data_done_o(mem_data_done_atomic_to_core),
+		.data_rdata_o(mem_data_rdata_atomic_to_core),
+
+		.data_we_o(mem_data_atomic_we),
+		.data_adrs_o(mem_data_atomic_adrs),
+		.data_wdata_o(mem_data_atomic_wdata),
+		.data_wsize_o(mem_data_atomic_wsize),
+		.data_req_o(mem_data_atomic_req),
+		.data_done_i(mem_data_done),
+		.data_rdata_i(mem_data_rdata)
+		);
 
 	wire [31:0] WB_UART_ADR;
 	wire [31:0] WB_UART_DAT_IN;
@@ -118,6 +160,7 @@ module teknofest_wrapper #(
 	wire 		   WB_UART_STB;
 	wire 			WB_UART_ACK;
 	wire 			WB_UART_RTY;
+	
 	memory_controller mem_ctrl (
 		.clk_i(core_clk),
 		.rst_i(!core_rst_n),
@@ -130,11 +173,11 @@ module teknofest_wrapper #(
 		.instr_done_o(mem_instr_done),
 		.instr_rdata_o(mem_instr_rdata),
 		// data mem operations
-		.data_we_i(mem_data_we),
-		.data_adrs_i(mem_data_adrs),
-		.data_wdata_i(mem_data_wdata),
-		.data_wsize_i(mem_data_wsize),
-		.data_req_i(mem_data_req),
+		.data_we_i(is_atomic? mem_data_atomic_we : mem_data_we),
+		.data_adrs_i(is_atomic? mem_data_atomic_adrs : mem_data_adrs),
+		.data_wdata_i(is_atomic? mem_data_atomic_wdata : mem_data_wdata),
+		.data_wsize_i(is_atomic? mem_data_atomic_wsize : mem_data_wsize),
+		.data_req_i(is_atomic? mem_data_atomic_req : mem_data_req),
 		.data_done_o(mem_data_done),
 		.data_rdata_o(mem_data_rdata),
 		// main mem operations

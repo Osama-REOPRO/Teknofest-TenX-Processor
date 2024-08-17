@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0 ps"></ZoomStartTime>
-      <ZoomEndTime time="1,526 ps"></ZoomEndTime>
-      <Cursor1Time time="0 ps"></Cursor1Time>
+      <ZoomStartTime time="386,981.703 ns"></ZoomStartTime>
+      <ZoomEndTime time="387,256.490 ns"></ZoomEndTime>
+      <Cursor1Time time="387,027.500 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="317"></NameColumnWidth>
-      <ValueColumnWidth column_width="327"></ValueColumnWidth>
+      <ValueColumnWidth column_width="273"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="19" />
    <wvobject fp_name="group672" type="group">
@@ -287,6 +287,10 @@
          <obj_property name="ElementShortName">prev_ready_i</obj_property>
          <obj_property name="ObjectShortName">prev_ready_i</obj_property>
       </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/clk" type="logic">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/this_ready_o" type="logic">
          <obj_property name="ElementShortName">this_ready_o</obj_property>
          <obj_property name="ObjectShortName">this_ready_o</obj_property>
@@ -294,6 +298,14 @@
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/next_ready_i" type="logic">
          <obj_property name="ElementShortName">next_ready_i</obj_property>
          <obj_property name="ObjectShortName">next_ready_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/MemWriteD" type="logic">
+         <obj_property name="ElementShortName">MemWriteD</obj_property>
+         <obj_property name="ObjectShortName">MemWriteD</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/instruction_d" type="array">
+         <obj_property name="ElementShortName">instruction_d[31:0]</obj_property>
+         <obj_property name="ObjectShortName">instruction_d[31:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/ALUControlD" type="array">
          <obj_property name="ElementShortName">ALUControlD[5:0]</obj_property>
@@ -336,8 +348,8 @@
          <obj_property name="ObjectShortName">FPUControlD[4:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/FPUControlD_r" type="array">
-         <obj_property name="ElementShortName">FPUControlD_r[5:0]</obj_property>
-         <obj_property name="ObjectShortName">FPUControlD_r[5:0]</obj_property>
+         <obj_property name="ElementShortName">FPUControlD_r[4:0]</obj_property>
+         <obj_property name="ObjectShortName">FPUControlD_r[4:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/FPUControlE" type="array">
          <obj_property name="ElementShortName">FPUControlE[4:0]</obj_property>
@@ -383,10 +395,6 @@
          <obj_property name="ElementShortName">JtypeE</obj_property>
          <obj_property name="ObjectShortName">JtypeE</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/MemWriteD" type="logic">
-         <obj_property name="ElementShortName">MemWriteD</obj_property>
-         <obj_property name="ObjectShortName">MemWriteD</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/MemWriteD_r" type="logic">
          <obj_property name="ElementShortName">MemWriteD_r</obj_property>
          <obj_property name="ObjectShortName">MemWriteD_r</obj_property>
@@ -402,10 +410,6 @@
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/PCPlus4E" type="array">
          <obj_property name="ElementShortName">PCPlus4E[31:0]</obj_property>
          <obj_property name="ObjectShortName">PCPlus4E[31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/instruction_d" type="array">
-         <obj_property name="ElementShortName">instruction_d[31:0]</obj_property>
-         <obj_property name="ObjectShortName">instruction_d[31:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/RD1_D" type="array">
          <obj_property name="ElementShortName">RD1_D[31:0]</obj_property>
@@ -455,10 +459,6 @@
          <obj_property name="ElementShortName">AUIPC</obj_property>
          <obj_property name="ObjectShortName">AUIPC</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/control/Atomic" type="logic">
-         <obj_property name="ElementShortName">Atomic</obj_property>
-         <obj_property name="ObjectShortName">Atomic</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/control/BSrc" type="logic">
          <obj_property name="ElementShortName">BSrc</obj_property>
          <obj_property name="ObjectShortName">BSrc</obj_property>
@@ -498,10 +498,6 @@
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/control/Load" type="logic">
          <obj_property name="ElementShortName">Load</obj_property>
          <obj_property name="ObjectShortName">Load</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/control/MemWrite" type="logic">
-         <obj_property name="ElementShortName">MemWrite</obj_property>
-         <obj_property name="ObjectShortName">MemWrite</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/control/Op" type="array">
          <obj_property name="ElementShortName">Op[6:0]</obj_property>
@@ -571,29 +567,45 @@
    <wvobject fp_name="group31306" type="group">
       <obj_property name="label">EXECUTE</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/prev_ready_i" type="logic">
-         <obj_property name="ElementShortName">prev_ready_i</obj_property>
-         <obj_property name="ObjectShortName">prev_ready_i</obj_property>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/prev_valid_i" type="logic">
+         <obj_property name="ElementShortName">prev_valid_i</obj_property>
+         <obj_property name="ObjectShortName">prev_valid_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/this_valid_o" type="logic">
+         <obj_property name="ElementShortName">this_valid_o</obj_property>
+         <obj_property name="ObjectShortName">this_valid_o</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/this_ready_o" type="logic">
          <obj_property name="ElementShortName">this_ready_o</obj_property>
          <obj_property name="ObjectShortName">this_ready_o</obj_property>
       </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/instruction_d" type="array">
+         <obj_property name="ElementShortName">instruction_d[31:0]</obj_property>
+         <obj_property name="ObjectShortName">instruction_d[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/MemWriteE" type="logic">
+         <obj_property name="ElementShortName">MemWriteE</obj_property>
+         <obj_property name="ObjectShortName">MemWriteE</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/atomic_op_m_o" type="array">
+         <obj_property name="ElementShortName">atomic_op_m_o[3:0]</obj_property>
+         <obj_property name="ObjectShortName">atomic_op_m_o[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/atomic_op_e_i" type="array">
+         <obj_property name="ElementShortName">atomic_op_e_i[3:0]</obj_property>
+         <obj_property name="ObjectShortName">atomic_op_e_i[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/atomic_op_e_r" type="array">
+         <obj_property name="ElementShortName">atomic_op_e_r[3:0]</obj_property>
+         <obj_property name="ObjectShortName">atomic_op_e_r[3:0]</obj_property>
+      </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/next_ready_i" type="logic">
          <obj_property name="ElementShortName">next_ready_i</obj_property>
          <obj_property name="ObjectShortName">next_ready_i</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/this_stage_free" type="logic">
-         <obj_property name="ElementShortName">this_stage_free</obj_property>
-         <obj_property name="ObjectShortName">this_stage_free</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/stage_cycle_counter" type="array">
          <obj_property name="ElementShortName">stage_cycle_counter[1:0]</obj_property>
          <obj_property name="ObjectShortName">stage_cycle_counter[1:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/instruction_d" type="array">
-         <obj_property name="ElementShortName">instruction_d[31:0]</obj_property>
-         <obj_property name="ObjectShortName">instruction_d[31:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/ALUControlE" type="array">
          <obj_property name="ElementShortName">ALUControlE[5:0]</obj_property>
@@ -643,10 +655,6 @@
          <obj_property name="ElementShortName">JtypeE</obj_property>
          <obj_property name="ObjectShortName">JtypeE</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/MemWriteE" type="logic">
-         <obj_property name="ElementShortName">MemWriteE</obj_property>
-         <obj_property name="ObjectShortName">MemWriteE</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/MemWriteE_r" type="logic">
          <obj_property name="ElementShortName">MemWriteE_r</obj_property>
          <obj_property name="ObjectShortName">MemWriteE_r</obj_property>
@@ -654,6 +662,10 @@
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/MemWriteM" type="logic">
          <obj_property name="ElementShortName">MemWriteM</obj_property>
          <obj_property name="ObjectShortName">MemWriteM</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/control/MemWrite" type="logic">
+         <obj_property name="ElementShortName">MemWrite</obj_property>
+         <obj_property name="ObjectShortName">MemWrite</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/PCE" type="array">
          <obj_property name="ElementShortName">PCE[31:0]</obj_property>
@@ -820,13 +832,17 @@
       <obj_property name="label">MEMORY</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/prev_ready_i" type="logic">
-         <obj_property name="ElementShortName">prev_ready_i</obj_property>
-         <obj_property name="ObjectShortName">prev_ready_i</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/this_ready_o" type="logic">
          <obj_property name="ElementShortName">this_ready_o</obj_property>
          <obj_property name="ObjectShortName">this_ready_o</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/atomic_op_m_i" type="array">
+         <obj_property name="ElementShortName">atomic_op_m_i[3:0]</obj_property>
+         <obj_property name="ObjectShortName">atomic_op_m_i[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/mem_data_atomic_operation_o" type="array">
+         <obj_property name="ElementShortName">mem_data_atomic_operation_o[3:0]</obj_property>
+         <obj_property name="ObjectShortName">mem_data_atomic_operation_o[3:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/clk" type="logic">
          <obj_property name="ElementShortName">clk</obj_property>
@@ -876,10 +892,6 @@
          <obj_property name="ElementShortName">PCPlus4W[31:0]</obj_property>
          <obj_property name="ObjectShortName">PCPlus4W[31:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/Execute_ResultW" type="array">
-         <obj_property name="ElementShortName">Execute_ResultW[31:0]</obj_property>
-         <obj_property name="ObjectShortName">Execute_ResultW[31:0]</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/ReadDataW" type="array">
          <obj_property name="ElementShortName">ReadDataW[31:0]</obj_property>
          <obj_property name="ObjectShortName">ReadDataW[31:0]</obj_property>
@@ -887,6 +899,10 @@
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/mem_data_we_o" type="logic">
          <obj_property name="ElementShortName">mem_data_we_o</obj_property>
          <obj_property name="ObjectShortName">mem_data_we_o</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/Execute_ResultW" type="array">
+         <obj_property name="ElementShortName">Execute_ResultW[31:0]</obj_property>
+         <obj_property name="ObjectShortName">Execute_ResultW[31:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/mem_data_adrs_o" type="array">
          <obj_property name="ElementShortName">mem_data_adrs_o[31:0]</obj_property>
@@ -940,21 +956,17 @@
          <obj_property name="ElementShortName">mem_state[1:0]</obj_property>
          <obj_property name="ObjectShortName">mem_state[1:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/mem_check_st" type="array">
-         <obj_property name="ElementShortName">mem_check_st[31:0]</obj_property>
-         <obj_property name="ObjectShortName">mem_check_st[31:0]</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/mem_init_st" type="array">
-         <obj_property name="ElementShortName">mem_init_st[31:0]</obj_property>
-         <obj_property name="ObjectShortName">mem_init_st[31:0]</obj_property>
+         <obj_property name="ElementShortName">mem_init_st[1:0]</obj_property>
+         <obj_property name="ObjectShortName">mem_init_st[1:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/mem_busy_st" type="array">
-         <obj_property name="ElementShortName">mem_busy_st[31:0]</obj_property>
-         <obj_property name="ObjectShortName">mem_busy_st[31:0]</obj_property>
+         <obj_property name="ElementShortName">mem_busy_st[1:0]</obj_property>
+         <obj_property name="ObjectShortName">mem_busy_st[1:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Memory/mem_finish_st" type="array">
-         <obj_property name="ElementShortName">mem_finish_st[31:0]</obj_property>
-         <obj_property name="ObjectShortName">mem_finish_st[31:0]</obj_property>
+         <obj_property name="ElementShortName">mem_finish_st[1:0]</obj_property>
+         <obj_property name="ObjectShortName">mem_finish_st[1:0]</obj_property>
       </wvobject>
    </wvobject>
    <wvobject type="divider" fp_name="divider148">
@@ -996,7 +1008,6 @@
    <wvobject fp_name="group31434" type="group">
       <obj_property name="label">TOP MODULE</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/JtypeE" type="logic">
          <obj_property name="ElementShortName">JtypeE</obj_property>
          <obj_property name="ObjectShortName">JtypeE</obj_property>
@@ -1147,6 +1158,7 @@
    <wvobject fp_name="group15887" type="group">
       <obj_property name="label">FP RF</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/F_rf/WE4" type="logic">
          <obj_property name="ElementShortName">WE4</obj_property>
          <obj_property name="ObjectShortName">WE4</obj_property>
@@ -1186,12 +1198,12 @@
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Decode/F_rf/Register" type="array">
          <obj_property name="ElementShortName">Register[31:0][31:0]</obj_property>
          <obj_property name="ObjectShortName">Register[31:0][31:0]</obj_property>
-         <obj_property name="isExpanded"></obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group11568" type="group">
       <obj_property name="label">ALU</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/Execute/alu/A" type="array">
          <obj_property name="ElementShortName">A[31:0]</obj_property>
          <obj_property name="ObjectShortName">A[31:0]</obj_property>

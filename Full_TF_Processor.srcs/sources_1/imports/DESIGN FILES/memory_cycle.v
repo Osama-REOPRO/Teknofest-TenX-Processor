@@ -11,7 +11,8 @@ module memory_cycle
 (
     // Declaration of I/Os
     input clk, rst, flush, register_write_m, int_rd_m, MemWriteM, mem_read_M,
-    input [4:0] RD_M, 
+    input [4:0] RD_M,
+    input [3:0] atomic_op_m_i,
     input [31:0] PCPlus4M, Execute_ResultM, WriteDataM,
     input [2:0] WordSize_M, /// byte: 00, half: 01, word: 10, unsignedbyte: 11, unsignedhalf: 100;
 
@@ -28,6 +29,9 @@ module memory_cycle
   	output reg 			mem_data_req_o,
   	input 				mem_data_done_i, //this_stage_done
   	input 	  [31:0]	mem_data_rdata_i,
+  	output reg [3:0] mem_data_atomic_operation_o,
+  	
+  	
     input prev_valid_i,
     output reg this_ready_o
     );
@@ -39,79 +43,57 @@ module memory_cycle
     reg register_write_m_r, mem_read_M_r, int_rd_m_r;
     reg [4:0] RD_M_r;
     reg [31:0] PCPlus4M_r, Execute_ResultM_r, ReadDataM_r;
-
-   // Memory Stage Register Logic
-	always @(posedge flush) begin
-        register_write_m_r <= 1'b0; 
-        mem_read_M_r <= 1'b0;
-        RD_M_r <= 5'h00;
-        PCPlus4M_r <= 32'h00000000; 
-        Execute_ResultM_r <= 32'h00000000; 
-        ReadDataM_r <= 32'h00000000;
-        int_rd_m_r <= 1'b0;
-        this_ready_o <= 1'b1;  // this_ready_o <= next_is_always_ready and prev is flushed.
-
-	end 
-   
+    
+    //FOR ATOMICS
+    //Execute_ResultM_r = RS1, 
+    // RS2_ATOMIC = RS2,
+    reg processing;
     
     reg [1:0] mem_state;	
-    localparam      mem_check_st  = 0, //00
-                    mem_init_st   = 1, //01
-					mem_busy_st   = 2, //10
-					mem_finish_st = 3;//11
-	 
-	always @(posedge clk or negedge rst) begin
-		if(!rst) begin
+    localparam [1:0]      mem_init_st   = 0, //00
+					      mem_busy_st   = 1, //01
+					       mem_finish_st = 2;//10
 
-			{ 
-                register_write_m_r,
-                mem_read_M_r,
-                RD_M_r,
-                PCPlus4M_r,
-                Execute_ResultM_r,
-                ReadDataM_r,
-                int_rd_m_r,
-                mem_state,
-			    mem_data_we_o,
-				mem_data_adrs_o,
-				mem_data_wdata_o,
-				mem_data_wsize_o,
-				mem_data_req_o
-				} <= 0;
-            this_ready_o <= 1'b1;
-		end else if (prev_valid_i) begin
-		    if(mem_read_M || MemWriteM) begin
-                case(mem_state)
-                    mem_init_st: begin //0
-                        if (!mem_data_done_i && !mem_data_req_o) begin
-                            mem_data_req_o 	<= 1'b1;
-                            mem_data_adrs_o 	<= Execute_ResultM;
-                            mem_data_we_o 		<= MemWriteM; //if write 1, if read 0
-                            mem_data_wsize_o 	<= WordSize_M[1:0]; //ignored on read
-                            mem_data_wdata_o  <= WriteDataM[1:0]; // ignored on read
-                            mem_state <= mem_busy_st;
-                            this_ready_o <= 1'b0;
+
+   // Memory Stage Register Logic
+	always @(posedge flush) reset_signals();
+	always @(posedge clk or negedge rst) begin
+		if(!rst) reset_signals();
+        else begin
+            if (processing) begin 
+                if(mem_read_M || MemWriteM || |atomic_op_m_i) begin
+                    case(mem_state)
+                        mem_init_st: begin //0
+                            if (!mem_data_done_i && !mem_data_req_o) begin //useless checks
+                                mem_data_req_o 	<= 1'b1;
+                                mem_data_adrs_o 	<= Execute_ResultM; // RS1
+                                mem_data_atomic_operation_o <=  atomic_op_m_i;
+                                mem_data_we_o 		<= MemWriteM; //if write 1, if read 0
+                                mem_data_wsize_o 	<= WordSize_M[1:0];
+                                mem_data_wdata_o  <= WriteDataM; // FOR ATOMICS THIS RS2
+                                mem_state <= mem_busy_st;
+                                this_ready_o <= 1'b0;
+                            end
                         end
-                    end
-                    
-                    mem_busy_st: begin //1
-                        if (mem_data_done_i) begin
-                            mem_data_req_o <= 1'b0;
-    
-                            mem_state <= mem_finish_st;
+                        
+                        mem_busy_st: begin //1
+                            if (mem_data_done_i) begin
+                                mem_data_req_o <= 1'b0;
+        
+                                mem_state <= mem_finish_st;
+                            end
                         end
-                    end
-                    
-                    mem_finish_st: begin //2
-                        if (!mem_data_done_i) begin
-                           ReadDataM_r <= mem_data_rdata_i; //ignored for writes
-                            latch_registers();  
-                            this_ready_o <= 1'b1;        
-                        end
-                    end	
-                endcase
-            end
-            else latch_registers();
+                        
+                        mem_finish_st: begin //2
+                            if (!mem_data_done_i) begin
+                               ReadDataM_r <= mem_data_rdata_i; //ignored for writes
+                                latch_registers();  
+                            end
+                        end	
+                    endcase
+                end
+                else latch_registers();
+            end else if(prev_valid_i) processing <=1'b1; 
 		end
 	end
     
@@ -126,6 +108,32 @@ module memory_cycle
            ReadDataM_r <= ReadDataM;
            int_rd_m_r <= int_rd_m;
            mem_state <= mem_init_st;      
+           this_ready_o <= 1'b1;        
+           processing <= 1'b0;
+       end
+    endtask
+    
+        
+    task reset_signals;
+        begin
+            { 
+                register_write_m_r,
+                mem_read_M_r,
+                RD_M_r,
+                PCPlus4M_r,
+                Execute_ResultM_r,
+                ReadDataM_r,
+                int_rd_m_r,
+                mem_state,
+                mem_data_we_o,
+                mem_data_adrs_o,
+                mem_data_wdata_o,
+                mem_data_wsize_o,
+                mem_data_req_o,
+                mem_data_atomic_operation_o,
+                processing
+            } <= 0;
+            this_ready_o <= 1'b1;
        end
     endtask
     

@@ -181,6 +181,7 @@ module ALU_Top(
                     (ALUControl == 6'b110001) ? SH3ADD_Result : // SH3ADD
                     (ALUControl == 6'b110010) ? XNOR_Result : // XNOR
                     (ALUControl == 6'b110011) ? { {16{1'b0}}, A[15:0]} : //    ZEXT.H
+                    (ALUControl == 6'b110100) ? A :
                     32'bx;  // DEFAULT
 
     // Overflow detection for addition and subtraction

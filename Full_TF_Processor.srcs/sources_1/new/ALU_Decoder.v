@@ -56,6 +56,13 @@ module ALU_Decoder(
     101100: SH3ADD
     101101: XNOR
     101110: ZEXT.H
+    110100: returns A
+    : CSRRW // RD = 0(CSR) & CSR = RS1 (IF RD=X0 -> CANCEL read operation)
+    : CSRRS // RD = 0(CSR) & CSR = CSR | RS1  (IF Rs=X0 -> cancel write op)
+    : CSRRC // RD = 0(CSR) & CSR = CSR ~& RS1  (IF Rs=X0 -> cancel write op)
+    : CSRRWI // imm var (IF RD=X0 -> CANCEL read operation)
+    : CSRRSI // imm var (if imm == 0 -> cancel write op )
+    : CSRRCI // imm var (if imm == 0 -> cancel write op ) 
     
     */
     assign ALUControl = (ALUOp == 3'b000) ?
@@ -153,16 +160,24 @@ module ALU_Decoder(
                          (ALUOp == 3'b100) ? 6'b001110 : // LUI (imm << 12)
                          (ALUOp == 3'b101) ? 6'b001111 : // AUIPC 
                          (ALUOp == 3'b110) ? 6'b010000 : // Jal and JALR
-                         (ALUOp == 3'b111) ? // ATOMIC
-                            (funct5 == 5'b00010)? 6'bx: // LR.W
-                            (funct5 == 5'b00011)? 6'bx: // SC.W
-                            (funct5 == 5'b00001)? 6'bx: // AMOSWAP.W
-                            (funct5 == 5'b00000)? 6'bx: // AMOADD.W
-                            (funct5 == 5'b01100)? 6'bx: // AMOAND.W
-                            (funct5 == 5'b01010)? 6'bx: // AMOOR.W
-                            (funct5 == 5'b00100)? 6'bx: // AMOXOR.W
-                            (funct5 == 5'b10100)? 6'bx: // AMOMAX.W
-                            (funct5 == 5'b10000)? 6'bx: // AMOMIN.W
-                            6'bxxxxxx: // Default
+                         (ALUOp == 3'b111) ? 6'b110100 :// ATOMIC or CSR
+//                            (funct5 == 5'b00010)? 6'bx: // LR.W
+//                            (funct5 == 5'b00011)? 6'bx: // SC.W
+//                            (funct5 == 5'b00001)? 6'bx: // AMOSWAP.W
+//                            (funct5 == 5'b00000)? 6'bx: // AMOADD.W
+//                            (funct5 == 5'b01100)? 6'bx: // AMOAND.W
+//                            (funct5 == 5'b01010)? 6'bx: // AMOOR.W
+//                            (funct5 == 5'b00100)? 6'bx: // AMOXOR.W
+//                            (funct5 == 5'b10100)? 6'bx: // AMOMAX.W
+//                            (funct5 == 5'b10000)? 6'bx: // AMOMIN.W
+//                            6'bxxxxxx: // Default
+//                          (ALUOp == 3'b000) ?
+//                            (funct3 == 3'b001) ? 6'b101111 : // CSRRW
+//                            (funct3 == 3'b010) ? 6'b110000 : // CSRRS
+//                            (funct3 == 3'b011) ? 6'b110001 : // CSRRC
+//                            (funct3 == 3'b101) ? 6'b110010 : // CSRRWI
+//                            (funct3 == 3'b110) ? 6'b110011 : // CSRRSI
+//                            (funct3 == 3'b111) ? 6'b110100 : // CSRRCI
+//                            6'bxxxxxx: // Default
                          6'bxxxxxx; // default at the beginning   
 endmodule
