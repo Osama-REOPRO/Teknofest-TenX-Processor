@@ -224,13 +224,13 @@ module Pipeline_top(
 
     // Write Back Stage
     writeback_cycle WriteBack (
-                        .register_write_w(register_write_w),
-                        .int_rd_w(int_rd_w),
+                        .RegWriteW(register_write_w),
+                        .int_RD_W(int_rd_w),
                         .mem_read_W(mem_read_W), 
                         .PCPlus4W(PCPlus4W), 
                         .Execute_ResultW(Execute_ResultW), 
                         .ReadDataW(ReadDataW), 
-                        .result_w(result_w)
+                        .ResultW(result_w)
                     );
 
     // Hazard Unit
