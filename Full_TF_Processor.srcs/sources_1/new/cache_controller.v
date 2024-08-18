@@ -100,17 +100,18 @@ always @(*) begin
 	end else begin
 		combined_read_write_data = main_rdata_i;
 		case (wsize_i) // 0:byte, 1:half, 2:word
-			2'h0: begin
+			2'd0: begin
 				// byte, must be at the beginning of input word
 				combined_read_write_data[((adrs_i % (4*b))*8) +:8] = wdata_i[7:0]; // todo: verify
 			end
-			2'h1: begin
+			2'd1: begin
 				// half word, must be at beginning of word (lower half)
 				combined_read_write_data[(((adrs_i*2) % (4*b))*16) +:16] = wdata_i[15:0]; // todo: verify
 			end
-			2'h2: begin
+			2'd2: begin
 				// word
-				combined_read_write_data[(((adrs_i*4) % (4*b))*32) +:32] = wdata_i; // todo: verify
+//				combined_read_write_data[(((adrs_i*4) % (4*b))*32) +:32] = wdata_i; // todo: verify
+				combined_read_write_data[adrs_i[3:2]*32 +:32] = wdata_i; // todo: verify
 			end
 		endcase
 	end
