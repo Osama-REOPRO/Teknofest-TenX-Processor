@@ -102,16 +102,18 @@ always @(*) begin
 		case (wsize_i) // 0:byte, 1:half, 2:word
 			2'd0: begin
 				// byte, must be at the beginning of input word
-				combined_read_write_data[((adrs_i % (4*b))*8) +:8] = wdata_i[7:0]; // todo: verify
+//				combined_read_write_data[((adrs_i % (4*b))*8) +:8] = wdata_i[7:0]; // old
+				combined_read_write_data[adrs_i[3:0]*8 +:8] = wdata_i[7:0]; // todo: change
 			end
 			2'd1: begin
 				// half word, must be at beginning of word (lower half)
-				combined_read_write_data[(((adrs_i*2) % (4*b))*16) +:16] = wdata_i[15:0]; // todo: verify
+//				combined_read_write_data[(((adrs_i*2) % (4*b))*16) +:16] = wdata_i[15:0]; // old
+				combined_read_write_data[adrs_i[3:1]*16 +:16] = wdata_i[15:0]; // todo: change
 			end
 			2'd2: begin
 				// word
-//				combined_read_write_data[(((adrs_i*4) % (4*b))*32) +:32] = wdata_i; // todo: verify
-				combined_read_write_data[adrs_i[3:2]*32 +:32] = wdata_i; // todo: verify
+//				combined_read_write_data[(((adrs_i*4) % (4*b))*32) +:32] = wdata_i; // old
+				combined_read_write_data[adrs_i[3:2]*32 +:32] = wdata_i;
 			end
 		endcase
 	end
@@ -282,26 +284,32 @@ always @(posedge clk_i) begin
 									set_dirty 	<= 1'b1;
 									// only write valid bytes from input
 									case (wsize_i) // 0:byte, 1:half, 2:word
-										2'h0: begin
+										2'd0: begin
 											// byte, must be at the beginning of input word
 											valid_bytes <= {(4*b){1'b0}};
-											valid_bytes[adrs_i % (4*b)] <= 1'b1; // todo: verify
+//											valid_bytes[adrs_i % (4*b)] <= 1'b1; // old
+											valid_bytes[adrs_i[3:0]] <= 1'b1; // todo: verify
 
-											write_data[((adrs_i % (4*b))*8) +:8] <= wdata_i[7:0]; // todo: verify
+//											write_data[((adrs_i % (4*b))*8) +:8] <= wdata_i[7:0]; // old
+											write_data[adrs_i[3:0]*8 +:8] <= wdata_i[7:0]; // todo: verify
 										end
-										2'h1: begin
+										2'd1: begin
 											// half word, must be at beginning of word (lower half)
 											valid_bytes <= {(4*b){1'b0}};
-											valid_bytes[(adrs_i*2) % (4*b) +:2] <= 2'b11; // todo: verify
+//											valid_bytes[(adrs_i*2) % (4*b) +:2] <= 2'b11; // old
+											valid_bytes[adrs_i[3:1]*2 +:2] <= 2'b11; // todo: verify
 
-											write_data[(((adrs_i*2) % (4*b))*16) +:16] <= wdata_i[15:0]; // todo: verify
+//											write_data[(((adrs_i*2) % (4*b))*16) +:16] <= wdata_i[15:0]; // todo: verify
+											write_data[adrs_i[3:1]*16 +:16] <= wdata_i[15:0]; // todo: verify
 										end
-										2'h2: begin
+										2'd2: begin
 											// word
 											valid_bytes <= {(4*b){1'b0}};
-											valid_bytes[(adrs_i*4) % (4*b) +:4] <= 4'b1111; // todo: verify
+//											valid_bytes[(adrs_i*4) % (4*b) +:4] <= 4'b1111; // old
+											valid_bytes[adrs_i[3:2]*4 +:4] <= 4'b1111; // todo: verify
 
-											write_data[(((adrs_i*4) % (4*b))*32) +:32] <= wdata_i; // todo: verify
+//											write_data[(((adrs_i*4) % (4*b))*32) +:32] <= wdata_i; // old
+											write_data[adrs_i[3:2]*32 +:32] <= wdata_i; // todo: verify
 										end
 									endcase
 								end else begin

@@ -11,18 +11,18 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="386,465.595 ns"></ZoomStartTime>
-      <ZoomEndTime time="386,695.147 ns"></ZoomEndTime>
-      <Cursor1Time time="386,656.888 ns"></Cursor1Time>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="387.265092 us"></ZoomEndTime>
+      <Cursor1Time time="387.144284 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="252"></NameColumnWidth>
-      <ValueColumnWidth column_width="233"></ValueColumnWidth>
+      <ValueColumnWidth column_width="228"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="21" />
    <wave_markers>
-      <marker time="386812500" label="" />
-      <marker time="386682500" label="" />
+      <marker time="387037500" label="" />
+      <marker time="387072500" label="" />
    </wave_markers>
    <wvobject type="divider" fp_name="divider520">
       <obj_property name="label">ports</obj_property>
@@ -112,5 +112,14 @@
       <obj_property name="ElementShortName">data_mem[1:0][3:0][3:0][3:0][7:0]</obj_property>
       <obj_property name="ObjectShortName">data_mem[1:0][3:0][3:0][3:0][7:0]</obj_property>
       <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/data_mem[1]" type="array">
+         <obj_property name="ElementShortName">[1][3:0][3:0][3:0][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[1][3:0][3:0][3:0][7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/data_mem[0]" type="array">
+         <obj_property name="ElementShortName">[0][3:0][3:0][3:0][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[0][3:0][3:0][3:0][7:0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
    </wvobject>
 </wave_config>

@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="386,905.533 ns"></ZoomStartTime>
-      <ZoomEndTime time="387,199.521 ns"></ZoomEndTime>
-      <Cursor1Time time="386,992.500 ns"></Cursor1Time>
+      <ZoomStartTime time="386,694.544 ns"></ZoomStartTime>
+      <ZoomEndTime time="387,346.185 ns"></ZoomEndTime>
+      <Cursor1Time time="387,543.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="197"></NameColumnWidth>
-      <ValueColumnWidth column_width="338"></ValueColumnWidth>
+      <ValueColumnWidth column_width="333"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="29" />
    <wave_markers>
@@ -35,6 +35,7 @@
       <obj_property name="ObjectShortName">Register[31:0][31:0]</obj_property>
       <obj_property name="CustomSignalColor">#FFFFFF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider493">
       <obj_property name="label">mem ctrl</obj_property>
@@ -167,33 +168,5 @@
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/data_mem" type="array">
       <obj_property name="ElementShortName">data_mem[1:0][3:0][3:0][3:0][7:0]</obj_property>
       <obj_property name="ObjectShortName">data_mem[1:0][3:0][3:0][3:0][7:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/data_mem[1]" type="array">
-         <obj_property name="ElementShortName">[1][3:0][3:0][3:0][7:0]</obj_property>
-         <obj_property name="ObjectShortName">[1][3:0][3:0][3:0][7:0]</obj_property>
-         <obj_property name="isExpanded"></obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/data_mem[0]" type="array">
-         <obj_property name="ElementShortName">[0][3:0][3:0][3:0][7:0]</obj_property>
-         <obj_property name="ObjectShortName">[0][3:0][3:0][3:0][7:0]</obj_property>
-         <obj_property name="isExpanded"></obj_property>
-         <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/data_mem[0][3]" type="array">
-            <obj_property name="ElementShortName">[3][3:0][3:0][7:0]</obj_property>
-            <obj_property name="ObjectShortName">[3][3:0][3:0][7:0]</obj_property>
-         </wvobject>
-         <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/data_mem[0][2]" type="array">
-            <obj_property name="ElementShortName">[2][3:0][3:0][7:0]</obj_property>
-            <obj_property name="ObjectShortName">[2][3:0][3:0][7:0]</obj_property>
-         </wvobject>
-         <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/data_mem[0][1]" type="array">
-            <obj_property name="ElementShortName">[1][3:0][3:0][7:0]</obj_property>
-            <obj_property name="ObjectShortName">[1][3:0][3:0][7:0]</obj_property>
-            <obj_property name="isExpanded"></obj_property>
-         </wvobject>
-         <wvobject fp_name="/tb_teknofest_wrapper/u_dut/mem_ctrl/cache_ctrl_data/cache/data_mem[0][0]" type="array">
-            <obj_property name="ElementShortName">[0][3:0][3:0][7:0]</obj_property>
-            <obj_property name="ObjectShortName">[0][3:0][3:0][7:0]</obj_property>
-         </wvobject>
-      </wvobject>
    </wvobject>
 </wave_config>

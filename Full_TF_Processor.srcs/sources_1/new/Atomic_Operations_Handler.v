@@ -113,7 +113,7 @@ always @(posedge clk_i) begin
 
 					finish: begin
 						if (!data_done_i) begin
-							state <= write;
+							state <= done;
 							sub_state <= init;
 						end
 					end
