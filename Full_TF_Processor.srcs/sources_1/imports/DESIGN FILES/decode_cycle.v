@@ -10,7 +10,7 @@ prev_ready_i (NULL) -> this flag indicates that the stage is ready to work on it
 module decode_cycle(
     
         // Declaring I/O
-        input clk, rst, flush, register_write_w, int_rd_w,
+        input clk, rst, flush, register_write_w, int_rd_w, is_csr_w_i,
         input [4:0] rd_w,
         input [11:0] csr_address_w_i,
         input [31:0] instruction_d, pc_d, pc_plus_4_d, result_w, csr_value_w_i,
@@ -18,11 +18,12 @@ module decode_cycle(
         output reg this_ready_o,
         input prev_ready_i,
         output reg this_valid_o,
-        output register_write_e,BSrcE,MemWriteE,JtypeE,mem_read_E,BranchE, F_instruction_E, int_rd_e,
+        output register_write_e,BSrcE,MemWriteE,JtypeE,
+        mem_read_E,BranchE, F_instruction_E, int_rd_e, is_csr_e_o,
         output [5:0] ALUControlE,
         output [4:0] FPUControlE,
-        output [3:0] atomic_op_e_o, csr_value_e_o,
-        output [31:0] RS1_E, RS2_E, RS3_E, Imm_Ext_E,
+        output [3:0] atomic_op_e_o,
+        output [31:0] RS1_E, RS2_E, RS3_E, Imm_Ext_E,csr_value_e_o,
         output [4:0] forwarded_RS1_E, forwarded_RS2_E, RD_E, // For Forwarding
         output [31:0] PCE, PCPlus4E,
         output [2:0] funct3_E,
@@ -30,16 +31,17 @@ module decode_cycle(
         
     );
     // Declare Interim Wires
-    wire RegWriteD,BSrcD,MemWriteD,mem_read_D,BranchD,JtypeD, F_instruction_D, int_RD_D, int_writeback_result;
+    wire RegWriteD,BSrcD,MemWriteD,mem_read_D,BranchD,JtypeD, F_instruction_D, int_RD_D;
     wire [2:0] ImmSrcD;
     wire [5:0] ALUControlD;
     wire [4:0] FPUControlD;
     wire [3:0] atomic_op_d;
-    wire [31:0] RS1_int, RS2_int, RS1_fp, RS2_fp, RS1_D, RS2_D, RS3_D, Imm_Ext_D, csr_value_d;
+    wire [31:0] RS1_int, RS2_int, RS1_fp, RS2_fp, RS1_D, RS2_D, RS3_D, Imm_Ext_D, csr_value_d, int_writeback_result;
     wire is_rs1_int;
     wire write_to_int_rf, is_csr_d;
     // Declaration of Interim Register
-    reg RegWriteD_r,BSrcD_r,MemWriteD_r,mem_read_D_r,BranchD_r,JtypeD_r, F_instructionD_r, int_RD_D_r;
+    reg RegWriteD_r,BSrcD_r,MemWriteD_r,mem_read_D_r,BranchD_r,JtypeD_r, F_instructionD_r,
+     int_RD_D_r, is_csr_d_r;
     reg [5:0] ALUControlD_r;
     reg [4:0] FPUControlD_r;
     reg [3:0] atomic_op_d_r;
@@ -77,17 +79,17 @@ module decode_cycle(
                         RS1_int
                     : RS1_fp;
     assign RS2_D = F_instruction_D ? RS2_fp : 
-                   is_csr_d ? RS1_int : RS2_int; // i need rs1 to be stored in rs2 bcz it can be swapped with immds
+                   is_csr_d ? RS1_int : // i need rs1 to be stored in rs2 bcz it can be swapped with immds
+                   RS2_int; 
     assign write_to_int_rf = int_rd_w & register_write_w;
     assign write_to_fp_rf = !int_rd_w & register_write_w;
     assign int_writeback_result = is_csr_w_i ? csr_value_w_i : result_w;
-
     // Register File
     Integer_RF I_rf (
                         .clk(clk),
                         .rst(rst),
                         .WE3(write_to_int_rf),
-                        .WD3(writeback_result),
+                        .WD3(int_writeback_result),
                         .A1(instruction_d[19:15]),
                         .A2(instruction_d[24:20]),
                         .A3(rd_w),
@@ -159,6 +161,7 @@ module decode_cycle(
             atomic_op_d_r <= atomic_op_d;
             F_instructionD_r <= F_instruction_D;
             int_RD_D_r <= int_RD_D;
+            is_csr_d_r <= is_csr_d;
             this_valid_o <= 1'b1;
         end else this_valid_o <= 1'b0;
         this_ready_o <= next_ready_i;
@@ -188,7 +191,7 @@ module decode_cycle(
     assign int_rd_e = int_RD_D_r;
     assign csr_address_e_o = csr_address_e_r;
     assign csr_value_e_o = csr_value_e_r;
-    
+    assign is_csr_e_o = is_csr_d_r;
     
     task reset_signals;
         begin
@@ -216,7 +219,8 @@ module decode_cycle(
             this_valid_o,
             atomic_op_d_r,
             csr_address_e_r,
-            csr_value_e_r
+            csr_value_e_r,
+            is_csr_d_r
         } <= 0;
         this_ready_o <= 1'b1;
         end

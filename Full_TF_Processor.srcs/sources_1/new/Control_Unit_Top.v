@@ -5,7 +5,7 @@ module Control_Unit_Top(
         input [6:0] Op,funct7,
         input [2:0] funct3,
         input [4:0] funct5,
-        output is_csr_o,RegWrite,Jtype,BSrc,MemWrite,mem_read,Branch,
+        output is_csr_o, RegWrite,Jtype,BSrc,MemWrite,mem_read,Branch,
         output [2:0] ImmSrc,
         
         output [5:0] ALUControl,
@@ -45,7 +45,8 @@ module Control_Unit_Top(
     assign BSrc = (Store | Utype | Itype | is_csr_imm); // 1 for immediate and 0 for register; 
     //J and branch is added to imm directly in execute, so we don't need to check for it
     
-    wire funct7_5 = funct7[6:2];
+    wire [4:0] funct7_5;
+    assign funct7_5  = funct7[6:2];
     assign atomic_op = (Op === 7'b0101111) ?  
                         (funct7_5 == 5'b00010)? `load_reserved_aop : // LR.W
                         (funct7_5 == 5'b00011)? `store_conditional_aop : // SC.W

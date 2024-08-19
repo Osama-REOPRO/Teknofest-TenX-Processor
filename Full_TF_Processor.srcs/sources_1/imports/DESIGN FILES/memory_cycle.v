@@ -10,13 +10,13 @@ prev_ready_i -> this flag indicates that the stage is ready to work on its data
 module memory_cycle
 (
     // Declaration of I/Os
-    input clk, rst, flush, register_write_m, int_rd_m, MemWriteM, mem_read_M,
+    input clk, rst, flush, register_write_m, int_rd_m, MemWriteM, mem_read_M, is_csr_m_i,
     input [4:0] RD_M,
     input [3:0] atomic_op_m_i,
     input [31:0] PCPlus4M, Execute_ResultM, WriteDataM, csr_value_m_i, csr_address_m_i,
     input [2:0] WordSize_M, /// byte: 00, half: 01, word: 10, unsignedbyte: 11, unsignedhalf: 100;
 
-    output register_write_w, mem_read_w, int_rd_w, 
+    output register_write_w, mem_read_w, int_rd_w, is_csr_w_o,
     output [4:0] rd_w,
     output [31:0] PCPlus4W, Execute_ResultW, ReadDataW, csr_value_w_o, csr_address_w_o,
     
@@ -37,10 +37,10 @@ module memory_cycle
     );
     
     // Declaration of Interim Wires
-    wire [31:0] ReadDataM;
+    //wire [31:0] ReadDataM;
 
     // Declaration of Interim Registers
-    reg register_write_m_r, mem_read_M_r, int_rd_m_r;
+    reg register_write_m_r, mem_read_M_r, int_rd_m_r, is_csr_m_r;
     reg [4:0] RD_M_r;
     reg [11:0] csr_address_m_r;
     reg [31:0] PCPlus4M_r, Execute_ResultM_r, ReadDataM_r, csr_value_m_r;
@@ -87,7 +87,18 @@ module memory_cycle
                         
                         mem_finish_st: begin //2
                             if (!mem_data_done_i) begin
-                               ReadDataM_r <= mem_data_rdata_i; //ignored for writes
+                                ReadDataM_r <= mem_data_rdata_i; // READ WORD
+                                
+//                                if(WordSize_M[2]) begin // if unsigned
+//                                    ReadDataM_r <= ReadDataM_r >> (WordSize_M[0] ? 16 : 24);
+//                                end else begin // is signed
+//                                    if(WordSize_M[0]) // if is half
+//                                        ReadDataM_r <= { {16{ReadDataM_r[15]}}, ReadDataM_r[15:0]};
+//                                    else //is byte
+//                                        ReadDataM_r <= { {24{ReadDataM_r[7]}}, ReadDataM_r[7:0] };
+//                                end 
+                                
+                                
                                 latch_registers();  
                             end
                         end	
@@ -106,11 +117,12 @@ module memory_cycle
            RD_M_r <= RD_M;
            PCPlus4M_r <= PCPlus4M;
            Execute_ResultM_r <= Execute_ResultM; 
-           ReadDataM_r <= ReadDataM;
+           //ReadDataM_r <= ReadDataM;
            csr_value_m_r <= csr_value_m_i;
            csr_address_m_r <= csr_address_m_i;
            int_rd_m_r <= int_rd_m;
-           mem_state <= mem_init_st;      
+           mem_state <= mem_init_st;    
+           is_csr_m_r <= is_csr_m_i; 
            this_ready_o <= 1'b1;        
            processing <= 1'b0;
            
@@ -137,6 +149,7 @@ module memory_cycle
                 mem_data_wsize_o,
                 mem_data_req_o,
                 mem_data_atomic_operation_o,
+                is_csr_m_r,
                 processing
             } <= 0;
             this_ready_o <= 1'b1;
@@ -153,4 +166,5 @@ module memory_cycle
     assign int_rd_w = int_rd_m_r;
     assign csr_value_w_o = csr_value_m_r;
     assign csr_address_w_o = csr_address_m_r;
+    assign is_csr_w_o = is_csr_m_r;
 endmodule

@@ -11,7 +11,7 @@ module execute_cycle
 (
     // Declaration I/Os
     input clk, rst, flush, JtypeE, register_write_e,
-    BSrcE, MemWriteE,mem_read_E,BranchE, F_instruction_E, int_rd_e,
+    BSrcE, MemWriteE,mem_read_E,BranchE, F_instruction_E, int_rd_e, is_csr_e_i,
     input [5:0] ALUControlE,
     input [4:0] FPUControlE,
     input [31:0] RS1_E, RS2_E, RS3_E, Imm_Ext_E,
@@ -20,7 +20,7 @@ module execute_cycle
     input [1:0] ForwardA_E, ForwardB_E,
     input [2:0] funct3_E,
 
-    output pc_src_e, register_write_m, MemWriteM, mem_read_M, int_rd_m,
+    output pc_src_e, register_write_m, MemWriteM, mem_read_M, int_rd_m, is_csr_m_o,
     output [4:0] RD_M,
     output [3:0] atomic_op_m_o,
     output [31:0] PCPlus4M, WriteDataM, Execute_ResultM, pc_target_e, csr_value_m_o, csr_address_m_o,
@@ -40,7 +40,7 @@ module execute_cycle
     wire ZeroE;
 
     // Declaration of Register
-    reg register_write_e_r, MemWriteE_r, mem_read_E_r ,pc_src_e_r, int_rd_e_r;
+    reg register_write_e_r, MemWriteE_r, mem_read_E_r ,pc_src_e_r, int_rd_e_r, is_csr_e_r;
     reg [4:0] RD_E_r;
     reg [3:0] atomic_op_e_r;
     reg [31:0] PCPlus4E_r, RS2_E_r, ResultE_r, PCTarget_E_r, csr_value_e_r;
@@ -135,6 +135,7 @@ module execute_cycle
                 PCTarget_E_r <= pc_target_e_r;
                 pc_src_e_r <= (ALUControlE === 6'b010000) || (ZeroE && BranchE); // If instructions is JAL, JALR or branch
                 int_rd_e_r <= int_rd_e;
+                is_csr_e_r <= is_csr_e_i;
                 
                 this_ready_o <= 1'b1;
                 this_valid_o <= 1'b1;
@@ -171,6 +172,7 @@ module execute_cycle
     assign int_rd_m = int_rd_e_r;
     assign csr_value_m_o = csr_value_e_r;
     assign csr_address_m_o = csr_address_e_r;
+    assign is_csr_m_o = is_csr_e_r;
     
     task reset_signals;
         begin
@@ -192,6 +194,7 @@ module execute_cycle
                 atomic_op_e_r,
                 csr_value_e_r,
                 csr_address_e_r,
+                is_csr_e_r,
                 processing_done
             } <= 0;
             this_ready_o <= 1'b1;
