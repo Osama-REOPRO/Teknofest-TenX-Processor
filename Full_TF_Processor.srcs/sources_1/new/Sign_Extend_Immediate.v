@@ -11,5 +11,6 @@ module Sign_Extend_Immediate
                      //LUI NEEDS NO OPERATION, CALCULATING THE IMMEDIATE ALLREADY SHIFTS IT BY 12
                      (ImmSrc == 3'b011) ? {In[31:12], 12'b0} : // U-type (LUI/AUIPC)
                      (ImmSrc == 3'b100) ? {{12{In[31]}}, In[19:12], In[20], In[30:21], 1'b0} : // J-type (JAL)
-                     32'h00000000; // Default
+                     (ImmSrc == 3'b101) ? {16'b0 ,In[19:15]} : //CSR
+                     32'h0; // Default
 endmodule

@@ -13,12 +13,12 @@ module memory_cycle
     input clk, rst, flush, register_write_m, int_rd_m, MemWriteM, mem_read_M,
     input [4:0] RD_M,
     input [3:0] atomic_op_m_i,
-    input [31:0] PCPlus4M, Execute_ResultM, WriteDataM,
+    input [31:0] PCPlus4M, Execute_ResultM, WriteDataM, csr_value_m_i, csr_address_m_i,
     input [2:0] WordSize_M, /// byte: 00, half: 01, word: 10, unsignedbyte: 11, unsignedhalf: 100;
 
-    output register_write_w, mem_read_W, int_rd_w, 
+    output register_write_w, mem_read_w, int_rd_w, 
     output [4:0] rd_w,
-    output [31:0] PCPlus4W, Execute_ResultW, ReadDataW,
+    output [31:0] PCPlus4W, Execute_ResultW, ReadDataW, csr_value_w_o, csr_address_w_o,
     
     
     // mem signals 
@@ -42,7 +42,8 @@ module memory_cycle
     // Declaration of Interim Registers
     reg register_write_m_r, mem_read_M_r, int_rd_m_r;
     reg [4:0] RD_M_r;
-    reg [31:0] PCPlus4M_r, Execute_ResultM_r, ReadDataM_r;
+    reg [11:0] csr_address_m_r;
+    reg [31:0] PCPlus4M_r, Execute_ResultM_r, ReadDataM_r, csr_value_m_r;
     
     //FOR ATOMICS
     //Execute_ResultM_r = RS1, 
@@ -61,7 +62,7 @@ module memory_cycle
 		if(!rst) reset_signals();
         else begin
             if (processing) begin 
-                if(mem_read_M || MemWriteM || |atomic_op_m_i) begin
+                if(mem_read_M || MemWriteM) begin
                     case(mem_state)
                         mem_init_st: begin //0
                             if (!mem_data_done_i && !mem_data_req_o) begin //useless checks
@@ -106,10 +107,13 @@ module memory_cycle
            PCPlus4M_r <= PCPlus4M;
            Execute_ResultM_r <= Execute_ResultM; 
            ReadDataM_r <= ReadDataM;
+           csr_value_m_r <= csr_value_m_i;
+           csr_address_m_r <= csr_address_m_i;
            int_rd_m_r <= int_rd_m;
            mem_state <= mem_init_st;      
            this_ready_o <= 1'b1;        
            processing <= 1'b0;
+           
        end
     endtask
     
@@ -124,6 +128,8 @@ module memory_cycle
                 Execute_ResultM_r,
                 ReadDataM_r,
                 int_rd_m_r,
+                csr_value_m_r,
+                csr_address_m_r,
                 mem_state,
                 mem_data_we_o,
                 mem_data_adrs_o,
@@ -139,10 +145,12 @@ module memory_cycle
     
     // Declaration of output assignments
     assign register_write_w = register_write_m_r;
-    assign mem_read_W = mem_read_M_r;
+    assign mem_read_w = mem_read_M_r;
     assign rd_w = RD_M_r;
     assign PCPlus4W = PCPlus4M_r;
     assign Execute_ResultW = Execute_ResultM_r;
     assign ReadDataW = ReadDataM_r;
     assign int_rd_w = int_rd_m_r;
+    assign csr_value_w_o = csr_value_m_r;
+    assign csr_address_w_o = csr_address_m_r;
 endmodule

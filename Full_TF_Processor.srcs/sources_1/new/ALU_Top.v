@@ -5,7 +5,8 @@ module ALU_Top(
     output Carry, OverFlow, Zero, Negative,
     output [31:0] Result
 );
-    wire [31:0] Sum;
+
+    wire clmulr;
     wire [63:0] BoothProduct;
     wire [31:0] SRA_Result;
     wire [31:0] SLT_Result;
@@ -46,7 +47,7 @@ module ALU_Top(
     // Kogge-Stone Adder for Addition and Subtraction
     Kogge_Stone_Adder_32bit ksa (
         .c0(1'b0),
-        .in_A(ALUControl[0] == 1'b0 ? B : ~B + 1'b1),
+        .in_A(~ALUControl[0]? B : ~B + 1'b1),
         .in_B(A),
         .sum_out(KS_Sum),
         .C_out(KS_Cout)
@@ -98,13 +99,15 @@ module ALU_Top(
         .product(BoothProduct)
     );
     
+    assign clmulr = (&ALUControl[1:0]) ? 1 : 0;
+    // Instantiate the carryless multiplier
     carryless_multiplier carryless_mul (
         .A(A),
         .B(B),
+        .clmulr(clmulr),
         .product(CarrylessProduct)
     );
     
-    assign Sum = KS_Sum;
     // Shift operations
     assign SLL_Result = A << B[4:0];
     assign SRL_Result = A >> B[4:0];
@@ -130,7 +133,7 @@ module ALU_Top(
     
     
     // Result selection based on ALUControl
-    assign Result = (ALUControl == 6'b000000 || ALUControl == 6'b000001) ? Sum : // ADD and SUB
+    assign Result = (ALUControl == 6'b000000 || ALUControl == 6'b000001) ? KS_Sum : // ADD and SUB
                     (ALUControl == 6'b000010) ? (A & B) :       // AND
                     (ALUControl == 6'b000011) ? (A | B) :       // OR
                     (ALUControl == 6'b000100) ? (A ^ B) :       // XOR
@@ -146,7 +149,7 @@ module ALU_Top(
                     (ALUControl == 6'b001110) ? B : //LUI
                     (ALUControl == 6'b001111) ? PC + B : // AUIPC 
                     (ALUControl == 6'b010000) ? PC + 4 : // JAL AND JALR
-                    (ALUControl == 6'b010001) ? ~(|Sum): //{32{Sum == 0}} : // BNE (neg enabled)
+                    (ALUControl == 6'b010001) ? ~(|KS_Sum): //{32{Sum == 0}} : // BNE (neg enabled)
                     (ALUControl == 6'b010010) ? ~SLT_Result : // BLT (neg enabled)
                     (ALUControl == 6'b010011) ? ~SLTU_Result : // BLTU (neg enabled)
                     (ALUControl == 6'b010100) ? leading_zero_count : // CLZ
@@ -164,7 +167,7 @@ module ALU_Top(
                     (ALUControl == 6'b100000) ? A & ~B : // ANDN
                     (ALUControl == 6'b100001) ? CarrylessProduct[31:0] : // CLMUL
                     (ALUControl == 6'b100010) ? CarrylessProduct[63:32] : // CLMULH
-                    (ALUControl == 6'b100011) ? CarrylessProduct[31:0] : // CLMULR !TODO
+                    (ALUControl == 6'b100011) ? CarrylessProduct[31:0] : // CLMULR
                     (ALUControl == 6'b100100) ? Max_Result : // MAX
                     (ALUControl == 6'b100101) ? MaxU_Result : // MAXU
                     (ALUControl == 6'b100110) ? Min_Result : // MIN
@@ -182,10 +185,11 @@ module ALU_Top(
                     (ALUControl == 6'b110010) ? XNOR_Result : // XNOR
                     (ALUControl == 6'b110011) ? { {16{1'b0}}, A[15:0]} : //    ZEXT.H
                     (ALUControl == 6'b110100) ? A :
+                    (ALUControl == 6'b110101) ? (A & (~B) ) :
                     32'bx;  // DEFAULT
 
     // Overflow detection for addition and subtraction
-    assign OverFlow = ((A[31] & B[31] & ~Sum[31]) | (~A[31] & ~B[31] & Sum[31]));
+    assign OverFlow = ((A[31] & B[31] & ~KS_Sum[31]) | (~A[31] & ~B[31] & KS_Sum[31]));
     
     // Carry detection for addition
     assign Carry = ((~ALUControl[1]) & KS_Cout);

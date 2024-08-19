@@ -1,17 +1,15 @@
-module writeback_cycle(RegWriteW,int_RD_W,mem_read_W, PCPlus4W, Execute_ResultW, ReadDataW, ResultW);
+module writeback_cycle(
 
-// Declaration of IOs
-input RegWriteW,int_RD_W; //useless
-input [31:0] PCPlus4W; // useless
-input mem_read_W; 
-input [31:0] Execute_ResultW, ReadDataW;
+    input mem_read_w,
+    input [31:0] Execute_ResultW, ReadDataW,
 
-output [31:0] ResultW;
+    output [31:0] result_w_i
+);
 
 // Declaration of Module
 Mux result_mux (    
                 .a(Execute_ResultW),
                 .b(ReadDataW),
-                .s(mem_read_W),
-                .c(ResultW));
+                .s(mem_read_w|AT),
+                .c(result_w_i));
 endmodule

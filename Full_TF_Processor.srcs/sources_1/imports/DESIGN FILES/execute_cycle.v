@@ -14,18 +14,16 @@ module execute_cycle
     BSrcE, MemWriteE,mem_read_E,BranchE, F_instruction_E, int_rd_e,
     input [5:0] ALUControlE,
     input [4:0] FPUControlE,
-    input [31:0] RD1_E, RD2_E, RD3_E, Imm_Ext_E,
+    input [31:0] RS1_E, RS2_E, RS3_E, Imm_Ext_E,
     input [4:0] RD_E,
-    input [31:0] PCE, PCPlus4E,
-    input [31:0] result_w,
+    input [31:0] PCE, PCPlus4E,result_w, csr_value_e_i, csr_address_e_i,
     input [1:0] ForwardA_E, ForwardB_E,
     input [2:0] funct3_E,
 
     output pc_src_e, register_write_m, MemWriteM, mem_read_M, int_rd_m,
     output [4:0] RD_M,
     output [3:0] atomic_op_m_o,
-    output [31:0] PCPlus4M, WriteDataM, Execute_ResultM,
-    output [31:0] pc_target_e,
+    output [31:0] PCPlus4M, WriteDataM, Execute_ResultM, pc_target_e, csr_value_m_o, csr_address_m_o,
     
     output [2:0] WordSize_M,
 
@@ -45,9 +43,9 @@ module execute_cycle
     reg register_write_e_r, MemWriteE_r, mem_read_E_r ,pc_src_e_r, int_rd_e_r;
     reg [4:0] RD_E_r;
     reg [3:0] atomic_op_e_r;
-    reg [31:0] PCPlus4E_r, RD2_E_r, ResultE_r;
+    reg [31:0] PCPlus4E_r, RS2_E_r, ResultE_r, PCTarget_E_r, csr_value_e_r;
+    reg [11:0] csr_address_e_r;
     reg [2:0] WordSize_E_r;
-    reg [31:0] PCTarget_E_r;
     
     //Coordination wires
     reg stage_busy;
@@ -57,7 +55,7 @@ module execute_cycle
     
     // 3 by 1 Mux for Forwarding Source A
     Mux_3_by_1 srca_mux (
-                        .a_i(RD1_E),
+                        .a_i(RS1_E),
                         .b_i(result_w),
                         .c_i(Execute_ResultM),
                         .s_i(ForwardA_E),
@@ -66,7 +64,7 @@ module execute_cycle
 
     // 3 by 1 Mux for Forwarding Source B
     Mux_3_by_1 srcb_mux (
-                        .a_i(RD2_E),
+                        .a_i(RS2_E),
                         .b_i(result_w),
                         .c_i(Execute_ResultM),
                         .s_i(ForwardB_E),
@@ -88,7 +86,7 @@ module execute_cycle
 //        .clk(clk), 
 //        .A(Src_A),
 //        .B(Src_B),
-//        .C(RD3_E),
+//        .C(RS3_E),
 //        .rmode(funct3_E),
 //        .Result(FPU_Result),
 //        .FPUControl(FPUControlE)
@@ -128,8 +126,10 @@ module execute_cycle
                 mem_read_E_r <= mem_read_E;
                 RD_E_r <= RD_E;
                 atomic_op_e_r <= atomic_op_e_i;
+                csr_value_e_r <= csr_value_e_i;
+                csr_address_e_r <= csr_address_e_i;
                 PCPlus4E_r <= PCPlus4E; 
-                RD2_E_r <= Src_B_interim; 
+                RS2_E_r <= Src_B_interim; 
                 ResultE_r <= ResultE;
                 WordSize_E_r <= funct3_E;
                 PCTarget_E_r <= pc_target_e_r;
@@ -164,11 +164,13 @@ module execute_cycle
     assign RD_M = RD_E_r;
     assign atomic_op_m_o = atomic_op_e_r;
     assign PCPlus4M = PCPlus4E_r;
-    assign WriteDataM = RD2_E_r;
+    assign WriteDataM = RS2_E_r;
     assign Execute_ResultM = ResultE_r;
     assign pc_target_e = PCTarget_E_r;
     assign WordSize_M = WordSize_E_r;
     assign int_rd_m = int_rd_e_r;
+    assign csr_value_m_o = csr_value_e_r;
+    assign csr_address_m_o = csr_address_e_r;
     
     task reset_signals;
         begin
@@ -178,7 +180,7 @@ module execute_cycle
                 mem_read_E_r,
                 RD_E_r,
                 PCPlus4E_r,
-                RD2_E_r,
+                RS2_E_r,
                 ResultE_r,
                 WordSize_E_r,
                 PCTarget_E_r,
@@ -188,6 +190,8 @@ module execute_cycle
                 this_valid_o,
                 stage_busy,
                 atomic_op_e_r,
+                csr_value_e_r,
+                csr_address_e_r,
                 processing_done
             } <= 0;
             this_ready_o <= 1'b1;

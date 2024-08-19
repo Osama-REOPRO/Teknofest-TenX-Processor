@@ -59,17 +59,20 @@ module Pipeline_top(
     wire flush_F,flush_D, flush_E, flush_M;
 
     wire pc_src_e, register_write_w, register_write_e, register_write_m, int_rd_e, int_rd_m, int_rd_w, JtypeE, F_instruction_E;
-    wire BSrcE, MemWriteE, mem_read_E, BranchE, MemWriteM, mem_read_M, mem_read_W;
+    wire BSrcE, MemWriteE, mem_read_E, BranchE, MemWriteM, mem_read_M, mem_read_w;
     wire [5:0] ALUControlE;
     wire [4:0] FPUControlE;
     wire [3:0] atomic_op_e, atomic_op_m;
     wire [4:0] RD_E, RD_M, rd_w;
-    wire [31:0] pc_target_e, instruction_d, pc_d, pc_plus_4_d, result_w, RD1_E, RD2_E, 
-    RD3_E, Imm_Ext_E, PCE, PCPlus4E, PCPlus4M, WriteDataM, Execute_ResultM;
+    wire [31:0] pc_target_e, instruction_d, pc_d, pc_plus_4_d, result_w, RS1_E, RS2_E, 
+    RS3_E, Imm_Ext_E, PCE, PCPlus4E, PCPlus4M, WriteDataM, Execute_ResultM;
     wire [31:0] PCPlus4W, Execute_ResultW, ReadDataW;
-    wire [4:0] RS1_E, RS2_E;
+    wire [4:0] forwarded_RS1_E, forwarded_RS2_E;
     wire [1:0] ForwardBE, ForwardAE;
     wire [2:0] funct3_E, WordSize_M;
+    
+    wire [11:0] csr_address_e, csr_address_m,csr_address_w;
+    wire [31:0] csr_value_e, csr_value_m, csr_value_w;
 //    wire reservation_valid;
 //    reg reservation_set;
 
@@ -113,7 +116,11 @@ module Pipeline_top(
                         .pc_plus_4_d(pc_plus_4_d), 
                         .register_write_w(register_write_w), 
                         .int_rd_e(int_rd_e),
-                        .rd_w(rd_w), 
+                        .rd_w(rd_w),
+                        .csr_address_e_o(csr_address_e),
+                        .csr_value_e_o(csr_value_e), 
+                        .csr_address_w_i(csr_address_w),
+                        .csr_value_w_i(csr_value_w),
                         .result_w(result_w),
                         .int_rd_w(int_rd_w),
                         .register_write_e(register_write_e), 
@@ -124,15 +131,15 @@ module Pipeline_top(
                         .BranchE(BranchE),  
                         .ALUControlE(ALUControlE), 
                         .FPUControlE(FPUControlE),
-                        .RD1_E(RD1_E), 
-                        .RD2_E(RD2_E),
-                        .RD3_E(RD3_E),
+                        .RS1_E(RS1_E), 
+                        .RS2_E(RS2_E),
+                        .RS3_E(RS3_E),
                         .Imm_Ext_E(Imm_Ext_E), 
                         .RD_E(RD_E), 
                         .PCE(PCE), 
                         .PCPlus4E(PCPlus4E),
-                        .RS1_E(RS1_E),
-                        .RS2_E(RS2_E),
+                        .forwarded_RS1_E(RS1_E),
+                        .forwarded_RS2_E(RS2_E),
                         .funct3_E(funct3_E),
                         .F_instruction_E(F_instruction_E),
                         .atomic_op_e_o(atomic_op_e)
@@ -152,15 +159,19 @@ module Pipeline_top(
                         .next_ready_i(memory_ready),
                         .register_write_e(register_write_e), 
                         .int_rd_e(int_rd_e),
+                        .csr_value_e_i(csr_value_e),
+                        .csr_address_e_i(csr_address_e),
+                        .csr_value_m_o(csr_value_m), 
+                        .csr_address_m_o(csr_address_m),
                         .BSrcE(BSrcE),
                         .MemWriteE(MemWriteE), 
                         .mem_read_E(mem_read_E), 
                         .BranchE(BranchE), 
                         .ALUControlE(ALUControlE), 
                         .FPUControlE(FPUControlE),
-                        .RD1_E(RD1_E), 
-                        .RD2_E(RD2_E), 
-                        .RD3_E(RD3_E),
+                        .RS1_E(RS1_E), 
+                        .RS2_E(RS2_E), 
+                        .RS3_E(RS3_E),
                         .Imm_Ext_E(Imm_Ext_E), 
                         .RD_E(RD_E), 
                         .PCE(PCE), 
@@ -207,7 +218,11 @@ module Pipeline_top(
                         .Execute_ResultM(Execute_ResultM), 
                         .register_write_w(register_write_w), 
                         .int_rd_w(int_rd_w),
-                        .mem_read_W(mem_read_W), 
+                        .csr_address_m_i(csr_address_m),
+                        .csr_address_w_o(csr_address_w),
+                        .csr_value_m_i(csr_value_m),
+                        .csr_value_w_o(csr_value_w),
+                        .mem_read_w(mem_read_w), 
                         .rd_w(rd_w), 
                         .PCPlus4W(PCPlus4W), 
                         .Execute_ResultW(Execute_ResultW), 
@@ -224,13 +239,13 @@ module Pipeline_top(
 
     // Write Back Stage
     writeback_cycle WriteBack (
-                        .register_write_w(register_write_w),
-                        .int_rd_w(int_rd_w),
-                        .mem_read_W(mem_read_W), 
-                        .PCPlus4W(PCPlus4W), 
+                        //.register_write_w(register_write_w),
+                        //.int_rd_w(int_rd_w),
+                        .mem_read_w(mem_read_w),
+                        //.PCPlus4W(PCPlus4W), 
                         .Execute_ResultW(Execute_ResultW), 
                         .ReadDataW(ReadDataW), 
-                        .result_w(result_w)
+                        .result_w_i(result_w)
                     );
 
     // Hazard Unit
@@ -241,8 +256,8 @@ module Pipeline_top(
                         .register_write_w(register_write_w), 
                         .RD_M(RD_M), 
                         .rd_w(rd_w), 
-                        .Rs1_E(RS1_E), 
-                        .Rs2_E(RS2_E), 
+                        .Rs1_E(forwarded_RS1_E), 
+                        .Rs2_E(forwarded_RS2_E), 
                         .ForwardAE(ForwardAE), 
                         .ForwardBE(ForwardBE),
                         .flush_F(flush_F), 

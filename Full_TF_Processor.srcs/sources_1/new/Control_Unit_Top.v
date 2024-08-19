@@ -5,7 +5,7 @@ module Control_Unit_Top(
         input [6:0] Op,funct7,
         input [2:0] funct3,
         input [4:0] funct5,
-        output RegWrite,Jtype,BSrc,MemWrite,mem_read,Branch,
+        output is_csr_o,RegWrite,Jtype,BSrc,MemWrite,mem_read,Branch,
         output [2:0] ImmSrc,
         
         output [5:0] ALUControl,
@@ -16,8 +16,8 @@ module Control_Unit_Top(
         output [3:0] atomic_op
     );
     
-    wire [2:0] ALUOp;
-    wire Load, JALR, ImmediateOP, Rtype, LUI, AUIPC, Itype, Utype, Store;
+    wire [3:0] ALUOp;
+    wire Load, JALR, ImmediateOP, Rtype, LUI, AUIPC, Itype, Utype, Store,is_csr_imm;
     
     assign Load = (Op === 7'b0000011);
     assign ImmediateOP = (Op === 7'b0010011); // Immediate operations excluding loads b0010011
@@ -30,21 +30,20 @@ module Control_Unit_Top(
     assign Jtype = (Op === 7'b1101111); // THAT IS JAL, since JAL is the only Jtype insturction in I
     assign Branch = (Op === 7'b1100011);
     assign Store = (Op === 7'b0100011);
-    assign csr_instruction = (Op === 7'b1110011);
+    assign is_csr_o = (Op === 7'b1110011);
+    assign is_csr_imm = is_csr_o && funct3[2];
     assign RegWrite = ~(Branch || Store);  // ALL instructios write to registers except B and S
 
     assign ImmSrc = Store ? 3'b001 : // S-type: Stores
                     Branch ? 3'b010 : // B-type: branches
                     Utype ? 3'b011 : // U-type: LUI/AUIPC
                     Jtype ? 3'b100 : // J-type: JAL
+                    is_csr_imm ? 3'b101 : // CSR
                     3'b000; // Default - I-type (b0000011 and b0010011)
 
 
-    assign BSrc = (Store | Utype | Itype ); // 1 for immediate and 0 for register
-
-    assign MemWrite = Store; // Store
-
-    assign mem_read = Load; // Load
+    assign BSrc = (Store | Utype | Itype | is_csr_imm); // 1 for immediate and 0 for register; 
+    //J and branch is added to imm directly in execute, so we don't need to check for it
     
     wire funct7_5 = funct7[6:2];
     assign atomic_op = (Op === 7'b0101111) ?  
@@ -60,15 +59,23 @@ module Control_Unit_Top(
                             `no_aop
                         :`no_aop ;
 
-    assign ALUOp = ImmediateOP ? 3'b000 : // I-type except loads and stores
-                    Branch ? 3'b001 : // Branches
-                    Rtype ? 3'b010 :  /*I AND M*/ 
-                   (Load || Store) ? 3'b011 : // I, M and F
-                   (LUI) ? 3'b100 :  
-                   (AUIPC) ? 3'b101 :
-                   (Jtype || JALR) ? 3'b110:
-                   (atomic_op || csr_instruction) ? 3'b111:
-                   3'b000; // Default  xxx results in xxx writedata
+
+    assign MemWrite = Store | |atomic_op; // Store
+
+    assign mem_read = Load | |atomic_op; // Load
+    
+
+
+    assign ALUOp = ImmediateOP ? 4'b0000 : // I-type except loads and stores
+                    Branch ? 4'b0001 : // Branches
+                    Rtype ? 4'b0010 :  /*I AND M*/ 
+                   (Load || Store) ? 4'b0011 : // I, M and F
+                   (LUI) ? 4'b0100 :  
+                   (AUIPC) ? 4'b0101 :
+                   (Jtype || JALR) ? 4'b0110:
+                   ( |atomic_op) ? 4'b0111:
+                   (is_csr_o) ? 4'b1000:
+                   4'b0000;// Default  xxx results in xxx writedata
     
     ALU_Decoder ALU_Decoder(
                             .ALUOp(ALUOp),
