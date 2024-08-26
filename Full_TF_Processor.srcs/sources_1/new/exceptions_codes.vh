@@ -1,0 +1,10 @@
+`define instr_addr_misalign 0
+`define instr_access_fault 1
+`define illegal_instr 2
+`define load_addr_misalign 4
+`define load_access_fault 5
+`define store_amo_addr_misalign 6
+`define store_amo_access_fault 7
+//`define breakpoint 3
+//`define env_call_u_mode 8
+//`define env_call_m_mode B

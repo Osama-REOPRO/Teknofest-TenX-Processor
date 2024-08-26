@@ -76,16 +76,20 @@ module Pipeline_top(
     
     wire is_csr_e, is_csr_m, is_csr_w;
     
-//    wire reservation_valid;
-//    reg reservation_set;
-
-// Coordination flags
+    // Coordination flags
     wire execute_ready, memory_ready, fetch_ready, decode_ready;
     wire decode_valid, execute_valid;
 
+    //Exception wires
+    wire exp_ld_mis, exp_st_mis, exp_instr_addr_mis, exp_instr_acc_fault,
+    exp_st_acc_fault, exp_ld_acc_fault, exp_ill_instr, is_exception;
+    wire [3:0] mcause_code;
+    
+
+
     // Module Initiation
     // Fetch Stage
-    fetch_cycle Fetch 
+    fetch_cycle fetch_stage 
    //#(.PC_START_ADRS(`PC_START_ADRS))
     (
                         .clk_i(clk), 
@@ -103,10 +107,12 @@ module Pipeline_top(
                         .instruction_d_o(instruction_d), 
                         .pc_d_o(pc_d), 
                         .pc_plus_4_d_o(pc_plus_4_d)
+                        
+                        //.exp_instr_acc_fault_o(exp_instr_acc_fault) // TODO
                 );
 
     // Decode Stage
-    decode_cycle Decode (
+    decode_cycle decode_stage (
                         .clk(clk), 
                         .rst(rst), 
                         .prev_ready_i(fetch_ready),
@@ -147,11 +153,14 @@ module Pipeline_top(
                         .forwarded_RS2_E(forwarded_RS2_E),
                         .funct3_E(funct3_E),
                         .F_instruction_E(F_instruction_E),
-                        .atomic_op_e_o(atomic_op_e)
+                        .atomic_op_e_o(atomic_op_e),
+                        
+                        .is_exp_i(is_exception),
+                        .mcause_code_i(mcause_code)
                     );
 
     // Execute Stage
-    execute_cycle Execute 
+    execute_cycle execute_stage 
     //#(.STAGE_CYCLE_REQ(`EXECUTE_CYCLES_COUNT))
     (
                         .clk(clk), 
@@ -201,11 +210,15 @@ module Pipeline_top(
                         .WordSize_M(WordSize_M),
                         .F_instruction_E(F_instruction_E),
                         .atomic_op_e_i(atomic_op_e),
-                        .atomic_op_m_o(atomic_op_m)
+                        .atomic_op_m_o(atomic_op_m),
+                        
+                        .exp_ld_mis_o(exp_ld_mis), //TODO
+                        .exp_st_mis_o(exp_st_mis), //TODO
+                        .exp_instr_addr_mis_o(exp_instr_addr_mis) //TODO
                     );
     
     // Memory Stage
-    memory_cycle Memory (
+    memory_cycle memory_stage(
                         .clk(clk), 
                         .rst(rst),
                         .flush(flush_M),
@@ -243,11 +256,14 @@ module Pipeline_top(
                      	.mem_data_wdata_o(mem_data_wdata_o),
                      	.mem_data_wsize_o(mem_data_wsize_o),
                      	.mem_data_req_o(mem_data_req_o),
-                     	.mem_data_rdata_i(mem_data_rdata_i)
+                     	.mem_data_rdata_i(mem_data_rdata_i),
+                     	
+                     	.exp_ld_acc_fault_o(exp_ld_acc_fault), //TODO
+                     	.exp_st_acc_fault_o(exp_st_acc_fault) //TODO
                     );
 
     // Write Back Stage
-    writeback_cycle WriteBack (
+    writeback_cycle writeback_stage (
                         //.register_write_w(register_write_w),
                         //.int_rd_w(int_rd_w),
                         .mem_read_w_i(mem_read_w),
@@ -258,7 +274,7 @@ module Pipeline_top(
                     );
 
     // Hazard Unit
-    hazard_unit Forwarding_block (
+    hazard_unit hazard_block (
                         .rst(rst), 
                         .pc_src_e(pc_src_e),
                         .register_write_m(register_write_m), 
@@ -272,7 +288,18 @@ module Pipeline_top(
                         .flush_F(flush_F), 
                         .flush_D(flush_D), 
                         .flush_E(flush_E), 
-                        .flush_M(flush_M)
+                        .flush_M(flush_M),
+                        
+                        
+                        .exp_ld_mis_i(exp_ld_mis), 
+                        .exp_st_mis_i(exp_st_mis),
+                        .exp_instr_addr_mis_i(exp_instr_addr_mis),
+                        .exp_instr_acc_fault_i(exp_instr_acc_fault), 
+                        .exp_st_acc_fault_i(exp_st_acc_fault),
+                        .exp_ld_acc_fault_i(exp_ld_acc_fault),
+                        .exp_ill_instr_i(exp_ill_instr),
+                        .is_exception_o(is_exception),
+                        .mcause_code_o(mcause_code)
                         );
                         
                         

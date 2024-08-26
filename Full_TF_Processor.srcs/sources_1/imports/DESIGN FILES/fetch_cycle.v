@@ -22,6 +22,8 @@ module fetch_cycle
         input [31:0] pc_target_e_i,
         output [31:0] instruction_d_o,
         output [31:0] pc_d_o, pc_plus_4_d_o
+        
+       // output exp_instr_acc_fault_o
     );
 
 	 // localparam pc_start_adrs = 32'h80000000;
@@ -67,17 +69,25 @@ module fetch_cycle
                 .c_o(pc_plus_4_f)
                 );
 
-    always @(posedge flush_i) reset_signals();
+    always @(posedge flush_i) begin
+        increment_pc <= 1'b1;
+         mem_state <= 3;
+         reset_signals();
+    end   
    
    // Fetch Cycle Register Logic state machine
    reg [1:0] mem_state;
-	localparam mem_init_st   = 0,
-	           mem_busy_st   = 1,
-			   mem_finish_st = 2,
-			   pc_increment_st = 3;
+    localparam [1:0] mem_init_st   = 0,
+	                 mem_busy_st   = 1,
+	                 mem_finish_st = 2,
+	                 pc_increment_st = 3;
 	
 	always @(posedge clk_i or negedge rst_i) begin
-        if(!rst_i) reset_signals();
+        if(!rst_i) begin 
+            increment_pc <= 0;
+            mem_state <= 0;
+            reset_signals();
+         end
         else begin
         		case(mem_state)
         			mem_init_st: begin
@@ -128,8 +138,6 @@ module fetch_cycle
                 pc_f_r,
                 pc_plus_4_f_r,
                 mem_instr_req_o,
-                mem_state,
-                increment_pc,
                 this_ready_o
             } <= 0;
         end

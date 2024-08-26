@@ -53,7 +53,7 @@ module Floating_RF(clk, rst, WE4,WD4,A1,A2,A3, A4, RS1,RS2, RS3);
     
     initial begin
         Register[1] = 32'b01000000010110011001100110011010; //3.4
-        Register[2] = 32'b00111111100110011001100110011010; // 3.2
+        Register[2] = 32'b01000000010011001100110011001101; // 3.2
     end
     
 
@@ -62,16 +62,18 @@ endmodule
 
 
 
-module CSR_RF(clk, rst, WE2,WD2,A1,A2,RS1);
-    input clk,rst, WE2; //write enable for A2 i.e. rd
-    input [11:0] A1,A2; //rs and rd
-    input [31:0] WD2; // write data for A2 i.e. rd
-    output [31:0] RS1; // read data of rs
+module CSR_RF(
+    input clk,rst, WE2,WEE3, //write enable for A2 i.e. rd
+    input [11:0] A1,A2, AE3, //rs and rd
+    input [31:0] WD2, WDE3, // write data for A2 i.e. rd
+    output [31:0] RS1 // read data of rs
+    );
 
     reg [31:0] Register [4069:0];
 
     always @ (posedge clk) begin
         if(WE2) Register[A2] <= WD2;
+        if(WEE3) Register[AE3] <= WDE3;
     end
 
     assign RS1 = (rst==1'b0) ? 32'd0 : Register[A1];

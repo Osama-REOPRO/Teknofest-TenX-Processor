@@ -10,9 +10,10 @@ module PC_Module
     
 
     always @(posedge flush_i) begin
-        pc_o <= START_ADRS;            
+        //pc_o <= START_ADRS;            
+        pc_incremented_o <= 1'b0;
     end
-    always @(posedge clk_i)
+    always @(posedge clk_i or negedge rst_i)
     begin
         if(!rst_i) begin
             pc_o <= START_ADRS;

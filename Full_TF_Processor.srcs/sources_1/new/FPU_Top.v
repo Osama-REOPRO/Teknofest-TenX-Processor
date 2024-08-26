@@ -5,8 +5,13 @@ module FPU_top(
     output [31:0] Result,
     /*fcsr,*/
     /*OverFlow, Underflow, Inexact, Infinite, Qnan, Snan, Div_by_zero, Zero,*/
-    input [2:0] rmode
+    input [2:0] fcsr_rmode_i,
+    input [2:0] isntr_rmode_i
     );
+    
+    
+    
+    
     
     wire [31:0] op_result;
     wire [2:0] fpu_op,fpu_op_2 ;
@@ -97,10 +102,8 @@ module FPU_top(
                     FPUControl == 5'b00111) ? op_result_4 : 
                      
                     (FPUControl == 5'b10000 || FPUControl == 5'b10001) ? fsgn : 
-                    (FPUControl == 5'b01101 || 
-                    FPUControl == 5'b01100  || 
-                    FPUControl == 5'b01011  || 
-                    FPUControl == 5'b01010  || 
+                    (FPUControl == 5'b01101 || FPUControl == 5'b01100  || 
+                    FPUControl == 5'b01011  || FPUControl == 5'b01010  || 
                     FPUControl == 5'b01001 )? cmp_result : 
-                    A; //for MOVE; //32'bx; 
+                    A; //for MOVE, will change
 endmodule

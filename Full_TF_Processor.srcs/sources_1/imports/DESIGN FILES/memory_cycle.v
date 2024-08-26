@@ -7,6 +7,9 @@ this_ready_o (FULL) = this_stage_done && NULL -> this flag indicates that the st
 prev_ready_i -> this flag indicates that the stage is ready to work on its data
 */
 
+
+`include "atomic_ops.vh"
+
 module memory_cycle
 (
     // Declaration of I/Os
@@ -33,13 +36,19 @@ module memory_cycle
   	
   	
     input prev_valid_i,
-    output reg this_ready_o
+    output reg this_ready_o,
+    
+    
+    output exp_ld_acc_fault_o,
+    output exp_st_acc_fault_o
+    
     );
     
     // Declaration of Interim Wires
     //wire [31:0] ReadDataM;
 
     // Declaration of Interim Registers
+    reg [31:0] reservation_address;
     reg register_write_m_r, mem_read_M_r, int_rd_m_r, is_csr_m_r;
     reg [4:0] RD_M_r;
     reg [11:0] csr_address_m_r;
@@ -62,7 +71,13 @@ module memory_cycle
 		if(!rst) reset_signals();
         else begin
             if (processing) begin 
-                if(mem_read_M || MemWriteM) begin
+                if(atomic_op_m_i === `store_conditional_aop && Execute_ResultM != reservation_address) begin
+                    ReadDataM_r <= 1'b1;
+                    latch_registers();
+                    
+                end
+                    
+                else if(mem_read_M || MemWriteM) begin
                     case(mem_state)
                         mem_init_st: begin //0
                             if (!mem_data_done_i && !mem_data_req_o) begin //useless checks
@@ -87,18 +102,24 @@ module memory_cycle
                         
                         mem_finish_st: begin //2
                             if (!mem_data_done_i) begin
-                                ReadDataM_r <= mem_data_rdata_i; // READ WORD
-                                
-//                                if(WordSize_M[2]) begin // if unsigned
-//                                    ReadDataM_r <= ReadDataM_r >> (WordSize_M[0] ? 16 : 24);
-//                                end else begin // is signed
-//                                    if(WordSize_M[0]) // if is half
-//                                        ReadDataM_r <= { {16{ReadDataM_r[15]}}, ReadDataM_r[15:0]};
-//                                    else //is byte
-//                                        ReadDataM_r <= { {24{ReadDataM_r[7]}}, ReadDataM_r[7:0] };
-//                                end 
-                                
-                                
+
+                                if (atomic_op_m_i === `store_conditional_aop)
+                                    ReadDataM_r <= 1'b0;
+                                else begin
+                                     if(WordSize_M[1]) //word
+                                        ReadDataM_r <= mem_data_rdata_i;
+                                    else if(WordSize_M[2]) begin // if unsigned
+                                        ReadDataM_r <= mem_data_rdata_i >> (WordSize_M[0] ? 16 : 24); //hlaf or byte
+                                    end else begin // is signed
+                                        if(WordSize_M[0]) // if is half
+                                            ReadDataM_r <= { {16{mem_data_rdata_i[15]}}, mem_data_rdata_i[15:0]};
+                                        else //is byte
+                                            ReadDataM_r <= { {24{mem_data_rdata_i[7]}}, mem_data_rdata_i[7:0] };
+                                    end 
+                                    if (atomic_op_m_i === `load_reserved_aop)
+                                        reservation_address <= Execute_ResultM;
+                                    
+                                end
                                 latch_registers();  
                             end
                         end	
@@ -150,7 +171,8 @@ module memory_cycle
                 mem_data_req_o,
                 mem_data_atomic_operation_o,
                 is_csr_m_r,
-                processing
+                processing,
+                reservation_address
             } <= 0;
             this_ready_o <= 1'b1;
        end

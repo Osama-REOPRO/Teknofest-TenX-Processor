@@ -167,7 +167,7 @@ task send_prog_seq();
     int i;
     i = 0;
 //	 $readmemb("test_instr_0.mem", test_instr);
-	 $readmemb("test_atomics_0.mem", test_instr);
+	 $readmemb("test_control_0.mem", test_instr);
     send32(num_of_instr); // doesn't work without this for some reason
     repeat(num_of_instr) begin
       send32(test_instr[i]);

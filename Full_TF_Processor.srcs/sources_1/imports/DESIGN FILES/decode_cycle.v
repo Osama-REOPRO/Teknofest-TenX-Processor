@@ -1,3 +1,6 @@
+`include "exceptions_codes.vh";
+`include "csr_addresses.vh";
+
 /*
 NULL MEANS THE FLAG IS NOT NEEDED IN THIS STAGE
 this_stage_done (NULL bcz i always take one cycle) -> this flags indicates that the stage has done its job  
@@ -10,7 +13,8 @@ prev_ready_i (NULL) -> this flag indicates that the stage is ready to work on it
 module decode_cycle(
     
         // Declaring I/O
-        input clk, rst, flush, register_write_w, int_rd_w, is_csr_w_i,
+        input clk, rst, flush, register_write_w, int_rd_w, is_csr_w_i, is_exp_i,
+        input [3:0] mcause_code_i,
         input [4:0] rd_w,
         input [11:0] csr_address_w_i,
         input [31:0] instruction_d, pc_d, pc_plus_4_d, result_w, csr_value_w_i,
@@ -27,7 +31,9 @@ module decode_cycle(
         output [4:0] forwarded_RS1_E, forwarded_RS2_E, RD_E, // For Forwarding
         output [31:0] PCE, PCPlus4E,
         output [2:0] funct3_E,
-        output [11:0] csr_address_e_o
+        output [11:0] csr_address_e_o,
+        
+        output exp_ill_instr_o
         
     );
     // Declare Interim Wires
@@ -35,10 +41,10 @@ module decode_cycle(
     wire [2:0] ImmSrcD;
     wire [5:0] ALUControlD;
     wire [4:0] FPUControlD;
-    wire [3:0] atomic_op_d;
-    wire [31:0] RS1_int, RS2_int, RS1_fp, RS2_fp, RS1_D, RS2_D, RS3_D, Imm_Ext_D, csr_value_d, int_writeback_result;
-    wire is_rs1_int;
-    wire write_to_int_rf, is_csr_d;
+    wire [3:0] atomic_op_d, mcause_code_d;
+    wire [31:0] RS1_int, RS2_int, RS1_fp, RS2_fp, RS1_D, RS2_D, RS3_D, Imm_Ext_D, csr_value_d, int_writeback_result,
+    csr_write_value, csr_read_address,csr_write_address;
+    wire is_rs1_int, write_to_int_rf, is_csr_d, is_error_d;
     // Declaration of Interim Register
     reg RegWriteD_r,BSrcD_r,MemWriteD_r,mem_read_D_r,BranchD_r,JtypeD_r, F_instructionD_r,
      int_RD_D_r, is_csr_d_r;
@@ -50,6 +56,8 @@ module decode_cycle(
     reg [31:0] pc_d_r, pc_plus_4_d_r;
     reg [2:0] funct3_D_r;
     reg [11:0] csr_address_e_r;
+    
+    
     
     // Initiate the modules
     // Control Unit
@@ -84,6 +92,14 @@ module decode_cycle(
     assign write_to_int_rf = int_rd_w & register_write_w;
     assign write_to_fp_rf = !int_rd_w & register_write_w;
     assign int_writeback_result = is_csr_w_i ? csr_value_w_i : result_w;
+    assign csr_write_value = is_exp_i ? {27'b0, mcause_code_i}: result_w;
+    assign csr_read_address = is_exp_i ? `mtvec_address : 
+                             F_instruction_D ? `fcsr_address :
+                             instruction_d[31:20];
+    assign csr_write_address = is_exp_i ? `mcause_address : csr_address_w_i;
+    
+    assign exp_ill_instr_o = 0; //(&ALUControlD | &FPUControlD);
+     
     // Register File
     Integer_RF I_rf (
                         .clk(clk),
@@ -111,15 +127,22 @@ module decode_cycle(
                         .RS2(RS2_fp),
                         .RS3(RS3_D)
                         );
+    
     // CSR Register File
     CSR_RF csr_rf (
                         .clk(clk),
                         .rst(rst),
-                        .WE2(is_csr_w_i), // new: to 
-                        .WD2(result_w), // RS1 value I RF at writeback
-                        .A1(instruction_d[31:20]), // CSR value
-                        .A2(csr_address_w_i), // CSR address
-                        .RS1(csr_value_d)
+                        .A1(csr_read_address), 
+                        .RS1(csr_value_d),
+                        
+                        .WE2(is_csr_w_i | is_exp_i), 
+                        .A2(csr_write_address),
+                        .WD2(csr_write_value),
+                        
+                        .WEE3(is_exp_i), 
+                        .WDE3(pc_d), // RS1 value I RF at writeback
+                        .AE3(`mepc_address) // CSR value
+                        
                         );
                         
    

@@ -1,13 +1,19 @@
+`include "exceptions_codes.vh"
+module hazard_unit(
 
-module hazard_unit(rst, pc_src_e, register_write_m, register_write_w, RD_M, rd_w, Rs1_E, Rs2_E, ForwardAE, ForwardBE,
-                    flush_F,flush_D, flush_E, flush_M);
-
-    // Declaration of I/Os
-    input rst, register_write_m, register_write_w, pc_src_e;
-    input [4:0] RD_M, rd_w, Rs1_E, Rs2_E;
-    output [1:0] ForwardAE, ForwardBE;
-    output flush_F,flush_D, flush_E, flush_M;
-    
+        input rst, register_write_m, register_write_w, pc_src_e,
+        
+        input [4:0] RD_M, rd_w, Rs1_E, Rs2_E,
+        output [1:0] ForwardAE, ForwardBE,
+        output flush_F,flush_D, flush_E, flush_M, is_exception_o,
+        
+        input exp_ld_mis_i, exp_st_mis_i,  exp_instr_addr_mis_i,
+        input exp_instr_acc_fault_i, exp_st_acc_fault_i, exp_ld_acc_fault_i,
+        input exp_ill_instr_i,
+        
+        output [3:0] mcause_code_o
+        
+    );
     
     
     assign ForwardAE = rst ? 2'b00 :
@@ -23,6 +29,23 @@ module hazard_unit(rst, pc_src_e, register_write_m, register_write_w, RD_M, rd_w
     assign flush_D = pc_src_e; 
     assign flush_E = 1'b0; 
     assign flush_M = 1'b0;  
+    
+       //, ,  ,
+       //, , ,
+       //,
+        
+   
+   assign mcause_code_o = exp_ill_instr_i ? `illegal_instr :
+                          exp_instr_addr_mis_i ? `instr_addr_misalign :
+                          exp_ld_mis_i ? `load_addr_misalign :
+                          exp_st_mis_i ? `store_amo_addr_misalign :
+                          exp_instr_acc_fault_i ? `instr_access_fault:
+                          exp_st_acc_fault_i ? `store_amo_access_fault:
+                          exp_ld_acc_fault_i ? `load_access_fault:
+                          4'bx;
+
+    assign is_exception_o = exp_ill_instr_i | exp_instr_addr_mis_i | exp_ld_mis_i | exp_st_mis_i |
+                        exp_instr_acc_fault_i | exp_st_acc_fault_i | exp_ld_acc_fault_i;
 
 
 endmodule

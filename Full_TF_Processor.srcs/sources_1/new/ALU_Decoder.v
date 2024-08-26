@@ -58,6 +58,9 @@ module ALU_Decoder(
     101110: ZEXT.H
     110100: returns A
     110101: NAND for CSSRC(I)
+    111111: INVALID INSTRUCTION
+    
+    
     : CSRRW // RD = 0(CSR) & CSR = RS1 (IF RD=X0 -> CANCEL read operation)
     : CSRRS // RD = 0(CSR) & CSR = CSR | RS1  (IF Rs=X0 -> cancel write op)
     : CSRRC // RD = 0(CSR) & CSR = CSR & ~RS1  (IF Rs=X0 -> cancel write op)
@@ -79,7 +82,7 @@ module ALU_Decoder(
                                 (funct7 == 7'b0110100) ? 6'b011000 : // rev8
                                 (funct7 == 7'b0110000) ? 6'b011001 : // RORI
                                 (funct7 == 7'b0100100) ? 6'b011011 : // bext
-                                6'bxxxxxx) : //default
+                                6'b111111) : //default
                              (funct3 == 3'b001) ?
                                 (funct7 == 7'b0110000 ) ? 
                                    ((funct5 == 5'b00000) ? 6'b010100 : //CLZ
@@ -87,14 +90,14 @@ module ALU_Decoder(
                                     (funct5 == 5'b00010) ? 6'b010101 : //CPOP
                                     (funct5 == 5'b00100) ? 6'b011110 : // sext.b
                                     (funct5 == 5'b00101) ? 6'b011111 : // sext.h
-                                    6'bxxxxxx) : //default 
+                                    6'b111111) : //default 
                                  (funct7 == 7'b0010100) ? 
                                     (funct5 == 5'b00111) ? 6'b010111 :// orc.b
                                      6'b011101 : // bseti
                                 (funct7 == 7'b0100100) ?  6'b011010 :// bclr
                                 (funct7 == 7'b0110100) ? 6'b011100 : // binv
                                 6'b000101 : // SLL
-                             6'bxxxxxx : // Default
+                             6'b111111 : // Default
                         (ALUOp == 4'b0001) ? //Branch
                              (funct3 == 3'b000) ? 6'b000001 : // BEQ - > SUB
                              (funct3 == 3'b001) ? 6'b010001 : // BNE
@@ -102,7 +105,7 @@ module ALU_Decoder(
                              (funct3 == 3'b101) ? 6'b001000 : // BGE -> SLT
                              (funct3 == 3'b110) ? 6'b010011 : // BLTU 
                              (funct3 == 3'b111) ? 6'b001001 : // BGEU -> SLTU
-                             6'bxxxxxx : // Default
+                             6'b111111 : // Default
                         (ALUOp == 4'b0010) ? // R-type
                             (funct7 == 7'b0000000) ?
                                ((funct3 == 3'b000) ? 6'b000000 : // ADD
@@ -113,7 +116,7 @@ module ALU_Decoder(
                                 (funct3 == 3'b101) ? 6'b000110 : // SRL
                                 (funct3 == 3'b110) ? 6'b000011 : // OR
                                 (funct3 == 3'b111) ? 6'b000010 : // AND
-                                6'bxxxxxx) : // Default (this defeaults dont make sense btw)
+                                6'b111111) : // Default (this defeaults dont make sense btw)
                             (funct7 == 7'b0000001) ?
                                ((funct3 == 3'b000) ? 6'b001010 : // MUL
                                 (funct3 == 3'b001) ? 6'b001011 : // MULH
@@ -130,7 +133,7 @@ module ALU_Decoder(
                                 (funct3 == 3'b100) ? 6'b101101 : // xnor
                                 (funct3 == 3'b110) ? 6'b101000 : //orn
                                 (funct3 == 3'b111) ? 6'b100000 : //ANDN
-                                6'bxxxxxx): // Default
+                                6'b111111): // Default
                             (funct7 == 7'b0000101) ?                
                                ((funct3 == 3'b001) ? 6'b100001 : // clmul
                                 (funct3 == 3'b011) ? 6'b100010 : // clmulh
@@ -139,29 +142,29 @@ module ALU_Decoder(
                                 (funct3 == 3'b111) ? 6'b100101 : // maxu
                                 (funct3 == 3'b100) ? 6'b100110 : // min
                                 (funct3 == 3'b101) ? 6'b100111 : // minu
-                                6'bxxxxxx): // Default
+                                6'b111111): // Default
                            (funct7 == 7'b0110000) ?                
                                ((funct3 == 3'b001) ? 6'b101001 : //rol
                                 (funct3 == 3'b101) ? 6'b011001 : //ror
-                                6'bxxxxxx): // Default
+                                6'b111111): // Default
                            (funct7 == 7'b0100100) ?                
                                ((funct3 == 3'b001) ? 6'b011010 : // bclr
                                 (funct3 == 3'b101) ? 6'b011011 : // bext
-                                6'bxxxxxx): // Default
+                                6'b111111): // Default
                            (funct7 == 7'b0010000) ?                
                                ((funct3 == 3'b010) ? 6'b101010 : //sh1add
                                 (funct3 == 3'b100) ? 6'b101011 : //sh2add
                                 (funct3 == 3'b110) ? 6'b101100 : //sh3add
-                                6'bxxxxxx): // Default
+                                6'b111111): // Default
                            (funct7 == 7'b0110100) ? 6'b011100 : // binv
                            (funct7 == 7'b0010100) ? 6'b011101 : // bset
                            (funct7 == 7'b0000100) ? 6'b101110 : // zext.h
-                            6'bxxxxxx : // Default
-                         (ALUOp == 4'b0011) ? 6'b000000 : // ADD for Load
+                            6'b111111 : // Default
+                         (ALUOp == 4'b0011) ? 6'b000000 : // ADD for Load and store TODO
                          (ALUOp == 4'b0100) ? 6'b001110 : // LUI (imm << 12)
                          (ALUOp == 4'b0101) ? 6'b001111 : // AUIPC 
                          (ALUOp == 4'b0110) ? 6'b010000 : // Jal and JALR
-                         (ALUOp == 4'b0111) ? 6'b110100 :// ATOMIC
+                         (ALUOp == 4'b0111 & funct3 == 3'b010) ? 6'b110100 :// ATOMIC
                          (ALUOp == 4'b1000) ?
                             (funct3 == 3'b001) ? 6'b001110: // CSRRW -> LUI
                             (funct3 == 3'b010) ? 6'b000011 : // CSRRS -> OR
@@ -169,7 +172,7 @@ module ALU_Decoder(
                             (funct3 == 3'b101) ? 6'b001110 : // CSRRWI -> LUI
                             (funct3 == 3'b110) ? 6'b000011 : // CSRRSI -> OR
                             (funct3 == 3'b111) ? 6'b110101 : // CSRRCI (NAND)
-                            6'bxxxxxx: // Default
+                            6'b111111: // Default
 //                            (funct5 == 5'b00010)? 6'bx: // LR.W
 //                            (funct5 == 5'b00011)? 6'bx: // SC.W
 //                            (funct5 == 5'b00001)? 6'bx: // AMOSWAP.W
@@ -180,5 +183,5 @@ module ALU_Decoder(
 //                            (funct5 == 5'b10100)? 6'bx: // AMOMAX.W
 //                            (funct5 == 5'b10000)? 6'bx: // AMOMIN.W
 //                            6'bxxxxxx: // Default
-                         6'bxxxxxx; // default at the beginning   
+                         6'b111111; // default at the beginning   
 endmodule

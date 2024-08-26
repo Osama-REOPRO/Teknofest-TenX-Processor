@@ -1,15 +1,15 @@
-module fpu( clk, rmode, fpu_op, opa, opb, out, inf, snan, qnan, ine, overflow, underflow, zero, div_by_zero);
-    input		clk;
-    input   [1:0]	rmode;
-    input	[2:0]	fpu_op;
-    input	[31:0]	opa, opb;
-    output reg [31:0] out; // Output register
-    output reg	inf, snan, qnan; // Output Registers for INF, SNAN and QNAN
-    output reg	ine; // Output Registers for INE
-    output reg  overflow, underflow; // Output registers for Overflow & Underflow
-    output reg  zero;
-    output reg  div_by_zero; // Divide by zero output register
-    
+module fpu( 
+        input		clk,
+        input   [1:0]	rmode,
+        input	[2:0]	fpu_op,
+        input	[31:0]	opa, opb,
+        output reg [31:0] out, // Output register
+        output reg	inf, snan, qnan, // Output Registers for INF, SNAN and QNAN
+        output reg	ine, // Output Registers for INE
+        output reg  overflow, underflow, // Output registers for Overflow & Underflow
+        output reg  zero,
+        output reg  div_by_zero // Divide by zero output register
+    );
     parameter	INF  = 31'h7f800000, // 0 11111111 00000000000000000000000
                 QNAN = 31'h7fc00001, // 0 11111111 10000000000000000000001
                 SNAN = 31'h7f800001; // 0 11111111 00000000000000000000001

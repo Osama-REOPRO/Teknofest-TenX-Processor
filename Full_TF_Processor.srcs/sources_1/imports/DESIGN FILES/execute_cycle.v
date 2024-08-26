@@ -32,7 +32,12 @@ module execute_cycle
     input next_ready_i,
     output reg this_ready_o,
     input prev_valid_i,
-    output reg this_valid_o
+    output reg this_valid_o,
+    
+    output exp_ld_mis_o,
+    output exp_st_mis_o,
+    output exp_instr_addr_mis_o
+     
 );
     // Declaration of Interim Wires
     wire [31:0] Src_A, Src_B_interim, Src_B, pc_target_e_r;
@@ -81,37 +86,53 @@ module execute_cycle
     wire [31:0] ALU_Result;
     
     
-//    FPU_Top fpu
-//    (
-//        .clk(clk), 
-//        .A(Src_A),
-//        .B(Src_B),
-//        .C(RS3_E),
-//        .rmode(funct3_E),
-//        .Result(FPU_Result),
-//        .FPUControl(FPUControlE)
-//    );
+    FPU_top fpu
+    (
+        .clk(clk), 
+        .A(Src_A),
+        .B(Src_B),
+        .C(RS3_E),
+        .rmode(),
+        .Result(FPU_Result),
+        .FPUControl(FPUControlE),
+        .fcsr_rmode_i(csr_value_e_i[7:5]),
+        .isntr_rmode_i(funct3_E)
+    );
     
     // ALU Unit
     ALU_Top alu (
-            .A(Src_A),
-            .B(Src_B),
-            .Result(ALU_Result),
-            .ALUControl(ALUControlE),
-            .PC(PCE),
-            .OverFlow(),
-            .Carry(),
-            .Zero(ZeroE),
-            .Negative()
+                .A(Src_A),
+                .B(Src_B),
+                .Result(ALU_Result),
+                .ALUControl(ALUControlE),
+                .PC(PCE),
+                .OverFlow(),
+                .Carry(),
+                .Zero(ZeroE),
+                .Negative()
             );
             
-            
     assign ResultE = F_instruction_E ? FPU_Result : ALU_Result;
+   
+   
+    wire mem_half_addr_misalign, mem_word_addr_misalign, mem_misalign, div_by_four;
+    wire instruction_misalign, load_misalign, store_amo_misalign;
+    wire JUMPS;
+    assign JUMPS = ALUControlE === 6'b010000;
+    assign mem_half_addr_misalign = funct3_E[0] & ResultE[0];
+    assign not_div_by_four = (&ResultE[1:0]);
+    assign mem_word_addr_misalign = funct3_E[1] & not_div_by_four;
+    assign mem_misalign = (mem_half_addr_misalign|mem_word_addr_misalign);
+   
+            
+    assign exp_ld_mis_o = mem_read_E & mem_misalign;
+    assign exp_st_mis_o = MemWriteE & mem_misalign;
+    assign exp_instr_addr_mis_o = (JUMPS|BranchE) & not_div_by_four;
     
     
     // Adder
     PC_Adder branch_adder (
-            .a_i( (JtypeE || BranchE) ? PCE: Src_A), // if Jtype (JAL) or branch, PC, else (JALR), RS1
+            .a_i( (JtypeE | BranchE) ? PCE: Src_A), // if Jtype (JAL) or branch, PC, else (JALR), RS1
             .b_i(Imm_Ext_E),
             .c_o(pc_target_e_r)
             );
@@ -121,6 +142,28 @@ module execute_cycle
         if(!rst) reset_signals();
         else begin
             if (processing_done && this_ready_o) begin
+            
+//                 ERROR HANDLING
+//                if(MemWriteE) //store and atomic
+                   
+                   
+//   wire mem_half_addr_misalign, mem_word_addr_misalign, mem_misalign, div_by_four;
+//   wire instruction_misalign, load_misalign, store_amo_misalign;
+//   assign mem_half_addr_misalign = funct3[0] & address_i[0];
+//   assign not_div_by_four = (&address_i[1:0]);
+//   assign mem_word_addr_misalign = funct3[1] & not_div_by_four; 
+   
+//   assign mem_misalign = (mem_half_addr_misalign|mem_word_addr_misalign);
+  
+//   assign instruction_misalign =  (JALR|Jtype|Branch) & not_div_by_four;
+//   assign load_misalign = Load & mem_misalign;
+//   assign store_amo_misalign =  (MemWrite) & mem_misalign;
+
+   
+//   assign is_error_o = (instruction_misalign|mem_misalign);
+                    
+//                else if (mem_read_E) // load
+                
                 register_write_e_r <= register_write_e; 
                 MemWriteE_r <= MemWriteE; 
                 mem_read_E_r <= mem_read_E;
@@ -133,7 +176,7 @@ module execute_cycle
                 ResultE_r <= ResultE;
                 WordSize_E_r <= funct3_E;
                 PCTarget_E_r <= pc_target_e_r;
-                pc_src_e_r <= (ALUControlE === 6'b010000) || (ZeroE && BranchE); // If instructions is JAL, JALR or branch
+                pc_src_e_r <= (JUMPS) || (ZeroE && BranchE); // If instructions is JAL, JALR or branch
                 int_rd_e_r <= int_rd_e;
                 is_csr_e_r <= is_csr_e_i;
                 

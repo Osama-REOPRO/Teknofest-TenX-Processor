@@ -7,9 +7,9 @@ module writeback_cycle(
 );
 
 // Declaration of Module
-Mux result_mux (    
-                .a(execute_result_w_i),
-                .b(read_data_w_i),
-                .s(mem_read_w_i),
-                .c(result_w_o));
+Mux_2_by_1 result_mux (    
+                .a_i(execute_result_w_i),
+                .b_i(read_data_w_i),
+                .s_i(mem_read_w_i),
+                .c_o(result_w_o));
 endmodule
