@@ -9,7 +9,8 @@ module fetch_cycle
 (
     // Declare input & outputs
         input clk_i, rst_i, flush_i,
-        
+        input [31:0] pc_error_i,
+        input is_exp_i,
         output reg this_ready_o,
         input next_ready_i,
         
@@ -21,15 +22,16 @@ module fetch_cycle
         input pc_src_e_i,
         input [31:0] pc_target_e_i,
         output [31:0] instruction_d_o,
-        output [31:0] pc_d_o, pc_plus_4_d_o
+        output [31:0] pc_d_o, pc_plus_4_d_o,
         
-       // output exp_instr_acc_fault_o
+       output exp_instr_acc_fault_o
     );
 
+    assign exp_instr_acc_fault_o = 0;
 	 // localparam pc_start_adrs = 32'h80000000;
 
     // Declaring interim wires
-    wire [31:0] pc_f_next, pc_f, pc_plus_4_f;
+    wire [31:0] pc_next, pc_f_next, pc_f, pc_plus_4_f;
     //wire [31:0] InstrF;
 
     // Declaration of Register
@@ -43,8 +45,17 @@ module fetch_cycle
                 .a_i(pc_plus_4_f),
                 .b_i(pc_target_e_i),
                 .s_i(pc_src_e_i),
+                .c_o(pc_next)
+                );
+
+    // Declare PC Mux
+    Mux_2_by_1 pc_error_mux (
+                .a_i(pc_next),
+                .b_i(pc_error_i),
+                .s_i(is_exp_i),
                 .c_o(pc_f_next)
                 );
+
 
     // Declare PC Counter
     reg increment_pc;
@@ -69,18 +80,20 @@ module fetch_cycle
                 .c_o(pc_plus_4_f)
                 );
 
-    always @(posedge flush_i) begin
-        increment_pc <= 1'b1;
-         mem_state <= 3;
-         reset_signals();
-    end   
-   
    // Fetch Cycle Register Logic state machine
    reg [1:0] mem_state;
     localparam [1:0] mem_init_st   = 0,
 	                 mem_busy_st   = 1,
 	                 mem_finish_st = 2,
 	                 pc_increment_st = 3;
+    
+    
+    always @(posedge flush_i) begin
+        increment_pc <= 1'b1;
+         mem_state <= 3;
+         reset_signals();
+    end   
+   
 	
 	always @(posedge clk_i or negedge rst_i) begin
         if(!rst_i) begin 

@@ -106,9 +106,10 @@ module Pipeline_top(
                         .pc_target_e_i(pc_target_e), 
                         .instruction_d_o(instruction_d), 
                         .pc_d_o(pc_d), 
-                        .pc_plus_4_d_o(pc_plus_4_d)
-                        
-                        //.exp_instr_acc_fault_o(exp_instr_acc_fault) // TODO
+                        .pc_plus_4_d_o(pc_plus_4_d),
+                        .is_exp_i(is_exception),
+                        .pc_error_i(csr_value_e),
+                        .exp_instr_acc_fault_o(exp_instr_acc_fault) // TODO
                 );
 
     // Decode Stage
@@ -155,6 +156,7 @@ module Pipeline_top(
                         .F_instruction_E(F_instruction_E),
                         .atomic_op_e_o(atomic_op_e),
                         
+                        .exp_ill_instr_o(exp_ill_instr),
                         .is_exp_i(is_exception),
                         .mcause_code_i(mcause_code)
                     );
@@ -212,9 +214,9 @@ module Pipeline_top(
                         .atomic_op_e_i(atomic_op_e),
                         .atomic_op_m_o(atomic_op_m),
                         
-                        .exp_ld_mis_o(exp_ld_mis), //TODO
-                        .exp_st_mis_o(exp_st_mis), //TODO
-                        .exp_instr_addr_mis_o(exp_instr_addr_mis) //TODO
+                        .exp_ld_mis_o(exp_ld_mis),
+                        .exp_st_mis_o(exp_st_mis),
+                        .exp_instr_addr_mis_o(exp_instr_addr_mis)
                     );
     
     // Memory Stage

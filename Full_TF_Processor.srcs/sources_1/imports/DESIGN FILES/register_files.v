@@ -86,5 +86,10 @@ module CSR_RF(
             end
         end
     endgenerate
+    
+    initial begin
+        Register[773] = 32'h80000004;
+    end
+    
 
 endmodule

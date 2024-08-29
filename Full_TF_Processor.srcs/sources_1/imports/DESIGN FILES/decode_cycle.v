@@ -33,7 +33,7 @@ module decode_cycle(
         output [2:0] funct3_E,
         output [11:0] csr_address_e_o,
         
-        output exp_ill_instr_o
+        output reg exp_ill_instr_o
         
     );
     // Declare Interim Wires
@@ -90,16 +90,19 @@ module decode_cycle(
                    is_csr_d ? RS1_int : // i need rs1 to be stored in rs2 bcz it can be swapped with immds
                    RS2_int; 
     assign write_to_int_rf = int_rd_w & register_write_w;
-    assign write_to_fp_rf = !int_rd_w & register_write_w;
+    assign write_to_fp_rf = ~int_rd_w & register_write_w;
     assign int_writeback_result = is_csr_w_i ? csr_value_w_i : result_w;
-    assign csr_write_value = is_exp_i ? {27'b0, mcause_code_i}: result_w;
+    assign csr_write_value = is_exp_i ? {27'b0, mcause_code_i}: 
+                             write_to_fp_rf ? csr_value_w_i: 
+                             result_w;
     assign csr_read_address = is_exp_i ? `mtvec_address : 
                              F_instruction_D ? `fcsr_address :
                              instruction_d[31:20];
-    assign csr_write_address = is_exp_i ? `mcause_address : csr_address_w_i;
-    
-    assign exp_ill_instr_o = 0; //(&ALUControlD | &FPUControlD);
-     
+    assign csr_write_address = is_exp_i ? `mcause_address : 
+                               write_to_fp_rf ? `fcsr_address :
+                               csr_address_w_i;
+     wire exp_ill_instr_d;
+     assign exp_ill_instr_d = F_instruction_D ? &FPUControlD : &ALUControlD;
     // Register File
     Integer_RF I_rf (
                         .clk(clk),
@@ -135,12 +138,12 @@ module decode_cycle(
                         .A1(csr_read_address), 
                         .RS1(csr_value_d),
                         
-                        .WE2(is_csr_w_i | is_exp_i), 
+                        .WE2(is_csr_w_i | is_exp_i | write_to_fp_rf), 
                         .A2(csr_write_address),
                         .WD2(csr_write_value),
                         
                         .WEE3(is_exp_i), 
-                        .WDE3(pc_d), // RS1 value I RF at writeback
+                        .WDE3(pc_d_r), // RS1 value I RF at writeback
                         .AE3(`mepc_address) // CSR value
                         
                         );
@@ -156,9 +159,23 @@ module decode_cycle(
                         );
 
     // Declaring Register Logic
-    always @(posedge flush) reset_signals();
+    always @(posedge flush) begin
+        if(exp_ill_instr_o) begin
+            exp_ill_instr_o <= exp_ill_instr_d;
+            csr_value_e_r <= csr_value_d;
+        end else begin
+            exp_ill_instr_o <= 1'b0;
+            csr_value_e_r <= 1'b0;
+        end
+        
+        reset_signals();
+    end
     always @(posedge clk or negedge rst) begin
-        if(!rst) reset_signals();
+        if(!rst) begin 
+            csr_value_e_r <= 0;
+            exp_ill_instr_o <= 0;
+            reset_signals();
+        end
         //decode is dones in a single cycle so i direcly propagate values.
         else if (prev_ready_i && this_ready_o) begin 
             RegWriteD_r <= RegWriteD;
@@ -186,6 +203,8 @@ module decode_cycle(
             int_RD_D_r <= int_RD_D;
             is_csr_d_r <= is_csr_d;
             this_valid_o <= 1'b1;
+            
+            exp_ill_instr_o <= exp_ill_instr_d;
         end else this_valid_o <= 1'b0;
         this_ready_o <= next_ready_i;
     end
@@ -242,7 +261,6 @@ module decode_cycle(
             this_valid_o,
             atomic_op_d_r,
             csr_address_e_r,
-            csr_value_e_r,
             is_csr_d_r
         } <= 0;
         this_ready_o <= 1'b1;

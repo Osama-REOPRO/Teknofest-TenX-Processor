@@ -19,7 +19,6 @@ module ALU_Top(
     wire [31:0] div_remainder;
     
     wire [63:0] CarrylessProduct;
-    //wire [63:0] CarrylessProduct_rev;
     wire [5:0] leading_zero_count;
     wire [5:0] trailing_zero_count;
     wire [5:0] pop_count;
@@ -57,13 +56,14 @@ module ALU_Top(
     .A(A),
     .Result(OrcB_Result)
     );
-    
-//   barrel_shift_32bit_rotate barrel_shift (
-//        .in(CarrylessProduct[31:0]),
-//        .ctrl(B[4:0]),
-//        .direction(1'b1), // Rotate right
-//        .out(CarrylessProduct_rev)
-//    );
+   
+   wire [63:0] CarrylessProduct_rev; 
+   barrel_shift_32bit_rotate barrel_shift (
+        .in(CarrylessProduct[31:0]),
+        .ctrl(B[4:0]),
+        .direction(1'b1), // Rotate right
+        .out(CarrylessProduct_rev)
+    );
     
 
     // Instantiate the ZeroCounter32 module
@@ -133,59 +133,59 @@ module ALU_Top(
     
     
     // Result selection based on ALUControl
-    assign Result = (ALUControl == 6'b000000 || ALUControl == 6'b000001) ? KS_Sum : // ADD and SUB
-                    (ALUControl == 6'b000010) ? (A & B) :       // AND
-                    (ALUControl == 6'b000011) ? (A | B) :       // OR
-                    (ALUControl == 6'b000100) ? (A ^ B) :       // XOR
-                    (ALUControl == 6'b001000) ? SLT_Result :    // SLT
-                    (ALUControl == 6'b001001) ? SLTU_Result :   // SLTU
-                    (ALUControl == 6'b000101) ? SLL_Result :    // SLL
-                    (ALUControl == 6'b000110) ? SRL_Result :    // SRL
-                    (ALUControl == 6'b000111) ? SRA_Result :    // SRA
-                    (ALUControl == 6'b001010) ? BoothProduct[31:0] : // MUL
-                    (ALUControl == 6'b001011) ? BoothProduct[63:32] : // MUL, MULHSU, MULHU
-                    (ALUControl == 6'b001100) ? div_quotient :  // div divu
-                    (ALUControl == 6'b001101) ? div_remainder :  // rem remu
-                    (ALUControl == 6'b001110) ? B : //LUI
-                    (ALUControl == 6'b001111) ? PC + B : // AUIPC 
-                    (ALUControl == 6'b010000) ? PC + 4 : // JAL AND JALR
-                    (ALUControl == 6'b010001) ? ~(|KS_Sum): //{32{Sum == 0}} : // BNE (neg enabled)
-                    (ALUControl == 6'b010010) ? ~SLT_Result : // BLT (neg enabled)
-                    (ALUControl == 6'b010011) ? ~SLTU_Result : // BLTU (neg enabled)
-                    (ALUControl == 6'b010100) ? leading_zero_count : // CLZ
-                    (ALUControl == 6'b010101) ? pop_count : // CPOP
-                    (ALUControl == 6'b010110) ? trailing_zero_count : // CTZ
-                    (ALUControl == 6'b010111) ? OrcB_Result : // ORC.B
-                    (ALUControl == 6'b011000) ? {A[7:0], A[15:8], A[23:16], A[31:24]} : // REV8
-                    (ALUControl == 6'b011001) ? (A << B) | (A >> (32 - B)) : // RORI
-                    (ALUControl == 6'b011010) ? BCLR_Result : // BCLR
-                    (ALUControl == 6'b011011) ? BEXT_Result : // BEXT
-                    (ALUControl == 6'b011100) ? BINV_Result : // BINV
-                    (ALUControl == 6'b011101) ? BSET_Result : // BSET
-                    (ALUControl == 6'b011110) ? SEXTB_Result : // SEXT.B
-                    (ALUControl == 6'b011111) ? SEXTH_Result : // SEXT.H
-                    (ALUControl == 6'b100000) ? A & ~B : // ANDN
-                    (ALUControl == 6'b100001) ? CarrylessProduct[31:0] : // CLMUL
-                    (ALUControl == 6'b100010) ? CarrylessProduct[63:32] : // CLMULH
-                    (ALUControl == 6'b100011) ? CarrylessProduct[31:0] : // CLMULR
-                    (ALUControl == 6'b100100) ? Max_Result : // MAX
-                    (ALUControl == 6'b100101) ? MaxU_Result : // MAXU
-                    (ALUControl == 6'b100110) ? Min_Result : // MIN
-                    (ALUControl == 6'b100111) ? MinU_Result: // MINU
-                    (ALUControl == 6'b101000) ? A | ~B : // ORN
-                    (ALUControl == 6'b101001) ? (A << B) | (A >> (32 - B)) : // ROL
-                    (ALUControl == 6'b101010) ? (A >> B) | (A << (32 - B)) : // ROR
-                    (ALUControl == 6'b101011) ? BCLR_Result : // BCLR
-                    (ALUControl == 6'b101100) ? BEXT_Result : // BEXT
-                    (ALUControl == 6'b101101) ? BINV_Result : // BINV
-                    (ALUControl == 6'b101110) ? BSET_Result : // BSET
-                    (ALUControl == 6'b101111) ? SH1ADD_Result : // SH1ADD
-                    (ALUControl == 6'b110000) ? SH2ADD_Result : // SH2ADD
-                    (ALUControl == 6'b110001) ? SH3ADD_Result : // SH3ADD
-                    (ALUControl == 6'b110010) ? XNOR_Result : // XNOR
-                    (ALUControl == 6'b110011) ? { {16{1'b0}}, A[15:0]} : //    ZEXT.H
-                    (ALUControl == 6'b110100) ? A :
-                    (ALUControl == 6'b110101) ? (A & (~B) ) :
+    assign Result = (ALUControl == `ALU_ADD || ALUControl == `ALU_SUB) ? KS_Sum : // ADD and SUB
+                    (ALUControl == `ALU_AND) ? (A & B) :       // AND
+                    (ALUControl == `ALU_OR) ? (A | B) :       // OR
+                    (ALUControl == `ALU_XOR) ? (A ^ B) :       // XOR
+                    (ALUControl == `ALU_SLT) ? SLT_Result :    // SLT
+                    (ALUControl == `ALU_SLTU) ? SLTU_Result :   // SLTU
+                    (ALUControl == `ALU_SLL) ? SLL_Result :    // SLL
+                    (ALUControl == `ALU_SRL) ? SRL_Result :    // SRL
+                    (ALUControl == `ALU_SRA) ? SRA_Result :    // SRA
+                    (ALUControl == `ALU_MUL) ? BoothProduct[31:0] : // MUL
+                    (ALUControl == `ALU_MULH) ? BoothProduct[63:32] : // MUL, MULHSU, MULHU
+                    (ALUControl == `ALU_DIV) ? div_quotient :  // div divu
+                    (ALUControl == `ALU_REM) ? div_remainder :  // rem remu
+                    (ALUControl == `ALU_RETURN_B) ? B : //LUI
+                    (ALUControl == `ALU_AUIPC) ? PC + B : // AUIPC 
+                    (ALUControl == `ALU_JUMPS) ? PC + 4 : // JAL AND JALR
+                    (ALUControl == `ALU_BNE) ? ~(|KS_Sum): //{32{Sum == 0}} : // BNE (neg enabled)
+                    (ALUControl == `ALU_BLT) ? ~SLT_Result : // BLT (neg enabled)
+                    (ALUControl == `ALU_BLTU) ? ~SLTU_Result : // BLTU (neg enabled)
+                    (ALUControl == `ALU_CLZ) ? leading_zero_count : // CLZ
+                    (ALUControl == `ALU_CPOP) ? pop_count : // CPOP
+                    (ALUControl == `ALU_CTZ) ? trailing_zero_count : // CTZ
+                    (ALUControl == `ALU_ORCB) ? OrcB_Result : // ORC.B
+                    (ALUControl == `ALU_REV8) ? {A[7:0], A[15:8], A[23:16], A[31:24]} : // REV8
+                    (ALUControl == `ALU_ROR) ? (A << B) | (A >> (32 - B)) : // RORI
+                    (ALUControl == `ALU_BCLR) ? BCLR_Result : // BCLR
+                    (ALUControl == `ALU_BEXT) ? BEXT_Result : // BEXT
+                    (ALUControl == `ALU_BINV) ? BINV_Result : // BINV
+                    (ALUControl == `ALU_BSET) ? BSET_Result : // BSET
+                    (ALUControl == `ALU_SEXTB) ? SEXTB_Result : // SEXT.B
+                    (ALUControl == `ALU_SEXTH) ? SEXTH_Result : // SEXT.H
+                    (ALUControl == `ALU_ANDN) ? A & ~B : // ANDN
+                    (ALUControl == `ALU_CLMUL) ? CarrylessProduct[31:0] : // CLMUL
+                    (ALUControl == `ALU_CLMULH) ? CarrylessProduct[63:32] : // CLMULH
+                    (ALUControl == `ALU_CLMULR) ? CarrylessProduct[31:0] : // CLMULR
+                    (ALUControl == `ALU_MAX) ? Max_Result : // MAX
+                    (ALUControl == `ALU_MAXU) ? MaxU_Result : // MAXU
+                    (ALUControl == `ALU_MIN) ? Min_Result : // MIN
+                    (ALUControl == `ALU_MINU) ? MinU_Result: // MINU
+                    (ALUControl == `ALU_ORN) ? A | ~B : // ORN
+                    (ALUControl == `ALU_ROL) ? (A << B) | (A >> (32 - B)) : // ROL
+                    (ALUControl == `ALU_ROR) ? (A >> B) | (A << (32 - B)) : // ROR
+                    (ALUControl == `ALU_BCLR) ? BCLR_Result : // BCLR
+                    (ALUControl == `ALU_BEXT) ? BEXT_Result : // BEXT
+                    (ALUControl == `ALU_BINV) ? BINV_Result : // BINV
+                    (ALUControl == `ALU_BSET) ? BSET_Result : // BSET
+                    (ALUControl == `ALU_SH1ADD) ? SH1ADD_Result : // SH1ADD
+                    (ALUControl == `ALU_SH2ADD) ? SH2ADD_Result : // SH2ADD
+                    (ALUControl == `ALU_SH3ADD) ? SH3ADD_Result : // SH3ADD
+                    (ALUControl == `ALU_XNOR) ? XNOR_Result : // XNOR
+                    (ALUControl == `ALU_ZEXTH) ? { {16{1'b0}}, A[15:0]} : //    ZEXT.H
+                    (ALUControl == `ALU_RETURN_A) ? A :
+                    (ALUControl == `ALU_NAND) ? (A & (~B) ) :
                     32'bx;  // DEFAULT
 
     // Overflow detection for addition and subtraction

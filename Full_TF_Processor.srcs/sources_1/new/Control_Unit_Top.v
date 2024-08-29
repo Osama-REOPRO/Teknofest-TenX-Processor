@@ -1,5 +1,6 @@
 `include "atomic_ops.vh"
 `include "exceptions_codes.vh"
+`include "control_signals.vh"
 
 module Control_Unit_Top(
     
@@ -21,20 +22,20 @@ module Control_Unit_Top(
     wire [3:0] ALUOp;
     wire Load, JALR, ImmediateOP, Rtype, LUI, AUIPC, Itype, Utype, Store,is_csr_imm,f_load, f_store;
     
-    assign Load = (Op === 7'b0000011);
-    assign f_load = (Op === 7'b0000111);
-    assign f_store = (Op === 7'b0100111);
-    assign ImmediateOP = (Op === 7'b0010011); // Immediate operations excluding loads b0010011
-    assign Rtype = (Op === 7'b0110011);
-    assign LUI = (Op === 7'b0110111);
-    assign AUIPC = (Op === 7'b0010111);
+    assign Load = (Op === `LOAD_OP);
+    assign f_load = (Op === `F_LOAD_OP);
+    assign f_store = (Op === `F_STORE_OP);
+    assign ImmediateOP = (Op === `IMM_OP); // Immediate operations excluding loads b0010011
+    assign Rtype = (Op === `RTYPE_OP);
+    assign LUI = (Op === `LUI_OP);
+    assign AUIPC = (Op === `AUIPC_OP);
     assign Utype = (LUI || AUIPC);
-    assign JALR = (Op === 7'b1100111);
+    assign JALR = (Op === `JALR_OP);
     assign Itype = (ImmediateOP || Load || JALR );
-    assign Jtype = (Op === 7'b1101111); // THAT IS JAL, since JAL is the only Jtype insturction in I
-    assign Branch = (Op === 7'b1100011);
-    assign Store = (Op === 7'b0100011);
-    assign is_csr_o = (Op === 7'b1110011);
+    assign Jtype = (Op === `JTYPE_OP); // THAT IS JAL, since JAL is the only Jtype insturction in I
+    assign Branch = (Op === `BRANCH_OP);
+    assign Store = (Op === `STORE_OP);
+    assign is_csr_o = (Op === `CSR_OP);
     assign is_csr_imm = is_csr_o && funct3[2];
     assign RegWrite = ~(Branch || Store);  // ALL instructios write to registers except B and S
 
@@ -77,15 +78,15 @@ module Control_Unit_Top(
     assign valid_load = Load & (&funct3[2:1] | &funct3[1:0]); //011 or 110 or 111 are forbidden 
     assign valid_store = Store & ~ (funct3[2] | &funct3[1:0]); //anything above 10  
 
-    assign ALUOp = ImmediateOP ? 4'b0000 : // I-type except loads and stores
-                    Branch ? 4'b0001 : // Branches
-                    Rtype ? 4'b0010 :  /*I AND M*/ 
-                   (valid_load | valid_store | valid_f_load | valid_f_store ) ? 4'b0011 : // I, M and F
-                   (LUI) ? 4'b0100 :  
-                   (AUIPC) ? 4'b0101 :
-                   (Jtype || JALR) ? 4'b0110:
-                   (|atomic_op) ? 4'b0111:
-                   (is_csr_o) ? 4'b1000:
+    assign ALUOp = ImmediateOP ? `ALUOP_ITYPE: // I-type except loads and stores
+                    Branch ? `ALUOP_BRANCH : // Branches
+                    Rtype ? `ALUOP_RTYPE :  /*I AND M*/ 
+                   (valid_load | valid_store | valid_f_load | valid_f_store ) ? `ALUOP_LOAD_STORE : // I, M and F
+                   (LUI) ? `ALUOP_LUI :  
+                   (AUIPC) ? `ALUOP_AUIPC :
+                   (Jtype || JALR) ? `ALUOP_JUMPS:
+                   (|atomic_op) ? `ALUOP_ATOMIC:
+                   (is_csr_o) ? `ALUOP_CSR:
                    4'b0000;// Default -> change to x
    // ADD FMV.W.X, FCT.S.W
     ALU_Decoder ALU_Decoder(
@@ -104,7 +105,7 @@ module Control_Unit_Top(
                             .rs2_funct5(funct5),
                             .FPUControl(FPUControl),
                             .is_rs1_int(is_rs1_int), 
-                            .is_rd_int(f_instructions_rd_int),
+                            .is_rd_int(f_rd_int),
                             .f_instruction(f_instruction)
     );
     

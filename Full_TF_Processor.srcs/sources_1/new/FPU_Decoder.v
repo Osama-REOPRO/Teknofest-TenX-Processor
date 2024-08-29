@@ -13,28 +13,11 @@ module FPU_Decoder(
 
     // fmt [26-25] is always 00 since it is single-precision is specifed
     /*
-    () means same instruction (), () means same control signal but difference is to be found later in execute
-    00000: ADD
-    00001: SUB
-    00010: MUL
-    00011: DIV
-    00100: SQRT
-    00101: FMADD
-    00110: FMSUB
-    00111: FNMSUB
-    01000: FNMADD
-    01001: EQ
-    01010: LT
-    01011: LE
-    01100: MIN
-    01101: MAX
-    01110:(CVT.W.S, CVT.WU.S) FROM FLOAT TO INT to be seperated -> // TODO RS2 IS IMPORTATN
-    01111: (CVT.S.W, CVT.S.WU) FROM INT TO FLIAT -> // TODO RS2 IS IMPORTATN
-    10000: fsgnj TODO
-    10001: fsgnjn TODO
-    10010: fsgnjx TODO
-    10011: CLASS
-    10100: (MV.X.W) FROM FLOAT TO INT, (MV.W.X) FROM INT TO FLOAT
+    
+    (CVT.W.S, CVT.WU.S) FROM FLOAT TO INT to be seperated -> // TODO RS2 IS IMPORTATN
+    (CVT.S.W, CVT.S.WU) FROM INT TO FLIAT -> // TODO RS2 IS IMPORTATN
+    
+    (MV.X.W) FROM FLOAT TO INT, (MV.W.X) FROM INT TO FLOAT
     //flw and fs, are realized in ALU_decoder
     */     
     
@@ -49,33 +32,45 @@ module FPU_Decoder(
     
     
     assign FPUControl = r_i_type ?
-                            (funct5 == 5'b00000) ? 5'b00000 : //ADD
-                            (funct5 == 5'b00001) ? 5'b00001 : //SUB
-                            (funct5 == 5'b00010) ? 5'b00010 : //MUL
-                            (funct5 == 5'b00011) ? 5'b00011 : //DIV
-                            (funct5 == 5'b01010) ? 5'bxxxxx : //SQRT
+                            (funct5 == 5'b00000) ? `FPU_ADD : //ADD
+                            (funct5 == 5'b00001) ? `FPU_SUB : //SUB
+                            (funct5 == 5'b00010) ? `FPU_MUL : //MUL
+                            (funct5 == 5'b00011) ? `FPU_DIV : //DIV
+                            (funct5 == 5'b01010) ? `FPU_SQRT : //SQRT
+                            (funct5 == 5'b00100) ?
+                                (funct3 == 3'b000) ? `FPU_FSGNJ : // J.S
+                                (funct3 == 3'b001) ? `FPU_FSGNJ : // JN
+                               ((funct3 == 3'b010) ? `FPU_FSGNJ : //JX
+                                `FPU_INVALID) : //Default 
                             (funct5 == 5'b10100) ?
-                               ((funct3 == 3'b010) ? 5'b01001 : //EQ
-                                (funct3 == 3'b001) ? 5'b01010 : //LT
-                                (funct3 == 3'b000) ? 5'b01011 : //LE
-                                5'b11111) : //Default
+                                (funct3 == 3'b000) ? `FPU_CMP: //LE
+                                (funct3 == 3'b001) ? `FPU_CMP: //LT
+                               ((funct3 == 3'b010) ? `FPU_CMP : //EQ
+                                `FPU_INVALID) : //Default
                             (funct5 == 5'b00101) ?
-                               ((funct3 == 3'b000) ? 5'b01100 : //MIN
-                                (funct3 == 3'b001) ? 5'b01101 : //MAX
-                                5'b11111): // Default
-                            (funct5 == 5'b11000) ? 5'b01110 : //CVT.W.S //TODO RS2 IS IMPORTATN
-                            (funct5 == 5'b11010) ? 5'b01111 ://CVT.S.W 
+                               ((funct3 == 3'b000) ? `FPU_MIN_MAX: //MIN
+                                (funct3 == 3'b001) ? `FPU_MIN_MAX: //MAX
+                                `FPU_INVALID): // Default
+                            (funct5 == 5'b11000) ?
+                                 (rs2_funct5 == 5'b00000 ) ? `FPU_CVT_F2I_U : //CVT.W.S 
+                                 (rs2_funct5 == 5'b00001 ) ? `FPU_CVT_F2I_U: //CVT.WU.S
+                                 `FPU_INVALID:
+                            (funct5 == 5'b11010) ?
+                                 (rs2_funct5 == 5'b00000 ) ? `FPU_CVT_I2F : //CVT.W.S 
+                                 (rs2_funct5 == 5'b00001 ) ? `FPU_CVT_I2F_U: //CVT.WU.S
+                                 `FPU_INVALID:
                             (funct5 == 5'b11100) ? 
                                 (
-                                    (funct3 == 3'b000) ? 5'b10100 : //MVT.X.W -> RETURN NUMBER
-                                    (funct3 == 3'b001) ? 5'b10011 : 
-                                5'b11111): 
-                            (funct5 == 5'b11110 & funct3 == 3'b000) ? 5'b10100 : //MVT.W.x  -> RETURN NUMBER 
-                            5'b11111 : //DEFAULT
-                        r4typeop == 2'b00 ? 5'b01000 : //FNMADD
-                        r4typeop == 2'b01 ? 5'b00110 : //FMSUB
-                        r4typeop == 2'b10 ? 5'b00111 : //FNMSUB
-                        r4typeop == 2'b11 ? 5'b01000 : //FNMADD
-                    5'b11111; //Default
+                                    (funct3 == 3'b000) ? `FPU_RETURN_A : //MVT.X.W 
+                                    (funct3 == 3'b001) ? `FPU_CLASS : 
+                                `FPU_INVALID
+                                ): 
+                            (funct5 == 5'b11110 & funct3 == 3'b000) ? `FPU_RETURN_A : //MVT.W.x
+                            `FPU_INVALID : //DEFAULT
+                        r4typeop == 2'b00 ? `FPU_FMADD: //FMADD
+                        r4typeop == 2'b01 ? `FPU_FMSUB: //FMSUB
+                        r4typeop == 2'b10 ? `FPU_FNMSUB: //FNMSUB
+                        r4typeop == 2'b11 ? `FPU_FNMADD : //FNMADD
+                    `FPU_INVALID; //Default
 
 endmodule

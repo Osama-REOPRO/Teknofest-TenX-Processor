@@ -16,24 +16,37 @@ module hazard_unit(
     );
     
     
-    assign ForwardAE = rst ? 2'b00 :
+    assign ForwardAE = ~rst ? 2'b00 :
                        (register_write_m & (RD_M != 5'h00) & (RD_M == Rs1_E)) ? 2'b10 :
                        (register_write_w & (rd_w != 5'h00) & (rd_w == Rs1_E)) ? 2'b01 :
                         2'b00;
                        
-    assign ForwardBE = rst ? 2'b00 :
+    assign ForwardBE = ~rst ? 2'b00 :
                        (register_write_m & (RD_M != 5'h00) & (RD_M == Rs2_E)) ? 2'b10 :
                        (register_write_w & (rd_w != 5'h00) & (rd_w == Rs2_E)) ? 2'b01 : 
                        2'b00;
-    assign flush_F = pc_src_e;
-    assign flush_D = pc_src_e; 
-    assign flush_E = 1'b0; 
-    assign flush_M = 1'b0;  
-    
-       //, ,  ,
-       //, , ,
-       //,
+//    assign flush_F = pc_src_e | 
+//    exp_ill_instr_i | exp_instr_addr_mis_i | exp_ld_mis_i | exp_st_mis_i | 
+//    exp_instr_acc_fault_i | exp_st_acc_fault_i | exp_ld_acc_fault_i;
+//    assign flush_D = pc_src_e | 
+//    exp_instr_addr_mis_i  | exp_st_acc_fault_i | exp_ld_acc_fault_i |
+//    exp_ld_mis_i | exp_st_mis_i ; 
+//    assign flush_E = exp_st_acc_fault_i | exp_ld_acc_fault_i; 
+//    assign flush_M = 1'b0;  
         
+        
+        
+        
+   
+   assign flush_F = pc_src_e | 
+    exp_ill_instr_i | exp_instr_addr_mis_i | exp_ld_mis_i | exp_st_mis_i | 
+    exp_instr_acc_fault_i | exp_st_acc_fault_i | exp_ld_acc_fault_i;
+    assign flush_D = pc_src_e | 
+    exp_ill_instr_i | exp_instr_addr_mis_i | exp_ld_mis_i | exp_st_mis_i | 
+    exp_st_acc_fault_i | exp_ld_acc_fault_i;
+    assign flush_E = exp_instr_addr_mis_i  | exp_st_acc_fault_i | exp_ld_acc_fault_i |
+                     exp_ld_mis_i | exp_st_mis_i ; 
+    assign flush_M = exp_st_acc_fault_i | exp_ld_acc_fault_i; 
    
    assign mcause_code_o = exp_ill_instr_i ? `illegal_instr :
                           exp_instr_addr_mis_i ? `instr_addr_misalign :
@@ -44,8 +57,9 @@ module hazard_unit(
                           exp_ld_acc_fault_i ? `load_access_fault:
                           4'bx;
 
-    assign is_exception_o = exp_ill_instr_i | exp_instr_addr_mis_i | exp_ld_mis_i | exp_st_mis_i |
-                        exp_instr_acc_fault_i | exp_st_acc_fault_i | exp_ld_acc_fault_i;
+    assign is_exception_o = ~rst ? 1'b0 : 
+    exp_ill_instr_i | exp_instr_addr_mis_i | exp_ld_mis_i | exp_st_mis_i | 
+    exp_instr_acc_fault_i | exp_st_acc_fault_i | exp_ld_acc_fault_i;
 
 
 endmodule

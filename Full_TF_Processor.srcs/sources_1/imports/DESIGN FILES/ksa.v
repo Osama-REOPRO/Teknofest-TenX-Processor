@@ -358,6 +358,6 @@ module Greyblock(input wire in_gi,in_pj,in_gj,output wire out_g);
     assign out_g = in_gj | (in_gi & in_pj);
 endmodule
 
-module Sum_block(input wire in_Carry,in_pi,output wire Sum_i); 
-    assign Sum_i = in_pi^in_Carry;
-endmodule
+//module Sum_block(input wire in_Carry,in_pi,output wire Sum_i); 
+//    assign Sum_i = in_pi^in_Carry;
+//endmodule

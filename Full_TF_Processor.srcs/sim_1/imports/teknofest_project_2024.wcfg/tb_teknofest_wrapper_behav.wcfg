@@ -5,21 +5,23 @@
    <db_ref_list>
       <db_ref path="tb_teknofest_wrapper_behav.wdb" id="1">
          <top_modules>
+            <top_module name="fp_wire" />
             <top_module name="glbl" />
+            <top_module name="lzc_wire" />
             <top_module name="tb_teknofest_wrapper" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="386,131.027 ns"></ZoomStartTime>
-      <ZoomEndTime time="386,139.868 ns"></ZoomEndTime>
-      <Cursor1Time time="386,132.500 ns"></Cursor1Time>
+      <ZoomStartTime time="999,974.115 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,000,005.178 ns"></ZoomEndTime>
+      <Cursor1Time time="1,000,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="317"></NameColumnWidth>
-      <ValueColumnWidth column_width="178"></ValueColumnWidth>
+      <NameColumnWidth column_width="285"></NameColumnWidth>
+      <ValueColumnWidth column_width="90"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="24" />
+   <WVObjectSize size="27" />
    <wvobject fp_name="group672" type="group">
       <obj_property name="label">Wrapper</obj_property>
       <obj_property name="DisplayName">label</obj_property>
@@ -184,21 +186,45 @@
       <obj_property name="label">FETCH</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/fetch_stage/clk_i" type="logic">
+         <obj_property name="ElementShortName">clk_i</obj_property>
+         <obj_property name="ObjectShortName">clk_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/flush_F" type="logic">
+         <obj_property name="ElementShortName">flush_F</obj_property>
+         <obj_property name="ObjectShortName">flush_F</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/fetch_stage/pc_error_i" type="array">
+         <obj_property name="ElementShortName">pc_error_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">pc_error_i[31:0]</obj_property>
+      </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/fetch_stage/mem_instr_done_i" type="logic">
          <obj_property name="ElementShortName">mem_instr_done_i</obj_property>
          <obj_property name="ObjectShortName">mem_instr_done_i</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/fetch_stage/is_exp_i" type="logic">
+         <obj_property name="ElementShortName">is_exp_i</obj_property>
+         <obj_property name="ObjectShortName">is_exp_i</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/fetch_stage/mem_instr_rdata_i" type="array">
          <obj_property name="ElementShortName">mem_instr_rdata_i[31:0]</obj_property>
          <obj_property name="ObjectShortName">mem_instr_rdata_i[31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/fetch_stage/mem_instr_req_o" type="logic">
          <obj_property name="ElementShortName">mem_instr_req_o</obj_property>
          <obj_property name="ObjectShortName">mem_instr_req_o</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/fetch_stage/mem_instr_adrs_o" type="array">
          <obj_property name="ElementShortName">mem_instr_adrs_o[31:0]</obj_property>
          <obj_property name="ObjectShortName">mem_instr_adrs_o[31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/fetch_stage/mem_state" type="array">
          <obj_property name="ElementShortName">mem_state[1:0]</obj_property>
@@ -245,6 +271,90 @@
    <wvobject fp_name="group31306" type="group">
       <obj_property name="label">DECODE</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/clk" type="logic">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/rst" type="logic">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/control/FPU_Decoder/is_rd_int" type="logic">
+         <obj_property name="ElementShortName">is_rd_int</obj_property>
+         <obj_property name="ObjectShortName">is_rd_int</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/control/is_rd_int" type="logic">
+         <obj_property name="ElementShortName">is_rd_int</obj_property>
+         <obj_property name="ObjectShortName">is_rd_int</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/control/is_rs1_int" type="logic">
+         <obj_property name="ElementShortName">is_rs1_int</obj_property>
+         <obj_property name="ObjectShortName">is_rs1_int</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/exp_ill_instr_o" type="logic">
+         <obj_property name="ElementShortName">exp_ill_instr_o</obj_property>
+         <obj_property name="ObjectShortName">exp_ill_instr_o</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/instruction_d" type="array">
+         <obj_property name="ElementShortName">instruction_d[31:0]</obj_property>
+         <obj_property name="ObjectShortName">instruction_d[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/control/FPU_Decoder/f_instruction" type="logic">
+         <obj_property name="ElementShortName">f_instruction</obj_property>
+         <obj_property name="ObjectShortName">f_instruction</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_instruction_D" type="logic">
+         <obj_property name="ElementShortName">F_instruction_D</obj_property>
+         <obj_property name="ObjectShortName">F_instruction_D</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/ALUControlD" type="array">
+         <obj_property name="ElementShortName">ALUControlD[5:0]</obj_property>
+         <obj_property name="ObjectShortName">ALUControlD[5:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/ALUControlD_r" type="array">
+         <obj_property name="ElementShortName">ALUControlD_r[5:0]</obj_property>
+         <obj_property name="ObjectShortName">ALUControlD_r[5:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/FPUControlD" type="array">
+         <obj_property name="ElementShortName">FPUControlD[4:0]</obj_property>
+         <obj_property name="ObjectShortName">FPUControlD[4:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/FPUControlD_r" type="array">
+         <obj_property name="ElementShortName">FPUControlD_r[4:0]</obj_property>
+         <obj_property name="ObjectShortName">FPUControlD_r[4:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/control/Op" type="array">
+         <obj_property name="ElementShortName">Op[6:0]</obj_property>
+         <obj_property name="ObjectShortName">Op[6:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/fpu_control_i" type="array">
+         <obj_property name="ElementShortName">fpu_control_i[4:0]</obj_property>
+         <obj_property name="ObjectShortName">fpu_control_i[4:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/int_rd_w" type="logic">
+         <obj_property name="ElementShortName">int_rd_w</obj_property>
+         <obj_property name="ObjectShortName">int_rd_w</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/control/ALU_Decoder/funct7" type="array">
+         <obj_property name="ElementShortName">funct7[6:0]</obj_property>
+         <obj_property name="ObjectShortName">funct7[6:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/control/ALU_Decoder/funct3" type="array">
+         <obj_property name="ElementShortName">funct3[2:0]</obj_property>
+         <obj_property name="ObjectShortName">funct3[2:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/control/ALU_Decoder/ALUOp" type="array">
+         <obj_property name="ElementShortName">ALUOp[3:0]</obj_property>
+         <obj_property name="ObjectShortName">ALUOp[3:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject type="divider" fp_name="divider83">
       <obj_property name="label">EXECUTE</obj_property>
@@ -253,6 +363,162 @@
    <wvobject fp_name="group31306" type="group">
       <obj_property name="label">EXECUTE</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/Execute_ResultM" type="array">
+         <obj_property name="ElementShortName">Execute_ResultM[31:0]</obj_property>
+         <obj_property name="ObjectShortName">Execute_ResultM[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/ResultE" type="array">
+         <obj_property name="ElementShortName">ResultE[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ResultE[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/ALU_Result" type="array">
+         <obj_property name="ElementShortName">ALU_Result[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ALU_Result[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/processing_done" type="logic">
+         <obj_property name="ElementShortName">processing_done</obj_property>
+         <obj_property name="ObjectShortName">processing_done</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/this_ready_o" type="logic">
+         <obj_property name="ElementShortName">this_ready_o</obj_property>
+         <obj_property name="ObjectShortName">this_ready_o</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/fpu_result_o" type="array">
+         <obj_property name="ElementShortName">fpu_result_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">fpu_result_o[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/fpu_ready_o" type="logic">
+         <obj_property name="ElementShortName">fpu_ready_o</obj_property>
+         <obj_property name="ObjectShortName">fpu_ready_o</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/exp_ld_mis_o" type="logic">
+         <obj_property name="ElementShortName">exp_ld_mis_o</obj_property>
+         <obj_property name="ObjectShortName">exp_ld_mis_o</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/exp_st_mis_o" type="logic">
+         <obj_property name="ElementShortName">exp_st_mis_o</obj_property>
+         <obj_property name="ObjectShortName">exp_st_mis_o</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/exp_instr_addr_mis_o" type="logic">
+         <obj_property name="ElementShortName">exp_instr_addr_mis_o</obj_property>
+         <obj_property name="ObjectShortName">exp_instr_addr_mis_o</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group4253" type="group">
+      <obj_property name="label">FPU UNIT</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/clk_i" type="logic">
+         <obj_property name="ElementShortName">clk_i</obj_property>
+         <obj_property name="ObjectShortName">clk_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/rst_i" type="logic">
+         <obj_property name="ElementShortName">rst_i</obj_property>
+         <obj_property name="ObjectShortName">rst_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/rs1_i" type="array">
+         <obj_property name="ElementShortName">rs1_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rs1_i[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/rs2_i" type="array">
+         <obj_property name="ElementShortName">rs2_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rs2_i[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/rs3_i" type="array">
+         <obj_property name="ElementShortName">rs3_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rs3_i[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/fpu_control_i" type="array">
+         <obj_property name="ElementShortName">fpu_control_i[4:0]</obj_property>
+         <obj_property name="ObjectShortName">fpu_control_i[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/fcsr_rmode_i" type="array">
+         <obj_property name="ElementShortName">fcsr_rmode_i[2:0]</obj_property>
+         <obj_property name="ObjectShortName">fcsr_rmode_i[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/isntr_rmode_i" type="array">
+         <obj_property name="ElementShortName">isntr_rmode_i[2:0]</obj_property>
+         <obj_property name="ObjectShortName">isntr_rmode_i[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/fpu_enable_i" type="logic">
+         <obj_property name="ElementShortName">fpu_enable_i</obj_property>
+         <obj_property name="ObjectShortName">fpu_enable_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/fpu_flags_o" type="array">
+         <obj_property name="ElementShortName">fpu_flags_o[4:0]</obj_property>
+         <obj_property name="ObjectShortName">fpu_flags_o[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/fp_unit_i" type="array">
+         <obj_property name="ElementShortName">fp_unit_i</obj_property>
+         <obj_property name="ObjectShortName">fp_unit_i</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/fpu/fp_unit_o" type="array">
+         <obj_property name="ElementShortName">fp_unit_o</obj_property>
+         <obj_property name="ObjectShortName">fp_unit_o</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group13404" type="group">
+      <obj_property name="label">ALU UNIT</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/ALU_Result" type="array">
+         <obj_property name="ElementShortName">ALU_Result[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ALU_Result[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/execute_stage/alu/ALUControl" type="array">
+         <obj_property name="ElementShortName">ALUControl[5:0]</obj_property>
+         <obj_property name="ObjectShortName">ALUControl[5:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group512" type="group">
+      <obj_property name="label">EXCEPTIONS</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/is_exception_o" type="logic">
+         <obj_property name="ElementShortName">is_exception_o</obj_property>
+         <obj_property name="ObjectShortName">is_exception_o</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/rst" type="logic">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/exp_ld_mis_i" type="logic">
+         <obj_property name="ElementShortName">exp_ld_mis_i</obj_property>
+         <obj_property name="ObjectShortName">exp_ld_mis_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/exp_st_mis_i" type="logic">
+         <obj_property name="ElementShortName">exp_st_mis_i</obj_property>
+         <obj_property name="ObjectShortName">exp_st_mis_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/exp_instr_addr_mis_i" type="logic">
+         <obj_property name="ElementShortName">exp_instr_addr_mis_i</obj_property>
+         <obj_property name="ObjectShortName">exp_instr_addr_mis_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/exp_instr_acc_fault_i" type="logic">
+         <obj_property name="ElementShortName">exp_instr_acc_fault_i</obj_property>
+         <obj_property name="ObjectShortName">exp_instr_acc_fault_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/exp_st_acc_fault_i" type="logic">
+         <obj_property name="ElementShortName">exp_st_acc_fault_i</obj_property>
+         <obj_property name="ObjectShortName">exp_st_acc_fault_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/exp_ld_acc_fault_i" type="logic">
+         <obj_property name="ElementShortName">exp_ld_acc_fault_i</obj_property>
+         <obj_property name="ObjectShortName">exp_ld_acc_fault_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/exp_ill_instr_i" type="logic">
+         <obj_property name="ElementShortName">exp_ill_instr_i</obj_property>
+         <obj_property name="ObjectShortName">exp_ill_instr_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/mcause_code_o" type="array">
+         <obj_property name="ElementShortName">mcause_code_o[3:0]</obj_property>
+         <obj_property name="ObjectShortName">mcause_code_o[3:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider124">
       <obj_property name="label">MEMORY</obj_property>
@@ -261,6 +527,7 @@
    <wvobject fp_name="group31306" type="group">
       <obj_property name="label">MEMORY</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider148">
       <obj_property name="label">WRITEBACK</obj_property>
@@ -382,7 +649,6 @@
    <wvobject fp_name="group32911" type="group">
       <obj_property name="label">INT RF</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/I_rf/clk" type="logic">
          <obj_property name="ElementShortName">clk</obj_property>
          <obj_property name="ObjectShortName">clk</obj_property>
@@ -422,21 +688,133 @@
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/I_rf/Register" type="array">
          <obj_property name="ElementShortName">Register[31:0][31:0]</obj_property>
          <obj_property name="ObjectShortName">Register[31:0][31:0]</obj_property>
-         <obj_property name="isExpanded"></obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group15887" type="group">
       <obj_property name="label">FP RF</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
-   </wvobject>
-   <wvobject fp_name="group11568" type="group">
-      <obj_property name="label">ALU</obj_property>
-      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/clk" type="logic">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/rst" type="logic">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/WE4" type="logic">
+         <obj_property name="ElementShortName">WE4</obj_property>
+         <obj_property name="ObjectShortName">WE4</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/A1" type="array">
+         <obj_property name="ElementShortName">A1[4:0]</obj_property>
+         <obj_property name="ObjectShortName">A1[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/A2" type="array">
+         <obj_property name="ElementShortName">A2[4:0]</obj_property>
+         <obj_property name="ObjectShortName">A2[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/A3" type="array">
+         <obj_property name="ElementShortName">A3[4:0]</obj_property>
+         <obj_property name="ObjectShortName">A3[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/A4" type="array">
+         <obj_property name="ElementShortName">A4[4:0]</obj_property>
+         <obj_property name="ObjectShortName">A4[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/WD4" type="array">
+         <obj_property name="ElementShortName">WD4[31:0]</obj_property>
+         <obj_property name="ObjectShortName">WD4[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/RS1" type="array">
+         <obj_property name="ElementShortName">RS1[31:0]</obj_property>
+         <obj_property name="ObjectShortName">RS1[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/RS2" type="array">
+         <obj_property name="ElementShortName">RS2[31:0]</obj_property>
+         <obj_property name="ObjectShortName">RS2[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/RS3" type="array">
+         <obj_property name="ElementShortName">RS3[31:0]</obj_property>
+         <obj_property name="ObjectShortName">RS3[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/Register" type="array">
+         <obj_property name="ElementShortName">Register[31:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">Register[31:0][31:0]</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject fp_name="group11189" type="group">
       <obj_property name="label">CSSR RF</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/clk" type="logic">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/rst" type="logic">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/WE2" type="logic">
+         <obj_property name="ElementShortName">WE2</obj_property>
+         <obj_property name="ObjectShortName">WE2</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/WEE3" type="logic">
+         <obj_property name="ElementShortName">WEE3</obj_property>
+         <obj_property name="ObjectShortName">WEE3</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/is_exp_i" type="logic">
+         <obj_property name="ElementShortName">is_exp_i</obj_property>
+         <obj_property name="ObjectShortName">is_exp_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/A1" type="array">
+         <obj_property name="ElementShortName">A1[11:0]</obj_property>
+         <obj_property name="ObjectShortName">A1[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/A2" type="array">
+         <obj_property name="ElementShortName">A2[11:0]</obj_property>
+         <obj_property name="ObjectShortName">A2[11:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/AE3" type="array">
+         <obj_property name="ElementShortName">AE3[11:0]</obj_property>
+         <obj_property name="ObjectShortName">AE3[11:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/WD2" type="array">
+         <obj_property name="ElementShortName">WD2[31:0]</obj_property>
+         <obj_property name="ObjectShortName">WD2[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/WDE3" type="array">
+         <obj_property name="ElementShortName">WDE3[31:0]</obj_property>
+         <obj_property name="ObjectShortName">WDE3[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/RS1" type="array">
+         <obj_property name="ElementShortName">RS1[31:0]</obj_property>
+         <obj_property name="ObjectShortName">RS1[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/Register[3]" type="array">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[3][31:0]</obj_property>
+         <obj_property name="ObjectShortName">[3][31:0]</obj_property>
+         <obj_property name="label">[3] fcsr_address</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/Register[773]" type="array">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[773][31:0]</obj_property>
+         <obj_property name="ObjectShortName">[773][31:0]</obj_property>
+         <obj_property name="label">[773] mtvec_address</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/Register[833]" type="array">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[833][31:0]</obj_property>
+         <obj_property name="ObjectShortName">[833][31:0]</obj_property>
+         <obj_property name="label">[833] mepc_address</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/csr_rf/Register[834]" type="array">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[834][31:0]</obj_property>
+         <obj_property name="ObjectShortName">[834][31:0]</obj_property>
+         <obj_property name="label">[834] mcause_address</obj_property>
+      </wvobject>
    </wvobject>
 </wave_config>

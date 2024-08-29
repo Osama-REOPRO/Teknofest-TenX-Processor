@@ -44,6 +44,7 @@
     <Option Name="SimulatorGccVersionRiviera" Val="9.3.0"/>
     <Option Name="SimulatorGccVersionActiveHdl" Val="9.3.0"/>
     <Option Name="BoardPart" Val=""/>
+    <Option Name="SourceMgmtMode" Val="None"/>
     <Option Name="ActiveSimSet" Val="sim_1"/>
     <Option Name="DefaultLib" Val="xil_defaultlib"/>
     <Option Name="ProjectType" Val="Default"/>
@@ -58,7 +59,7 @@
     <Option Name="IPUserFilesDir" Val="$PIPUSERFILESDIR"/>
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
-    <Option Name="WTXSimLaunchSim" Val="603"/>
+    <Option Name="WTXSimLaunchSim" Val="726"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -96,6 +97,13 @@
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/control_signals.vh">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+          <Attr Name="IsVisible" Val="1"/>
         </FileInfo>
       </File>
       <File Path="$PSRCDIR/sources_1/new/ALU_Decoder.v">
@@ -147,23 +155,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/FPU.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/FPU.v"/>
-          <Attr Name="ImportTime" Val="1721294066"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PSRCDIR/sources_1/new/FPU_Decoder.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/FPU_Top.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -223,10 +215,10 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/adder_unit.v">
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/barrel_shifter.v">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/adder_unit.v"/>
-          <Attr Name="ImportTime" Val="1721217258"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/barrel_shifter.v"/>
+          <Attr Name="ImportTime" Val="1720981792"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -262,28 +254,10 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/carry_look_ahead_adder.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/carry_look_ahead_adder.v"/>
-          <Attr Name="ImportTime" Val="1721217307"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/carryless_multiplier.v">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/carryless_multiplier.v"/>
           <Attr Name="ImportTime" Val="1720981800"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/comparator_unit.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/comparator_unit.v"/>
-          <Attr Name="ImportTime" Val="1721218222"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -328,24 +302,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/divider_unit.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/divider_unit.v"/>
-          <Attr Name="ImportTime" Val="1721217353"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/except.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/except.v"/>
-          <Attr Name="ImportTime" Val="1721230276"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/execute_cycle.v">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/execute_cycle.v"/>
@@ -359,15 +315,6 @@
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fetch_cycle.v"/>
           <Attr Name="ImportTime" Val="1721298905"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_sqrt_unit.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_sqrt_unit.v"/>
-          <Attr Name="ImportTime" Val="1721242216"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -407,15 +354,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/multiplier_unit.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/multiplier_unit.v"/>
-          <Attr Name="ImportTime" Val="1721217388"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/non_restoring_div.v">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/non_restoring_div.v"/>
@@ -429,33 +367,6 @@
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/pipeline_top.v"/>
           <Attr Name="ImportTime" Val="1721301898"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/post_norm.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/post_norm.v"/>
-          <Attr Name="ImportTime" Val="1721233129"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/pre_norm.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/pre_norm.v"/>
-          <Attr Name="ImportTime" Val="1721225341"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/pre_norm_mul.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/pre_norm_mul.v"/>
-          <Attr Name="ImportTime" Val="1721218346"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -509,6 +420,184 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_wire.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_wire.sv"/>
+          <Attr Name="ImportTime" Val="1724690964"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/FPU_Top.sv">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_cmp.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_cmp.sv"/>
+          <Attr Name="ImportTime" Val="1724690963"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/lzc_wire.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/lzc_wire.sv"/>
+          <Attr Name="ImportTime" Val="1724690964"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_cvt.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_cvt.sv"/>
+          <Attr Name="ImportTime" Val="1724690963"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_exe.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_exe.sv"/>
+          <Attr Name="ImportTime" Val="1724690963"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_ext.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_ext.sv"/>
+          <Attr Name="ImportTime" Val="1724690963"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_fdiv.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_fdiv.sv"/>
+          <Attr Name="ImportTime" Val="1724690963"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_fma.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_fma.sv"/>
+          <Attr Name="ImportTime" Val="1724690963"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_mac.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_mac.sv"/>
+          <Attr Name="ImportTime" Val="1724690963"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_max.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_max.sv"/>
+          <Attr Name="ImportTime" Val="1724690964"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_rnd.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_rnd.sv"/>
+          <Attr Name="ImportTime" Val="1724690964"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_sgnj.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_sgnj.sv"/>
+          <Attr Name="ImportTime" Val="1724690964"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/fp_unit.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/fp_unit.sv"/>
+          <Attr Name="ImportTime" Val="1724690964"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/lzc_128.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/lzc_128.sv"/>
+          <Attr Name="ImportTime" Val="1724690964"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/lzc_16.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/lzc_16.sv"/>
+          <Attr Name="ImportTime" Val="1724690964"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/lzc_32.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/lzc_32.sv"/>
+          <Attr Name="ImportTime" Val="1724690964"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/lzc_4.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/lzc_4.sv"/>
+          <Attr Name="ImportTime" Val="1724690964"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/lzc_64.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/lzc_64.sv"/>
+          <Attr Name="ImportTime" Val="1724690964"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/lzc_8.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/lzc_8.sv"/>
+          <Attr Name="ImportTime" Val="1724690964"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/new/programmer.sv">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_wrapper_2024.srcs/sources_1/new/programmer.sv"/>
@@ -536,11 +625,10 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/utilities.v">
+      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/carry_look_ahead_adder.v">
         <FileInfo>
-          <Attr Name="UserDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/utilities.v"/>
-          <Attr Name="ImportTime" Val="1721218269"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/carry_look_ahead_adder.v"/>
+          <Attr Name="ImportTime" Val="1721217307"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -548,7 +636,6 @@
       </File>
       <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/Branch_Predictor.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/Branch_Predictor.v"/>
           <Attr Name="ImportTime" Val="1721147394"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -556,19 +643,8 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/barrel_shifter.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/barrel_shifter.v"/>
-          <Attr Name="ImportTime" Val="1720981792"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PSRCDIR/sources_1/imports/sim/ddr2_model_parameters.vh">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="ImportPath" Val="$PPRDIR/../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_project_2024.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/example_design/sim/ddr2_model_parameters.vh"/>
           <Attr Name="ImportTime" Val="1721245885"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -578,7 +654,6 @@
       </File>
       <File Path="$PSRCDIR/sources_1/new/ddr2_model.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="ImportPath" Val="$PPRDIR/../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_wrapper_2024.srcs/sources_1/new/ddr2_model.v"/>
           <Attr Name="ImportTime" Val="1717483473"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -586,29 +661,8 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/pre_norm_add.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/pre_norm_add.v"/>
-          <Attr Name="ImportTime" Val="1719247041"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/pre_norm_sqrt.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/pre_norm_sqrt.v"/>
-          <Attr Name="ImportTime" Val="1721225049"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_wrapper_2024.srcs/ddr2_model_parameters.vh">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
           <Attr Name="IsVisible" Val="1"/>
@@ -616,7 +670,6 @@
       </File>
       <File Path="$PPRDIR/../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_wrapper_2024.srcs/ddr3_model_parameters.vh">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
           <Attr Name="IsVisible" Val="1"/>
@@ -653,39 +706,8 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/WB_SYSCON.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/WB_SYSCON.v"/>
-          <Attr Name="ImportTime" Val="1721337889"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/WB_SLAVES.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/WB_SLAVES.v"/>
-          <Attr Name="ImportTime" Val="1721337885"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/DESIGN FILES/WB_MASTERS.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/WB_MASTERS.v"/>
-          <Attr Name="ImportTime" Val="1721337708"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PSRCDIR/sources_1/new/access_sizes.vh">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
           <Attr Name="IsVisible" Val="1"/>
@@ -698,7 +720,6 @@
       </File>
       <File Path="$PSRCDIR/sources_1/new/Mux_4_by_1.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -706,14 +727,6 @@
       </File>
       <File Path="$PSRCDIR/sources_1/new/test_atomics_0.mem">
         <FileInfo>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/exception_handler.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
@@ -758,16 +771,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sim_1/imports/new/tb_teknofest_wrapper.sv">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_project_2024.srcs/sources_1/new/tb_teknofest_wrapper.sv"/>
-          <Attr Name="ImportTime" Val="1721306605"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PSRCDIR/sim_1/imports/teknofest_project_2024.wcfg/tb_teknofest_wrapper_behav.wcfg">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_project_2024.wcfg/tb_teknofest_wrapper_behav.wcfg"/>
@@ -785,7 +788,6 @@
       </File>
       <File Path="$PSRCDIR/sim_1/imports/sources_1/imports/DESIGN FILES/pipeline_tb.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/pipeline_tb.v"/>
           <Attr Name="ImportTime" Val="1721084710"/>
           <Attr Name="UsedIn" Val="synthesis"/>

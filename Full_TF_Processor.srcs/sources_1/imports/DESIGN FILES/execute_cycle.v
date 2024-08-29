@@ -7,7 +7,7 @@ prev_ready_i -> this flag indicates that the stage is ready to work on its data
 */
 
 module execute_cycle
-# (parameter STAGE_CYCLE_REQ = 2'b11)
+# (parameter STAGE_CYCLE_REQ = 2'b01)
 (
     // Declaration I/Os
     input clk, rst, flush, JtypeE, register_write_e,
@@ -43,6 +43,9 @@ module execute_cycle
     wire [31:0] Src_A, Src_B_interim, Src_B, pc_target_e_r;
     wire [31:0] ResultE;
     wire ZeroE;
+    wire [4:0] fpu_flags_e;
+    wire fpu_ready_e;
+    reg fpu_valid_e;
 
     // Declaration of Register
     reg register_write_e_r, MemWriteE_r, mem_read_E_r ,pc_src_e_r, int_rd_e_r, is_csr_e_r;
@@ -51,6 +54,7 @@ module execute_cycle
     reg [31:0] PCPlus4E_r, RS2_E_r, ResultE_r, PCTarget_E_r, csr_value_e_r;
     reg [11:0] csr_address_e_r;
     reg [2:0] WordSize_E_r;
+    
     
     //Coordination wires
     reg stage_busy;
@@ -82,21 +86,24 @@ module execute_cycle
             .s_i(BSrcE),
             .c_o(Src_B)
             );
-    wire [31:0] FPU_Result = 0;
+    wire [31:0] FPU_Result;
     wire [31:0] ALU_Result;
     
     
     FPU_top fpu
     (
-        .clk(clk), 
-        .A(Src_A),
-        .B(Src_B),
-        .C(RS3_E),
-        .rmode(),
-        .Result(FPU_Result),
-        .FPUControl(FPUControlE),
+        .clk_i(clk),
+        .rst_i(rst), 
+        .rs1_i(Src_A),
+        .rs2_i(Src_B),
+        .rs3_i(RS3_E),
+        .fpu_control_i(FPUControlE),
         .fcsr_rmode_i(csr_value_e_i[7:5]),
-        .isntr_rmode_i(funct3_E)
+        .isntr_rmode_i(funct3_E),
+        .fpu_enable_i(F_instruction_E&fpu_valid_e),
+        .fpu_result_o(FPU_Result),
+        .fpu_flags_o(fpu_flags_e),
+        .fpu_ready_o(fpu_ready_e)
     );
     
     // ALU Unit
@@ -117,17 +124,16 @@ module execute_cycle
    
     wire mem_half_addr_misalign, mem_word_addr_misalign, mem_misalign, div_by_four;
     wire instruction_misalign, load_misalign, store_amo_misalign;
-    wire JUMPS;
-    assign JUMPS = ALUControlE === 6'b010000;
-    assign mem_half_addr_misalign = funct3_E[0] & ResultE[0];
-    assign not_div_by_four = (&ResultE[1:0]);
-    assign mem_word_addr_misalign = funct3_E[1] & not_div_by_four;
-    assign mem_misalign = (mem_half_addr_misalign|mem_word_addr_misalign);
+     wire jump_instr_e;
+     assign jump_instr_e = ALUControlE === `ALU_JUMPS;
+     assign mem_half_addr_misalign = funct3_E[0] & ResultE[0];
+     assign not_div_by_four = (&ResultE[1:0]);
+     assign mem_word_addr_misalign = funct3_E[1] & not_div_by_four;
+     assign mem_misalign = (mem_half_addr_misalign|mem_word_addr_misalign);
    
-            
-    assign exp_ld_mis_o = mem_read_E & mem_misalign;
-    assign exp_st_mis_o = MemWriteE & mem_misalign;
-    assign exp_instr_addr_mis_o = (JUMPS|BranchE) & not_div_by_four;
+     assign exp_ld_mis_o = mem_read_E & mem_misalign;
+     assign exp_st_mis_o = MemWriteE & mem_misalign;
+     assign exp_instr_addr_mis_o = (jump_instr_e|BranchE) & not_div_by_four;
     
     
     // Adder
@@ -141,42 +147,20 @@ module execute_cycle
     always @(posedge clk or negedge rst) begin
         if(!rst) reset_signals();
         else begin
-            if (processing_done && this_ready_o) begin
-            
-//                 ERROR HANDLING
-//                if(MemWriteE) //store and atomic
-                   
-                   
-//   wire mem_half_addr_misalign, mem_word_addr_misalign, mem_misalign, div_by_four;
-//   wire instruction_misalign, load_misalign, store_amo_misalign;
-//   assign mem_half_addr_misalign = funct3[0] & address_i[0];
-//   assign not_div_by_four = (&address_i[1:0]);
-//   assign mem_word_addr_misalign = funct3[1] & not_div_by_four; 
-   
-//   assign mem_misalign = (mem_half_addr_misalign|mem_word_addr_misalign);
-  
-//   assign instruction_misalign =  (JALR|Jtype|Branch) & not_div_by_four;
-//   assign load_misalign = Load & mem_misalign;
-//   assign store_amo_misalign =  (MemWrite) & mem_misalign;
-
-   
-//   assign is_error_o = (instruction_misalign|mem_misalign);
-                    
-//                else if (mem_read_E) // load
-                
+            if (processing_done &&  this_ready_o) begin                
                 register_write_e_r <= register_write_e; 
                 MemWriteE_r <= MemWriteE; 
                 mem_read_E_r <= mem_read_E;
                 RD_E_r <= RD_E;
                 atomic_op_e_r <= atomic_op_e_i;
-                csr_value_e_r <= csr_value_e_i;
+                csr_value_e_r <= F_instruction_E ? {csr_value_e_i[31:8], fpu_flags_e} : csr_value_e_i;
                 csr_address_e_r <= csr_address_e_i;
                 PCPlus4E_r <= PCPlus4E; 
                 RS2_E_r <= Src_B_interim; 
                 ResultE_r <= ResultE;
                 WordSize_E_r <= funct3_E;
                 PCTarget_E_r <= pc_target_e_r;
-                pc_src_e_r <= (JUMPS) || (ZeroE && BranchE); // If instructions is JAL, JALR or branch
+                pc_src_e_r <= (jump_instr_e) || (ZeroE && BranchE); // If instructions is JAL, JALR or branch
                 int_rd_e_r <= int_rd_e;
                 is_csr_e_r <= is_csr_e_i;
                 
@@ -185,17 +169,20 @@ module execute_cycle
                 stage_cycle_counter <= 2'b0;
                 stage_busy <=1'b0;
                 processing_done <= 1'b0;
-                
             end else if (stage_busy) begin
                 this_valid_o <= 1'b0;
                 if(stage_cycle_counter < STAGE_CYCLE_REQ) begin
                     stage_cycle_counter <= stage_cycle_counter + 1;
                     this_ready_o <= 1'b0;
-                end else begin 
+                end else if (fpu_ready_e) begin 
                     this_ready_o <= next_ready_i;
                     processing_done <= 1'b1;
+                    fpu_valid_e <= 1'b0;
                 end
-            end else if (prev_valid_i) stage_busy <= 1'b1;
+            end else if (prev_valid_i) begin 
+                stage_busy <= 1'b1;
+                fpu_valid_e <= 1'b1;
+            end
         end
     end
 
@@ -238,7 +225,8 @@ module execute_cycle
                 csr_value_e_r,
                 csr_address_e_r,
                 is_csr_e_r,
-                processing_done
+                processing_done,
+                fpu_valid_e
             } <= 0;
             this_ready_o <= 1'b1;
         end

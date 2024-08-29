@@ -43,7 +43,8 @@ module memory_cycle
     output exp_st_acc_fault_o
     
     );
-    
+    assign exp_ld_acc_fault_o = 0;
+    assign exp_st_acc_fault_o = 0;
     // Declaration of Interim Wires
     //wire [31:0] ReadDataM;
 
