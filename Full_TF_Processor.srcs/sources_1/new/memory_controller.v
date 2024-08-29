@@ -21,6 +21,8 @@ module memory_controller(
 	input     	  data_req_i,
 	output	  	  data_done_o,
 	output [31:0] data_rdata_o,
+	// -------------------- access faults
+	output [1:0]  access_fault_o,
 	// -------------------- main mem signals
 	output 		   main_we_o,
 	output [31:0]  main_adrs_o,
@@ -59,12 +61,33 @@ localparam adrs_uart_end 	= 32'h2000000c + 32'd4;
 wire adrs_instr_is_uart = (instr_adrs_i >= adrs_uart_start) && (instr_adrs_i <= adrs_uart_end);
 wire adrs_instr_is_interface = instr_adrs_i > adrs_uart_end;
 wire adrs_instr_is_main = (instr_adrs_i >= adrs_main_start) && (instr_adrs_i <= adrs_main_end);
+wire adrs_instr_outside_bounds = !adrs_instr_is_uart && !adrs_instr_is_interface && !adrs_instr_is_main;
+wire adrs_instr_is_word_aligned = instr_adrs_i[1:0] == 2'b00;
+wire adrs_instr_is_half_aligned = instr_adrs_i[0] == 1'b0;
 
 wire adrs_data_is_uart = (data_adrs_i >= adrs_uart_start) && (data_adrs_i <= adrs_uart_end);
 wire adrs_data_is_interface = data_adrs_i > adrs_uart_end;
 wire adrs_data_is_main = (data_adrs_i >= adrs_main_start) && (data_adrs_i <= adrs_main_end);
+wire adrs_data_outside_bounds = !adrs_data_is_uart && !adrs_data_is_interface && !adrs_data_is_main;
+wire adrs_data_is_word_aligned = data_adrs_i[1:0] == 2'b00;
+wire adrs_data_is_half_aligned = data_adrs_i[0] == 1'b0;
 
 wire adrs_is_uart = adrs_instr_is_uart || adrs_data_is_uart;
+wire adrs_outside_bounds = adrs_instr_outside_bounds || adrs_data_outside_bounds;
+wire adrs_is_word_aligned = adrs_instr_is_word_aligned || adrs_data_is_word_aligned;
+wire adrs_is_half_aligned = adrs_instr_is_half_aligned || adrs_data_is_half_aligned;
+
+// access faults
+wire instr_access_fault = adrs_instr_outside_bounds;
+wire load_access_fault = adrs_data_outside_bounds && !data_we_i;
+wire store_access_fault = adrs_data_outside_bounds && data_we_i;
+
+assign access_fault_o = 
+	instr_access_fault ? 2'b01 :
+	load_access_fault ? 2'b10 :
+	store_access_fault ? 2'b11 :
+		2'b00;
+
 
 // ----------------- intermediate signals
 // uart signals
