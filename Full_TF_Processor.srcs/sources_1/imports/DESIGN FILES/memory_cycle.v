@@ -65,9 +65,14 @@ module memory_cycle
 
 
    // Memory Stage Register Logic
-   //always @(posedge flush) reset_signals();
+   reg flushing;
+    always @(posedge flush) begin
+        reset_signals();
+        flushing <= 1'b1;
+    end
 	always @(posedge clk or negedge rst) begin
-		if(!rst | flush) reset_signals();
+	    if(flushing) flushing <= 1'b0;
+        else if(!rst) reset_signals();
         else begin
             if (processing) begin 
                 if(atomic_op_m_i === `store_conditional_aop && Execute_ResultM != reservation_address) begin

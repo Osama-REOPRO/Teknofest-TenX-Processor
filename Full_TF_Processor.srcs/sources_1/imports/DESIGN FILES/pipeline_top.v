@@ -1,6 +1,6 @@
-`define PC_START_ADRS 32'h80000000
-`define EXECUTE_CYCLES_COUNT 2'b11
-`include "atomic_ops.vh"
+`define PC_START_ADRS 32'h80000000;
+`define EXECUTE_CYCLES_COUNT 2'b11;
+`include "atomic_ops.vh";
 module Pipeline_top(
 
     input clk, 
@@ -25,6 +25,7 @@ module Pipeline_top(
 	
 	input [1:0] exp_access_faults_i
 );
+
    //useless
    assign mem_instr_we_o = 1'b0;
    assign mem_instr_wdata_o = 32'b0;

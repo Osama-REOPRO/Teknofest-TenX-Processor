@@ -59,7 +59,7 @@
     <Option Name="IPUserFilesDir" Val="$PIPUSERFILESDIR"/>
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
-    <Option Name="WTXSimLaunchSim" Val="729"/>
+    <Option Name="WTXSimLaunchSim" Val="739"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -638,24 +638,6 @@
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../DESIGN FILES/Branch_Predictor.v"/>
           <Attr Name="ImportTime" Val="1721147394"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/sim/ddr2_model_parameters.vh">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_project_2024.gen/sources_1/ip/mig_7series_0_1/mig_7series_0/example_design/sim/ddr2_model_parameters.vh"/>
-          <Attr Name="ImportTime" Val="1721245885"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-          <Attr Name="IsVisible" Val="1"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/ddr2_model.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../TEKNOFEST_2024_Cip_Tasarim_Yarismasi/teknofest_wrapper_2024/teknofest_wrapper_2024.srcs/sources_1/new/ddr2_model.v"/>
-          <Attr Name="ImportTime" Val="1717483473"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>

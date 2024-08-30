@@ -143,20 +143,20 @@ module execute_cycle
             .c_o(pc_target_e_r)
             );
     // Register Logic
-    //always @(posedge flush) reset_signals();
+    reg flushing;
+    always @(posedge flush) begin
+        exp_ld_mis_o <= mem_read_E & mem_misalign;
+        exp_st_mis_o <= MemWriteE & mem_misalign;
+        exp_instr_addr_mis_o <= (jump_instr_e|BranchE) & not_div_by_four;
+        flushing <= 1'b1;
+        reset_signals();
+    end
     always @(posedge clk or negedge rst) begin
-//        if(!rst | flush) reset_signals();
-
-          if(!rst | flush) begin 
-            if(flush & (exp_ld_mis_o |exp_st_mis_o|exp_instr_addr_mis_o)) begin
-                exp_ld_mis_o <= mem_read_E & mem_misalign;
-                exp_st_mis_o <= MemWriteE & mem_misalign;
-                exp_instr_addr_mis_o <= (jump_instr_e|BranchE) & not_div_by_four;
-            end else begin
-                exp_ld_mis_o <= 0;
-                exp_st_mis_o <= 0;
-                exp_instr_addr_mis_o <= 0;
-            end
+        if(flushing) flushing <= 1'b0;
+        else if(!rst) begin 
+            exp_ld_mis_o <= 0;
+            exp_st_mis_o <= 0;
+            exp_instr_addr_mis_o <= 0;
             reset_signals();
         end else begin
             if (processing_done &&  this_ready_o) begin                

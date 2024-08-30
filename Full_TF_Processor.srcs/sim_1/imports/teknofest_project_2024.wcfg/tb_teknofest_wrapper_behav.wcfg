@@ -13,15 +13,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="999,974.115 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,000,005.178 ns"></ZoomEndTime>
-      <Cursor1Time time="1,000,000.000 ns"></Cursor1Time>
+      <ZoomStartTime time="385,784.273 ns"></ZoomStartTime>
+      <ZoomEndTime time="385,833.639 ns"></ZoomEndTime>
+      <Cursor1Time time="385,792.500 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="285"></NameColumnWidth>
+      <NameColumnWidth column_width="273"></NameColumnWidth>
       <ValueColumnWidth column_width="90"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="27" />
+   <WVObjectSize size="29" />
    <wvobject fp_name="group672" type="group">
       <obj_property name="label">Wrapper</obj_property>
       <obj_property name="DisplayName">label</obj_property>
@@ -162,6 +162,10 @@
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/is_exception" type="logic">
+      <obj_property name="ElementShortName">is_exception</obj_property>
+      <obj_property name="ObjectShortName">is_exception</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/flush_F" type="logic">
       <obj_property name="ElementShortName">flush_F</obj_property>
       <obj_property name="ObjectShortName">flush_F</obj_property>
@@ -189,6 +193,14 @@
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/fetch_stage/clk_i" type="logic">
          <obj_property name="ElementShortName">clk_i</obj_property>
          <obj_property name="ObjectShortName">clk_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/exp_access_faults_i" type="array">
+         <obj_property name="ElementShortName">exp_access_faults_i[1:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_access_faults_i[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/rst" type="logic">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/flush_F" type="logic">
          <obj_property name="ElementShortName">flush_F</obj_property>
@@ -263,6 +275,10 @@
          <obj_property name="ElementShortName">pc_src_e_i</obj_property>
          <obj_property name="ObjectShortName">pc_src_e_i</obj_property>
       </wvobject>
+   </wvobject>
+   <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/exp_access_faults_i" type="array">
+      <obj_property name="ElementShortName">exp_access_faults_i[1:0]</obj_property>
+      <obj_property name="ObjectShortName">exp_access_faults_i[1:0]</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider35">
       <obj_property name="label">DECODE</obj_property>
@@ -495,18 +511,6 @@
          <obj_property name="ElementShortName">exp_instr_addr_mis_i</obj_property>
          <obj_property name="ObjectShortName">exp_instr_addr_mis_i</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/exp_instr_acc_fault_i" type="logic">
-         <obj_property name="ElementShortName">exp_instr_acc_fault_i</obj_property>
-         <obj_property name="ObjectShortName">exp_instr_acc_fault_i</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/exp_st_acc_fault_i" type="logic">
-         <obj_property name="ElementShortName">exp_st_acc_fault_i</obj_property>
-         <obj_property name="ObjectShortName">exp_st_acc_fault_i</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/exp_ld_acc_fault_i" type="logic">
-         <obj_property name="ElementShortName">exp_ld_acc_fault_i</obj_property>
-         <obj_property name="ObjectShortName">exp_ld_acc_fault_i</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/hazard_block/exp_ill_instr_i" type="logic">
          <obj_property name="ElementShortName">exp_ill_instr_i</obj_property>
          <obj_property name="ObjectShortName">exp_ill_instr_i</obj_property>
@@ -693,6 +697,7 @@
    <wvobject fp_name="group15887" type="group">
       <obj_property name="label">FP RF</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/clk" type="logic">
          <obj_property name="ElementShortName">clk</obj_property>
          <obj_property name="ObjectShortName">clk</obj_property>
@@ -740,6 +745,7 @@
       <wvobject fp_name="/tb_teknofest_wrapper/u_dut/core/decode_stage/F_rf/Register" type="array">
          <obj_property name="ElementShortName">Register[31:0][31:0]</obj_property>
          <obj_property name="ObjectShortName">Register[31:0][31:0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group11189" type="group">

@@ -1,7 +1,8 @@
-import fp_wire::*; 
 include "control_signals.vh";
+import fp_wire::*; 
 
-module FPU_top(
+module FPU_top
+(
     input clk_i,
     input rst_i,
     input [31:0] rs1_i, rs2_i, rs3_i,

@@ -18,9 +18,9 @@ module hazard_unit(
     );
     
     wire exp_instr_acc_fault, exp_st_acc_fault, exp_ld_acc_fault;
-    assign exp_instr_acc_fault = ~exp_access_faults_i[1] & exp_access_faults_i[0];
-    assign exp_st_acc_fault = &exp_access_faults_i;
-    assign exp_ld_acc_fault = exp_access_faults_i[1] & ~exp_access_faults_i[0];
+    assign exp_instr_acc_fault = ~rst ? 1'b0 :~exp_access_faults_i[1] & exp_access_faults_i[0];
+    assign exp_st_acc_fault = ~rst ? 1'b0 :&exp_access_faults_i;
+    assign exp_ld_acc_fault = ~rst ? 1'b0 :exp_access_faults_i[1] & ~exp_access_faults_i[0];
     
     
     

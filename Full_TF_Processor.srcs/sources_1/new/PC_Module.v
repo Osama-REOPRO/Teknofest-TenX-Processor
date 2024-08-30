@@ -7,17 +7,15 @@ module PC_Module
     output reg [31:0] pc_o,
     output reg pc_incremented_o
     );
-    
+    reg flushing;
 
-//    always @(posedge flush_i) begin
-//        //pc_o <= START_ADRS;            
-//        pc_incremented_o <= 1'b0;
-//    end
+    always @(posedge flush_i) begin
+        //pc_o <= START_ADRS;            
+        pc_incremented_o <= 1'b0;
+    end
     always @(posedge clk_i or negedge rst_i) begin
-        if(!rst_i|flush_i) begin
-            if(!rst_i) begin
-                pc_o <= START_ADRS;
-            end         
+        if(!rst_i) begin
+            pc_o <= START_ADRS;      
             pc_incremented_o <= 1'b0;
         end else begin
             if (increment_pc_i && !pc_incremented_o) begin

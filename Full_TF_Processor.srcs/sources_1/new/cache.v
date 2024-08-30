@@ -289,7 +289,7 @@ endmodule
 module LFSR
 #(
 	parameter size = 4,
-	localparam clamped_size = size >= 4 ? size : 4 // LFSR makes no sense under 4-bits
+	parameter clamped_size = size >= 4 ? size : 4 // LFSR makes no sense under 4-bits
 ) (
 	input i_clk, i_rst, 
 	output reg [clamped_size-1:0] o_num
