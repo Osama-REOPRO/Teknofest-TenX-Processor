@@ -83,9 +83,9 @@ wire load_access_fault = adrs_data_outside_bounds && !data_we_i;
 wire store_access_fault = adrs_data_outside_bounds && data_we_i;
 
 assign access_fault_o = 
-	instr_access_fault ? 2'b01 :
-	load_access_fault ? 2'b10 :
-	store_access_fault ? 2'b11 :
+	                   instr_done_o & instr_access_fault ? 2'b01 :
+	                   data_done_o & load_access_fault ? 2'b10 :
+	                   data_done_o & store_access_fault ? 2'b11 :
 		2'b00;
 
 
