@@ -9,21 +9,23 @@ module PC_Module
     );
     
 
-    always @(posedge flush_i) begin
-        //pc_o <= START_ADRS;            
-        pc_incremented_o <= 1'b0;
-    end
-    always @(posedge clk_i or negedge rst_i)
-    begin
-        if(!rst_i) begin
-            pc_o <= START_ADRS;
+//    always @(posedge flush_i) begin
+//        //pc_o <= START_ADRS;            
+//        pc_incremented_o <= 1'b0;
+//    end
+    always @(posedge clk_i or negedge rst_i) begin
+        if(!rst_i|flush_i) begin
+            if(!rst_i) begin
+                pc_o <= START_ADRS;
+            end         
             pc_incremented_o <= 1'b0;
-        end else
+        end else begin
             if (increment_pc_i && !pc_incremented_o) begin
                 pc_o <= pc_next_i;
                 pc_incremented_o <= 1'b1;
             end
             
             if (!increment_pc_i) pc_incremented_o <= 1'b0;
+       end
     end
 endmodule

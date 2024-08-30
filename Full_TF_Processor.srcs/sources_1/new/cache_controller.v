@@ -148,8 +148,8 @@ always @(posedge clk_i) begin
 			end
 
 			done_st: begin
-				done_o = 1'b1;
-				if (!req_i) state = idle_st;
+				done_o <= 1'b1;
+				if (!req_i) state <= idle_st;
 			end
 
 			lookup_st: begin

@@ -159,21 +159,27 @@ module decode_cycle(
                         );
 
     // Declaring Register Logic
-    always @(posedge flush) begin
-        if(exp_ill_instr_o) begin
-            exp_ill_instr_o <= exp_ill_instr_d;
-            csr_value_e_r <= csr_value_d;
-        end else begin
-            exp_ill_instr_o <= 1'b0;
-            csr_value_e_r <= 1'b0;
-        end
+//    always @(posedge flush) begin
+//        if(exp_ill_instr_o) begin
+//            exp_ill_instr_o <= exp_ill_instr_d;
+//            csr_value_e_r <= csr_value_d;
+//        end else begin
+//            exp_ill_instr_o <= 1'b0;
+//            csr_value_e_r <= 1'b0;
+//        end
         
-        reset_signals();
-    end
+//        reset_signals();
+//    end
+
     always @(posedge clk or negedge rst) begin
-        if(!rst) begin 
-            csr_value_e_r <= 0;
-            exp_ill_instr_o <= 0;
+        if(!rst | flush) begin 
+            if(flush & exp_ill_instr_o) begin
+                exp_ill_instr_o <= exp_ill_instr_d;
+                csr_value_e_r <= csr_value_d;
+            end else begin
+                csr_value_e_r <= 0;
+                exp_ill_instr_o <= 0;
+            end
             reset_signals();
         end
         //decode is dones in a single cycle so i direcly propagate values.

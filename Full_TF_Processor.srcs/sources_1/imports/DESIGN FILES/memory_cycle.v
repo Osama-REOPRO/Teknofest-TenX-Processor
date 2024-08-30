@@ -36,15 +36,13 @@ module memory_cycle
   	
   	
     input prev_valid_i,
-    output reg this_ready_o,
+    output reg this_ready_o
     
     
-    output exp_ld_acc_fault_o,
-    output exp_st_acc_fault_o
+//    output exp_ld_acc_fault_o,
+//    output exp_st_acc_fault_o
     
     );
-    assign exp_ld_acc_fault_o = 0;
-    assign exp_st_acc_fault_o = 0;
     // Declaration of Interim Wires
     //wire [31:0] ReadDataM;
 
@@ -67,9 +65,9 @@ module memory_cycle
 
 
    // Memory Stage Register Logic
-	always @(posedge flush) reset_signals();
+   //always @(posedge flush) reset_signals();
 	always @(posedge clk or negedge rst) begin
-		if(!rst) reset_signals();
+		if(!rst | flush) reset_signals();
         else begin
             if (processing) begin 
                 if(atomic_op_m_i === `store_conditional_aop && Execute_ResultM != reservation_address) begin

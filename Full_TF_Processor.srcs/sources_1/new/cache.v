@@ -297,7 +297,7 @@ module LFSR
 	always@(posedge i_clk) begin
 		if(i_rst) o_num <= {clamped_size{1'b1}};
 		else begin
-			o_num = {o_num[clamped_size-2:0],(o_num[clamped_size-1]^o_num[clamped_size-2])};
+			o_num <= {o_num[clamped_size-2:0],(o_num[clamped_size-1]^o_num[clamped_size-2])};
 //			$display("~~~~ new random number generated (%b) ~~~~", o_num);
 		end
 		// shift left once

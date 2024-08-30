@@ -22,12 +22,11 @@ module fetch_cycle
         input pc_src_e_i,
         input [31:0] pc_target_e_i,
         output [31:0] instruction_d_o,
-        output [31:0] pc_d_o, pc_plus_4_d_o,
+        output [31:0] pc_d_o, pc_plus_4_d_o
         
-       output exp_instr_acc_fault_o
-    );
+        );
 
-    assign exp_instr_acc_fault_o = 0;
+//    assign exp_instr_acc_fault_o = 0;
 	 // localparam pc_start_adrs = 32'h80000000;
 
     // Declaring interim wires
@@ -88,17 +87,22 @@ module fetch_cycle
 	                 pc_increment_st = 3;
     
     
-    always @(posedge flush_i) begin
-        increment_pc <= 1'b1;
-         mem_state <= 3;
-         reset_signals();
-    end   
+//    always @(posedge flush_i) begin
+//        increment_pc <= 1'b1;
+//         mem_state <= 3;
+//         reset_signals();
+//    end   
    
 	
 	always @(posedge clk_i or negedge rst_i) begin
-        if(!rst_i) begin 
-            increment_pc <= 0;
-            mem_state <= 0;
+        if(!rst_i | flush_i) begin 
+            if (flush_i) begin
+                increment_pc <= 1'b1;
+                mem_state <= 3;
+            end else begin
+                increment_pc <= 0;
+                mem_state <= 0;
+            end
             reset_signals();
          end
         else begin

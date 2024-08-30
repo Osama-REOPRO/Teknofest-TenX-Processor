@@ -34,9 +34,9 @@ module execute_cycle
     input prev_valid_i,
     output reg this_valid_o,
     
-    output exp_ld_mis_o,
-    output exp_st_mis_o,
-    output exp_instr_addr_mis_o
+    output reg exp_ld_mis_o,
+    output reg exp_st_mis_o,
+    output reg exp_instr_addr_mis_o
      
 );
     // Declaration of Interim Wires
@@ -131,9 +131,9 @@ module execute_cycle
      assign mem_word_addr_misalign = funct3_E[1] & not_div_by_four;
      assign mem_misalign = (mem_half_addr_misalign|mem_word_addr_misalign);
    
-     assign exp_ld_mis_o = mem_read_E & mem_misalign;
-     assign exp_st_mis_o = MemWriteE & mem_misalign;
-     assign exp_instr_addr_mis_o = (jump_instr_e|BranchE) & not_div_by_four;
+     //assign exp_ld_mis_o = mem_read_E & mem_misalign;
+     //assign exp_st_mis_o = MemWriteE & mem_misalign;
+     //assign exp_instr_addr_mis_o = (jump_instr_e|BranchE) & not_div_by_four;
     
     
     // Adder
@@ -143,10 +143,22 @@ module execute_cycle
             .c_o(pc_target_e_r)
             );
     // Register Logic
-    always @(posedge flush) reset_signals();
+    //always @(posedge flush) reset_signals();
     always @(posedge clk or negedge rst) begin
-        if(!rst) reset_signals();
-        else begin
+//        if(!rst | flush) reset_signals();
+
+          if(!rst | flush) begin 
+            if(flush & (exp_ld_mis_o |exp_st_mis_o|exp_instr_addr_mis_o)) begin
+                exp_ld_mis_o <= mem_read_E & mem_misalign;
+                exp_st_mis_o <= MemWriteE & mem_misalign;
+                exp_instr_addr_mis_o <= (jump_instr_e|BranchE) & not_div_by_four;
+            end else begin
+                exp_ld_mis_o <= 0;
+                exp_st_mis_o <= 0;
+                exp_instr_addr_mis_o <= 0;
+            end
+            reset_signals();
+        end else begin
             if (processing_done &&  this_ready_o) begin                
                 register_write_e_r <= register_write_e; 
                 MemWriteE_r <= MemWriteE; 

@@ -99,6 +99,8 @@ module teknofest_wrapper #(
 	wire [1:0] 	mem_data_atomic_wsize;
 	wire 			mem_data_atomic_req;
 	
+	wire [1:0] exp_access_faults;
+	
 	wire mem_data_done_atomic_to_core;
 	wire [31:0] mem_data_rdata_atomic_to_core;
 	
@@ -125,7 +127,8 @@ module teknofest_wrapper #(
 		 .mem_data_wsize_o(mem_data_wsize),
 		 .mem_data_req_o(mem_data_req),
 		 .mem_data_done_i(is_atomic? mem_data_done_atomic_to_core : mem_data_done),
-		 .mem_data_rdata_i(is_atomic? mem_data_rdata_atomic_to_core : mem_data_rdata)
+		 .mem_data_rdata_i(is_atomic? mem_data_rdata_atomic_to_core : mem_data_rdata),
+		 .exp_access_faults_i(exp_access_faults)
 		 );
 
 	// atomic
@@ -180,6 +183,8 @@ module teknofest_wrapper #(
 		.data_req_i(is_atomic? mem_data_atomic_req : mem_data_req),
 		.data_done_o(mem_data_done),
 		.data_rdata_o(mem_data_rdata),
+		//access faults
+        .access_fault_o(exp_access_faults),
 		// main mem operations
 		.main_we_o(mem_main_we),
 		.main_adrs_o(mem_main_adrs),

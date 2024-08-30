@@ -10,9 +10,15 @@ module uart
         input rx
         );
         
+    integer rx_index;
+    parameter start_bit = 1'b0;
+    parameter stop_bit = 1'b1;
+    integer index_bit_to_send;
+    integer index_bit_to_send_next;     
+    integer baud_cntr;
+
     // baud-rate stuff
     wire [15:0] baud_div_non_zero = (baud_div > 0) ? baud_div : 1; // baud div can't be zero
-    integer baud_cntr;
         
     // buffers
     wire [7:0] tx_buffer_popped_value;
@@ -27,6 +33,8 @@ module uart
         
     reg [7:0] received_byte;
     reg start_bit_detected = 0; 
+    
+    
     wire stop_bit_detected = ( rx_index > 7 && rx == stop_bit ) ? 1 : 0;
     FIFObuffer #(.width(8), .size(32)) rx_buffer (
         .clk(clk), .rst(rst),
@@ -36,12 +44,8 @@ module uart
         .pop_data(rdata),
         .empty(rx_empty), .full(rx_full));    
     
-    parameter start_bit = 1'b0;
-    parameter stop_bit = 1'b1;
     wire [9:0] data_frame = {stop_bit, tx_buffer_popped_value, start_bit};
-    integer index_bit_to_send;
-    integer index_bit_to_send_next;
-    integer rx_index;
+
     
     always @ (posedge clk) begin
         if (rst) begin

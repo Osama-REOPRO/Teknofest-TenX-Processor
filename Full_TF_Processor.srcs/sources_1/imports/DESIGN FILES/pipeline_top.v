@@ -21,7 +21,9 @@ module Pipeline_top(
 	output 			mem_data_req_o,
 	input  			mem_data_done_i,
 	input  [31:0]	mem_data_rdata_i,
-	output [3:0]   mem_data_atomic_operation_o
+	output [3:0]   mem_data_atomic_operation_o,
+	
+	input [1:0] exp_access_faults_i
 );
    //useless
    assign mem_instr_we_o = 1'b0;
@@ -81,8 +83,8 @@ module Pipeline_top(
     wire decode_valid, execute_valid;
 
     //Exception wires
-    wire exp_ld_mis, exp_st_mis, exp_instr_addr_mis, exp_instr_acc_fault,
-    exp_st_acc_fault, exp_ld_acc_fault, exp_ill_instr, is_exception;
+    wire exp_ld_mis, exp_st_mis, exp_instr_addr_mis, exp_ill_instr, is_exception;
+    //exp_instr_acc_fault, exp_st_acc_fault, exp_ld_acc_fault,;
     wire [3:0] mcause_code;
     
 
@@ -108,8 +110,9 @@ module Pipeline_top(
                         .pc_d_o(pc_d), 
                         .pc_plus_4_d_o(pc_plus_4_d),
                         .is_exp_i(is_exception),
-                        .pc_error_i(csr_value_e),
-                        .exp_instr_acc_fault_o(exp_instr_acc_fault) // TODO
+                        .pc_error_i(csr_value_e)
+                        //.exp_instr_acc_fault_i(exp_access_faults_i),
+                        //.exp_instr_acc_fault_o(exp_instr_acc_fault)
                 );
 
     // Decode Stage
@@ -258,10 +261,10 @@ module Pipeline_top(
                      	.mem_data_wdata_o(mem_data_wdata_o),
                      	.mem_data_wsize_o(mem_data_wsize_o),
                      	.mem_data_req_o(mem_data_req_o),
-                     	.mem_data_rdata_i(mem_data_rdata_i),
+                     	.mem_data_rdata_i(mem_data_rdata_i)
                      	
-                     	.exp_ld_acc_fault_o(exp_ld_acc_fault), //TODO
-                     	.exp_st_acc_fault_o(exp_st_acc_fault) //TODO
+//                     	.exp_ld_acc_fault_o(exp_ld_acc_fault), //TODO
+//                     	.exp_st_acc_fault_o(exp_st_acc_fault) //TODO
                     );
 
     // Write Back Stage
@@ -296,11 +299,14 @@ module Pipeline_top(
                         .exp_ld_mis_i(exp_ld_mis), 
                         .exp_st_mis_i(exp_st_mis),
                         .exp_instr_addr_mis_i(exp_instr_addr_mis),
-                        .exp_instr_acc_fault_i(exp_instr_acc_fault), 
-                        .exp_st_acc_fault_i(exp_st_acc_fault),
-                        .exp_ld_acc_fault_i(exp_ld_acc_fault),
+                        //.exp_instr_acc_fault_i(exp_instr_acc_fault), 
+                        //.exp_st_acc_fault_i(exp_st_acc_fault),
+                        //.exp_ld_acc_fault_i(exp_ld_acc_fault),
                         .exp_ill_instr_i(exp_ill_instr),
                         .is_exception_o(is_exception),
+                        
+                        .exp_access_faults_i(exp_access_faults_i),
+                        
                         .mcause_code_o(mcause_code)
                         );
                         
