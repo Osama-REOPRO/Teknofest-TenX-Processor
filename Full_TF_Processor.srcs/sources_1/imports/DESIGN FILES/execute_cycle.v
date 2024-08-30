@@ -122,7 +122,7 @@ module execute_cycle
     assign ResultE = F_instruction_E ? FPU_Result : ALU_Result;
    
    
-    wire mem_half_addr_misalign, mem_word_addr_misalign, mem_misalign, div_by_four;
+    wire mem_half_addr_misalign, mem_word_addr_misalign, mem_misalign, not_div_by_four;
     wire instruction_misalign, load_misalign, store_amo_misalign;
      wire jump_instr_e;
      assign jump_instr_e = ALUControlE === `ALU_JUMPS;
