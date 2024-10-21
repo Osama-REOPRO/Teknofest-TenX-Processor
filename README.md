@@ -1,5 +1,5 @@
 This is the full RISCV processor that we the TenX team developed for the Teknofest 2024 competition.
-The entire thing is written from scratch in Verilog.
+The entire design is written from scratch in Verilog.
 
 #  DESIGN SUMMARY
 The project involved designing a 5-stage pipelined processor to enhance instruction processing
