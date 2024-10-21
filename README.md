@@ -82,7 +82,9 @@ instructions handling in the memory controller explained above is yet to be done
 # PROJECT DETAILED DESIGN
 ## CORE DESIGN
 ### PIPELINE DESIGN
+
 ![image](https://github.com/user-attachments/assets/f8e16a2b-2ec9-4301-8901-46d1a04e706c)
+
 A 5-stage pipeline is implemented as shown in the core diagram in the figure above:
 1. first stage is the fetch stage, where instructions are fetched from the instruction memory, the
 program counter traverses the instructions and a Mux selects either a target instruction or a
@@ -137,6 +139,7 @@ Choosing to implement a pipelined processor comes with advantages and disadvanta
 instruction throughput is increased, hazards are introduced, where such hazards causes instructions
 next in line to be executed incorrectly, the figure below shows how instructions are moving through the
 pipeline.
+
 ![image](https://github.com/user-attachments/assets/94846cb6-a743-49bd-a66f-a1a3ab757aaf)
 
 There are three types of hazards, which were all faced and dealt with on our end by implementing a hazard unit, the hazard unit is explained below.
@@ -170,6 +173,7 @@ There are three types of hazards, which were all faced and dealt with on our end
 ### ALU DESIGN
 
 As our Addition/Subtraction algorithm, we have implemented the Kogge-Stone adder [2], a highly efficient parallel prefix form of a carry-lookahead adder. The adder works by computing the carry signals in parallel, which reduces the overall addition time compared to traditional ripple-carry adders. The implementation involves several stages of preprocessing, carry generation, and post-processing as shown in figure 3.4. During preprocessing, the generate (G) and propagate (P) signals are computed for each bit of the operands. The carry generation stage then uses a series of parallel prefix operations to combine these signals and compute the carry for each bit position. Finally, the sum is calculated in the post-processing stage by combining the original propagate signals with the carry-out values from the previous stages.
+
 ![image](https://github.com/user-attachments/assets/75d0a18e-e653-4da4-ad62-e9087c03bf3d)
 
 Figure 3.4: Kogge-Stone Adder Diagram
@@ -183,6 +187,7 @@ For the Division algorithm, we opted for the Non-restoring division algorithm. T
 
 
 For the shifter module shown in figure 3.5, we opted for the Barrel Shifter, its combinational design allows it to perform operations in a single clock cycle, the shifter was used to perform shift operations in the I extension and B extension, a control bit in the design allowed it to perform either right rotation or left rotation.
+
 ![image](https://github.com/user-attachments/assets/a929b385-ae6e-4171-b521-480bee0ec0c9)
 
 Figure 3.5: Barrel-shifter diagram
@@ -192,6 +197,7 @@ B-extentions were handled easily as there simple bit operations in the ALU, spec
 ### FPU Design
 The FPU shown in figure 3.6  performs Floating-Point Addition, Subtraction, Multiplication, Division, Square Root, Comparison and Conversion operations, in addition to performing round_nearest_even,
 round_to_zero, round_up, round_down and round_nearest_up rounding operations. The FPU operates in four phases, Pre-Normalization, Unite Blocks, Post Normalization and FPU output.
+
 ![image](https://github.com/user-attachments/assets/2e71ad71-0c6e-4c10-a42e-9ff201c4084a)
 
 Figure 3.6: FPU diagram
@@ -205,6 +211,7 @@ For Square root, Special Case Handling: It properly handles cases where operands
 IEEE 754 compliance ensures the module accurately handles the detection of special floating-point values such as infinity, NaN, zero, and denormalized numbers. It detects and flags special cases for both operands, ensuring subsequent arithmetic operations are performed correctly. By providing precise flags for special cases, the module ensures the FPU operates robustly and accurately under all input conditions.		
 
 - Adder Unit
+
 ![image](https://github.com/user-attachments/assets/7f29478a-dfbf-4205-ad3b-e71a48ccf997)
 
 Figure 3.7: FPU CLA diagram
@@ -227,6 +234,7 @@ It Normalizes and Rounds the Result and Exception handling. Leading Zero Counter
 In the top module the FPU checks if the output is infinity, NAN, QNAN, SNAN, also checks for inexact results and for over and under flow conditions, in addition, it signals division by zero condition and zero output conditions for different operations and sets the output based on the operation and special cases. Moreover it decodes the desired instructions, feeds them to the correct modules, does the logic for Sign Injection and Move instruction and gives out the result depending on the FPUControl signal.
 
 ### Branch Prediction Design
+
 ![image](https://github.com/user-attachments/assets/55849b85-432f-4ac8-bb5c-197ce8b84f42)
 
 Figure 3.8: Two-Level Gshare Branch Predictor
@@ -465,7 +473,9 @@ Work Packages Uncompleted:
 [6] He, Y., Wan, H., Jiang, B., & Gao, X. (2017, December 5). A method to detect hazards in pipeline processor. MATEC Web of Conferences. https://doi.org/10.1051/matecconf/201713900085
 
 [7] Evers, M., Patel, S. J., Chappell, R. S., & Patt, Y. N. (1998). An Analysis of Correlation and Predictability: What Makes Two-Level Branch Predictors Work. IEEE Computer Society. https://www.csa.iisc.ac.in/~arkapravab/courses/paper_reading/p2_why_branch_prediction_works.pdf
+
 [8] Science Direct. (2020). Set-Associative Cache. https://www.sciencedirect.com/topics/computer-science/set-associative-cache
+
 [9] Wishbone system-on-Chip (Soc) interconnection architecture for portable IP cores — WISHBONE B3. (2019, October 20). WISHBONE System-on-Chip (SoC) Interconnection Architecture for Portable IP Cores — WISHBONE B3. https://wishbone-interconnect.readthedocs.io/en/latest/
 
 
