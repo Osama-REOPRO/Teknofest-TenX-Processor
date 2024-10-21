@@ -389,78 +389,73 @@ FPGA Setup:
   - FPGA-specific constraints and configurations are applied.
   - The design is loaded onto the FPGA for real-time testing.
 ## Test Scenarios:
-Functional Verification:
-Basic Operation: Verify the execution of basic instructions and sequences.
-Cache Functionality: Ensure correct behavior of cache memory during execution.
-Peripheral Interaction: Test data transfer and control signals with connected peripherals like UART, SPI, and I2C.
-Performance Benchmarking:
-Throughput Tests: Measure the data processing rate of the processor.
-Latency Tests: Evaluate the response time for different operations and instructions.
-Stress Testing:
-High Load: Subject the processor to maximum operational loads to test stability.
-Boundary Conditions: Validate performance and functionality at the edge of operational limits (e.g., maximum clock speed, minimal supply voltage).
+- Functional Verification:
+	- Basic Operation: Verify the execution of basic instructions and sequences.
+	- Cache Functionality: Ensure correct behavior of cache memory during execution.
+	- Peripheral Interaction: Test data transfer and control signals with connected peripherals like UART, SPI, and I2C.
+- Performance Benchmarking:
+	- Throughput Tests: Measure the data processing rate of the processor.
+	- Latency Tests: Evaluate the response time for different operations and instructions.
+- Stress Testing:
+	- High Load: Subject the processor to maximum operational loads to test stability.
+	- Boundary Conditions: Validate performance and functionality at the edge of operational limits (e.g., maximum clock speed, minimal supply voltage).
 ## Post-Layout Verification:
-Back-Annotated Simulations: Simulate the design with back-annotated timing information to ensure timing closure.
-Static Timing Analysis: Use tools like PrimeTime to verify timing constraints are met across all corners.
+- Back-Annotated Simulations: Simulate the design with back-annotated timing information to ensure timing closure.
+- Static Timing Analysis: Use tools like PrimeTime to verify timing constraints are met across all corners.
 ## Test Results and Bug Resolution
 Test Results:
-Functional Tests: All basic instruction and cache tests passed with 100% success.
-Peripheral Tests: Successful data transfer with UART, SPI, and I2C peripherals. Minor timing adjustments were needed.
-Performance Tests: Achieved expected performance metrics, with minor deviations corrected in the final timing adjustments.
-Post-Layout Tests: Passed DRC/LVS checks and met timing requirements for setup and hold times.
+- Functional Tests: All basic instruction and cache tests passed with 100% success.
+- Peripheral Tests: Successful data transfer with UART, SPI, and I2C peripherals. Minor timing adjustments were needed.
+- Performance Tests: Achieved expected performance metrics, with minor deviations corrected in the final timing adjustments.
+- Post-Layout Tests: Passed DRC/LVS checks and met timing requirements for setup and hold times.
 Bug Resolution:
-Functional Bugs: Initial bugs in the instruction decoder and pipeline stages were identified and fixed by adjusting control signal generation and hazard detection logic.
-Timing Issues: Encountered minor setup and hold violations, resolved by optimizing the clock tree and adjusting placement of critical paths.
-Power Consumption: Higher than expected power consumption was noted in early tests. This was mitigated by optimizing clock gating and using multi-Vt cells to reduce leakage power.
+- Functional Bugs: Initial bugs in the instruction decoder and pipeline stages were identified and fixed by adjusting control signal generation and hazard detection logic.
+- Timing Issues: Encountered minor setup and hold violations, resolved by optimizing the clock tree and adjusting placement of critical paths.
+- Power Consumption: Higher than expected power consumption was noted in early tests. This was mitigated by optimizing clock gating and using multi-Vt cells to reduce leakage power.
 Summary of Time Allocation
-RTL Level Simulation: 3 weeks
-Post-Layout Simulation: 4 weeks
-FPGA Implementation Testing: 3 weeks
-Bug Fixing and Optimization: 2 weeks
+- RTL Level Simulation: 3 weeks
+- Post-Layout Simulation: 4 weeks
+- FPGA Implementation Testing: 3 weeks
+- Bug Fixing and Optimization: 2 weeks
 This comprehensive testing strategy ensures that the processor design is robust, efficient, and ready for deployment, with thorough validation at each stage of development.
 ## BUSINESS PLAN
 The timing schedule is outlined below, showing the progress of work packages and identifying any delays or uncompleted tasks.
 Design packages: 
-Pipeline the processor:  COMPLETED
-ALU and FPU: COMPLETED
-UART and Wishbone interface: COMPLETED
-Cache system: COMPLETED
-Memory Controller: Not yet, we faced  difficulties in understanding the wrapper and integrating it with our processor.
-Integrating the FPU: Not yet. Although the FPU unit is finished and tested, we faced  difficulties in adjusting the execute stage thoroughly to realize the Floating point operations.
-Realizing the Extensions: Initial testing and validations were carried out through the design phase. We tested the processor for the IMB extensions, the A and Zicsr extensions were delayed due to the memory controller not being finalized. This happened because we changed the way we plan to realize the atomic instructions and moved it to the memory controller instead of the core.
+- Pipeline the processor:  COMPLETED
+- ALU and FPU: COMPLETED
+- UART and Wishbone interface: COMPLETED
+- Cache system: COMPLETED
+- Memory Controller: Not yet, we faced  difficulties in understanding the wrapper and integrating it with our processor.
+- Integrating the FPU: Not yet. Although the FPU unit is finished and tested, we faced  difficulties in adjusting the execute stage thoroughly to realize the Floating point operations.
+- Realizing the Extensions: Initial testing and validations were carried out through the design phase. We tested the processor for the IMB extensions, the A and Zicsr extensions were delayed due to the memory controller not being finalized. This happened because we changed the way we plan to realize the atomic instructions and moved it to the memory controller instead of the core.
 IC FLOW PACKAGES (TO BE COMPLETED IN THE FINAL STAGE) 
-Schematic entry and simulation
-Layout design 
-Design rule check (DRC) and layout versus schematic (LVS) check (
+- Schematic entry and simulation
+- Layout design 
+- Design rule check (DRC) and layout versus schematic (LVS) check 
 Work Packages Completed:
-Design specifications (75%)
-Core design and block diagrams (75%)
-Schematic entry and simulation (75%)
-Layout design (50%)
-Initial and final testing (50%)
+- Design specifications (75%)
+- Core design and block diagrams (75%)
+- Schematic entry and simulation (75%)
+- Layout design (50%)
+- Initial and final testing (50%)
 Work Packages Uncompleted:
-Optimization of IC flow (90%)
-Final adjustments post-testing (95%)
+- Optimization of IC flow (90%)
+- Final adjustments post-testing (95%)
+
 # REFERENCES 
 
 
 [1] Ushasree, G., Dhanabal, R., & Sahoo, S. (2013, July 15). VLSI implementation of a high speed single precision floating point unit using Verilog. IEEE Xplore. https://doi.org/10.1109/CICT.2013.6558204
 
-
 [2] Harold, S., & Kogge, P. (1973, August 8). A parallel algorithm for the efficient solution of a general class of recurrence equations. IEEE Xplore. https://ieeexplore.ieee.org/document/5009159
-
 
 [3] Harish, B., Sivani, K., & Rukmini, M. (2019, August 29). Design and performance comparison among various types of adder Topologies. 2019 3rd International Conference on Computing Methodologies and Communication (ICCMC). https://doi.org/10.1109/ICCMC.2019.8819779
 
-
 [4] Synopsys IP technical bulletin: Tradeoffs between Combinational and sequential dividers. (2024). Synopsys | EDA Tools, Semiconductor IP and Application Security Solutions. https://www.synopsys.com/dw/dwtb.php?a=fp_dividers
-
 
 [5] Patankar, U., & Koei, A. (2021, January 29). Review of basic classes of dividers based on division algorithm. IEEE Xplore. https://doi.org/10.1109/ACCESS.2021.3055735
 
-
 [6] He, Y., Wan, H., Jiang, B., & Gao, X. (2017, December 5). A method to detect hazards in pipeline processor. MATEC Web of Conferences. https://doi.org/10.1051/matecconf/201713900085
-
 
 [7] Evers, M., Patel, S. J., Chappell, R. S., & Patt, Y. N. (1998). An Analysis of Correlation and Predictability: What Makes Two-Level Branch Predictors Work. IEEE Computer Society. https://www.csa.iisc.ac.in/~arkapravab/courses/paper_reading/p2_why_branch_prediction_works.pdf
 [8] Science Direct. (2020). Set-Associative Cache. https://www.sciencedirect.com/topics/computer-science/set-associative-cache
